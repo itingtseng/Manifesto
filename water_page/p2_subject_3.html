@@ -1,0 +1,279 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>水污染防治費大事紀</title>
+    <script src="../js/jquery-1.10.2.js"></script>
+    <link href="../css/air2.css" rel="stylesheet" />
+    <script src="http://s.codepen.io/assets/libs/modernizr.js" type="text/javascript"></script>
+    <link href='http://fonts.googleapis.com/css?family=Droid+Serif|Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/reset.css">
+
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <style type="text/css">
+        .history {
+            width: 100%;
+            margin-left: 0%;
+            margin-top: 0%;
+        }
+
+        .top_block div {
+            float: left;
+        }
+
+        .top_block img {
+            width: 100%;
+        }
+
+        .top_block .text {
+            width: 70%;
+        }
+
+        .top_block .next {
+            width: 25%;
+            padding-left: 3%;
+            padding-top: 3%;
+        }
+
+        .top_block{
+            padding-top: 2%;
+            clear: both;
+            display: table; 
+        }
+
+        .back{
+            margin-top: -16.5%;
+        }
+
+        .chart{
+            margin-top: -16.5%;
+        }
+    </style>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            var $timeline_block = $('.cd-timeline-block');
+
+            //hide timeline blocks which are outside the viewport
+            $timeline_block.each(function () {
+                if ($(this).offset().top > $(window).scrollTop() + $(window).height() * 0.75) {
+                    $(this).find('.cd-timeline-img, .cd-timeline-content').addClass('is-hidden');
+                }
+            });
+
+            //on scolling, show/animate timeline blocks when enter the viewport
+            $(window).on('scroll', function () {
+                $timeline_block.each(function () {
+                    if ($(this).offset().top <= $(window).scrollTop() + $(window).height() * 0.75 && $(this).find('.cd-timeline-img').hasClass('is-hidden')) {
+                        $(this).find('.cd-timeline-img, .cd-timeline-content').removeClass('is-hidden').addClass('bounce-in');
+                    }
+                });
+            });
+        });
+    </script>
+
+</head>
+<body>
+    <form id="form1">
+        <div class="content">
+            <!-- dot -->
+            <div class="circle">
+                <div class="dot1">
+                    <img src="../images/air/3c.png" />
+                </div>
+                <div class="dot2">
+                    <img src="../images/air/1c.png" />
+                </div>
+                <div class="dot3">
+                    <img src="../images/air/2c.png" />
+                </div>
+                <div class="dot4">
+                    <img src="../images/air/4c.png" />
+                </div>
+                <div class="dot5">
+                    <img src="../images/air/5c.png" />
+                </div>
+                <div class="dot6 select_dot">
+                    <img src="../images/air/6d.png" />
+                </div>
+                <div class="dot7">
+                    <img src="../images/air/7c.png" />
+                </div>
+                <div class="dot8">
+                    <img src="../images/air/8c.png" />
+                </div>
+                <div class="dot9">
+                    <img src="../images/air/9c.png" />
+                </div>
+            </div>
+
+            <!-- dot text -->
+            <div class="circle_text">
+                <div class="dot_text1">
+                    燃料管制
+                </div>
+                <div class="dot_text2">
+                    空氣品質管制站
+                </div>
+                <div class="dot_text3">
+                    排放標準管制
+                </div>
+                <div class="dot_text4">
+                    空氣品質標準
+                </div>
+                <div class="dot_text5">
+                    固定污染源
+                </div>
+                <div class="dot_text6 select_text">
+                    空氣污染防制費
+                </div>
+                <div class="dot_text7">
+                    空品防制區
+                </div>
+                <div class="dot_text8">
+                    低污染交通工具
+                </div>
+                <div class="dot_text9">
+                    細懸浮微粒
+                </div>
+            </div>
+
+            <div  class="top_block">
+                <img src="../images/water_subject/s3_background.png" />
+            </div>
+
+            <div class="back">
+                <a href="../water_page/p1_water_year.html">
+                </a>
+            </div>
+
+            <!-- content -->
+            <div>
+                <section id="cd-timeline" class="cd-container">
+                    <div class="cd-timeline-block">
+                        <div class="cd-timeline-img cd-location">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-icon-location.svg" alt="Picture">
+                        </div>
+                        <!-- cd-timeline-img -->
+                        <div class="cd-timeline-content">
+                            <h2>修正「水污染防治法」</h2>
+                            <p>制定排放廢（污）水於地面水體者應繳交水污染防治費之規定。</p>
+                            <span class="cd-date">80年</span>
+                        </div>
+                        <!-- cd-timeline-content -->
+                    </div>
+                    <!-- cd-timeline-block -->
+                    <div class="cd-timeline-block">
+                        <div class="cd-timeline-img cd-location">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-icon-location.svg" alt="Movie">
+                        </div>
+                        <!-- cd-timeline-img -->
+                        <div class="cd-timeline-content">
+                            <h2>發布「廢（污）水排放收費辦法」</h2>
+                            <p>原定87年7月1日起向事業、污水下水道系統及家戶徵收，惟各界質疑對家戶徵收之法律授權不明確等因素，於87年6月30日修正該收費辦法，暫緩徵收。</p>
+                            <span class="cd-date">87年</span>
+                        </div>
+                        <!-- cd-timeline-content -->
+                    </div>
+                    <!-- cd-timeline-block -->
+                    <div class="cd-timeline-block">
+                        <div class="cd-timeline-img cd-location">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-icon-location.svg" alt="Picture">
+                        </div>
+                        <!-- cd-timeline-img -->
+                        <div class="cd-timeline-content">
+                            <h2>修正「水污染防治法」</h2>
+                            <p>明定徵收對象、計費依據、用途、相關子法之授權範圍訂定等。</p>
+                            <span class="cd-date">91年</span>
+                        </div>
+                        <!-- cd-timeline-content -->
+                    </div>
+                    <!-- cd-timeline-block -->
+                    <div class="cd-timeline-block">
+                        <div class="cd-timeline-img cd-location">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-icon-location.svg" alt="Location">
+                        </div>
+                        <!-- cd-timeline-img -->
+                        <div class="cd-timeline-content">
+                            <h2>健全水污提防治費徵收，奠定階段徵收</h2>
+                            <p>歷次立院法議延緩徵收水污染防治費，且開徵後針對徵收對象須採階段徵收。</p>
+                            <span class="cd-date">93年</span>
+                        </div>
+                        <!-- cd-timeline-content -->
+                    </div>
+                    <!-- cd-timeline-block -->
+                    <div class="cd-timeline-block">
+                        <div class="cd-timeline-img cd-location">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-icon-location.svg" alt="Location">
+                        </div>
+                        <!-- cd-timeline-img -->
+                        <div class="cd-timeline-content">
+                            <h2>提送「水污染防治費徵收及使用計畫」報院核定</h2>
+                            <p>並編列95年基金預算送立法院審查，開徵時間暫定為經立法院審查通過基金預算後之下一期開徵：同年發布「水污染防治費費率審議委員會設置辦法」：明定委員會組織及任務。</p>
+                            <span class="cd-date">94年</span>
+                        </div>
+                        <!-- cd-timeline-content -->
+                    </div>
+                    <!-- cd-timeline-block -->
+                    <div class="cd-timeline-block">
+                        <div class="cd-timeline-img cd-location">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-icon-location.svg" alt="Location">
+                        </div>
+                        <!-- cd-timeline-img -->
+                        <div class="cd-timeline-content">
+                            <h2>發布「水污染防治費收費辦法」</h2>
+                            <p>明定徵收對象、項目、方式及流程、計費方式、繳費流程、方式、頻率及期程、審理查核及核銷、獎勵措施、銀行代收、基金管理及審議委員會之組織等相關徵收制度。</p>
+                            <span class="cd-date">95年</span>
+                        </div>
+                        <!-- cd-timeline-content -->
+                    </div>
+                    <!-- cd-timeline-block -->
+                    <div class="cd-timeline-block">
+                        <div class="cd-timeline-img cd-location">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-icon-location.svg" alt="Location">
+                        </div>
+                        <!-- cd-timeline-img -->
+                        <div class="cd-timeline-content">
+                            <h2>強化立院溝通</h2>
+                            <p>水污染防治基金預算連續6年皆遭立法院刪減為1千元，至今尚未徵收。</p>
+                            <span class="cd-date">96年</span>
+                        </div>
+                        <!-- cd-timeline-content -->
+                    </div>
+                    <!-- cd-timeline-block -->
+                    <div class="cd-timeline-block">
+                        <div class="cd-timeline-img cd-location">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-icon-location.svg" alt="Location">
+                        </div>
+                        <!-- cd-timeline-img -->
+                        <div class="cd-timeline-content">
+                            <h2>加強產業輔導，積極謀取水污費開徵共識</h2>
+                            <p>積極輔導相關產業處理廢水及完成相關配套措施，並函報『水污染防治責徵收作業規劃及相關配套措施」送立法院審議，期能順利辦理水污費開徵作業。</p>
+                            <span class="cd-date">99年</span>
+                        </div>
+                        <!-- cd-timeline-content -->
+                    </div>
+                    <!-- cd-timeline-block -->
+                        <div class="cd-timeline-block">
+                        <div class="cd-timeline-img cd-location">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-icon-location.svg" alt="Location">
+                        </div>
+                        <!-- cd-timeline-img -->
+                        <div class="cd-timeline-content">
+                            <h2>修正發布「水污染防治費收費辦法」，104年5月1日開徵</h2>
+                            <p>主要係配合立法院決議內容將畜牧業納入第3年起徵收，有害健康物質由第4年調整為第1年起徵收外，並定於104年5月1日開徵水污染防治費。 </p>
+                            <span class="cd-date">104年</span>
+                        </div>
+                        <!-- cd-timeline-content -->
+                    </div>
+                    <!-- cd-timeline-block -->
+                </section>
+            </div>
+
+        </div>
+    </form>
+</body>
+</html>

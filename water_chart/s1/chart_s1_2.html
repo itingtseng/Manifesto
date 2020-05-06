@@ -1,0 +1,323 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="../../css/P3.css" rel="stylesheet" />
+    <script src="../../js/jquery-1.10.2.js"></script>
+
+    <script src="../../js/highchats/highstock.js"></script>
+    <script src="../../js/highchats/map.js"></script>
+    <script src="../../js/highchats/drilldown.js"></script>
+    <script src="../../js/highchats/exporting.js"></script>
+    <script src="../../js/highchats/offline-exporting.js"></script>
+
+    <script src="../../js/common_water/chart.js"></script>
+    <script src="../../js/water_s1/map_water_s1.js"></script>
+    <script src="../../js/common_water/play.js"></script>
+    <script src="../../js/common_water/area_code.js"></script>
+
+    <!-- co value -->
+    <script src="../../js/WaterChart/chart_type1_km_severe_all.js"></script>
+    <script src="../../js/WaterMap/map_type1_km_severe_all.js"></script>
+
+    <!-- geo json -->
+    <script src="../../Geojson/velly.geojson.js"></script>
+    <script src="../../js/map_tool.js"></script>
+
+    <title>河川嚴重污染長度趨勢</title>
+    <script type="text/javascript">
+
+        var current_area = "";
+        var current_area_code = "";
+
+        var data_sy, data_sm;
+
+        var current_sy = 0;
+        var current_sm = 0;
+        var current_map_value_name = "嚴重污染長度趨勢(公里)";
+        var current_site_name = "";
+
+        var co_map = map_type1_km_severe_all;
+        var co_chart = chart_type1_km_severe_all;
+
+        function set_default_ym() {
+            var d1 = new Date(stock_chart.xAxis[0].getExtremes().max);
+            //var d1 = new Date(co_chart[0].time_value[0][0]);
+            current_sy = d1.getFullYear();
+            current_sm = d1.getMonth() + 1;
+
+            data_sy = current_sy;
+            data_sm = current_sm;
+        }
+
+        function get_chart_opts() {
+            var chart_opts = {
+                chart: {
+                    spacing: [0, -120, 0, 60],
+                    events: {
+                        click: function (event) {
+                            var d = new Date(event.xAxis[0].value);
+
+                            play_current = d;
+                            current_sy = play_current.getFullYear();
+                            current_sm = play_current.getMonth() + 1;
+                            if (current_sm > 6) {
+                                current_sy += 1;
+                            }
+                            current_sm = 1;
+
+                            //draw plot line
+                            ShowPlotLine(current_sy, current_sm);
+
+                            //change map data
+                            change_year_data(current_sy, current_sm);
+                        }
+                    }
+                },
+                exporting: {
+                    enabled: true,
+                    buttons: {
+                        contextButton: {
+                            x: -150, y: 0,
+                            text: "輸出",
+                        }
+                    }
+                },
+                tooltip: {
+                    formatter: function () {
+                        var d = new Date(this.x);
+                        var str_d = d.getFullYear() - 1911 + "年";
+
+                        var s = "<b>" + str_d + "</b><br />";
+                        $.each(this.points, function () {
+                            if ((this.series.options.tooltip) && (this.series.options.tooltip.pointFormatter)) {
+                                s += this.series.options.tooltip.pointFormatter(this);
+                            }
+                            else {
+                                s += '<span style="color:' + this.color + '">\u25CF</span> ' + this.series.name + ': <b>'
+                               + this.y + "</b><br/>";
+                            }
+
+                        });
+                        return s;
+                    }
+                },
+                yAxis: [
+            {
+                title: {
+                    text: '嚴重污染長度趨勢(公里)',
+                    rotation: 0,
+                    align: 'high',
+                    x: -120,
+                    y: -40
+                },
+                labels: {
+                    format: "{value}"
+                },
+                min: 0,
+                gridLineWidth: 1,
+                offset: 25
+            }
+                ],
+                xAxis: {
+                    labels: {
+                        formatter: function () {
+                            var d = this.value;
+                            var d1 = new Date(d);
+                            var v = d1.getYear() + 1900 - 1911 + "";
+                            return v;
+                        },
+                    },
+                    title: {
+                        text: "年",
+                    },
+                    tickInterval: 365 * 24 * 3600 * 1000,
+                    showFirstLabel: true,
+                    tickPixelInterval: 10,
+                    crosshair: {
+                        color: "#888",
+                        zIndex: 999,
+                    }
+                }
+        , series: [
+            {
+                name: '嚴重污染',
+                data: [],
+                zIndex: 1,
+                type: 'spline',
+                yAxis: 0,
+                marker: {
+                    enabled: true,
+                    radius: 0
+                },
+                color: line_color[0],
+                fillOpacity: 1,
+                tooltip: {
+                    pointFormatter: function (obj) {
+                        var s = '<span style="color:' + obj.color + '">\u25CF</span> ' + obj.series.name + ': <b>';
+                        var v = parseFloat(obj.y.toFixed(2));
+                        s = s + v + ' </b><br/>';
+                        return s;
+                    }
+                }
+            }
+        ]
+            };
+
+            return chart_opts;
+        }
+
+        var map_tooltip_value_func = function map_tooltip_value_func(value) {
+            return value.toFixed(2);
+        }
+
+        var map_opts = {
+            colorAxis: {
+                min: 0,
+                max: 1.5
+            },
+            legend: {
+                width: 140
+            },
+            exporting: {
+                    enabled: true,
+                    buttons: {
+                        contextButton: {
+                            align: "right",
+                            text: "輸出",
+                        }
+                    }
+                },
+        }
+
+        $(document).ready(function () {
+
+            //設定地圖資料來源
+            current_area = "ALL";
+            current_area_code = "ALL";
+
+            //chart
+            var opts = get_chart_opts();
+            DrawChart(current_area, "data_chart", opts);
+
+            //chart data
+            change_chart_data();
+            set_default_ym(); // 找出最小日期
+
+            //set map;
+            show_map(current_area, "data_map", map_opts);
+            var map_class_value = [10, 20, 30, 40];
+            set_color_class(map_class_value, 0, false, 0);
+            change_year_data(current_sy, current_sm);
+
+            map_level_ary.push("ALL");
+
+            change_chart_title();
+
+            //auto play;
+            //play_year();
+        });
+
+        map_tooltip_value_func = function (value) {
+            if (value == null) return "無";
+            if (value == "無") return "無";
+            return value.toFixed(2) + "";
+        }
+
+        function go_next_month() {
+
+            if (play_current > play_d2) {
+                play_current = play_d1;
+                current_sy = play_current.getFullYear();
+            }
+            else {
+                current_sy = play_current.getFullYear() + 1;
+            }
+            current_sm = 1;
+
+            //draw plot line
+            ShowPlotLine(current_sy, current_sm);
+
+            //change map data
+            change_year_data(current_sy, current_sm);
+
+            //play month ++
+            play_current = new Date(current_sy, current_sm, 1);
+        }
+
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="container">
+
+            <div class="print_page">
+                <div>
+                    <a href="javascript: return false;" onclick="window.print();">
+                        <img src="../../images/print.png" />
+                    </a>
+                </div>
+            </div>
+
+            <div class="back">
+                <div>
+                    <a href="../../water_page/陸域水質改善大事紀/index.html">
+                        <img src="../../images/air/back.png" />
+                    </a>
+                </div>
+            </div>
+
+            <div class="title">
+                <div class="h1">
+                    <div class="text">河川水質調查</div>
+                    <div class="drop chart_change" onclick="open_change_list();">
+                        ▼
+                        <div class="list">
+                            <div>
+                                <a  href="chart_s1_1.html">
+                                    污染指標趨勢
+                                </a>
+                            </div>
+                            <div>
+                                <a class="select">
+                                    嚴重污染長度趨勢
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="h2">
+                    民國65年起開始河川水質取樣及檢驗，可知水質監測了解<a href="chart_s1_1.html"><u>污染指標趨勢</a></u>及<a href="chart_s1_2.html"><u>嚴重污染長度趨勢</a></u>是污染防治的第一歩。
+                </div>
+                <div class="h3">
+                    資料來源：重要河川污染情形：<a href="http://erdb.epa.gov.tw/DataRepository/ReportAndStatistics/ImportantRiverPollution.aspx"><u>環境資源資料庫</a></u>
+                </div>
+            </div>
+            <div class="map">
+                <div id="data_map">
+                </div>
+
+            </div>
+            <div class="chart">
+
+                <div id="data_chart">
+                </div>
+
+                <div class="action_bar">
+                    <div id="div_action_left" onclick="go_year_start();">
+                        <img src="../../images/right.png" />
+                    </div>
+                    <div onclick="btn_action();">
+                        <img src="../../images/play.png" id="img_action_play" />
+                    </div>
+                    <div id="div_action_right" onclick="go_year_end();">
+                        <img src="../../images/left.png" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</body>
+</html>

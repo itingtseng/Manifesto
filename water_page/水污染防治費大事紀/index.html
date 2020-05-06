@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="src/stylesheets/app.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta content="width=device-width; initial-scale=1.0;" name="viewport">
+    <title>水污染防治費大事紀</title>
+    <style type="text/css">
+    .chart_btn {
+        position: relative;
+        float: right;
+        width: 65px;
+        margin-top: 2%;
+    }
+    
+    .chart_btn img {
+        width: 100%;
+    }
+    </style>
+</head>
+
+<body data-bind="css:{'modalShown':itemSelected}">
+    <header>
+        <h1 data-bind="text:title"></h1>
+        <div class="chart_btn">
+            <a href="../p1_water_year.html">
+                <img src="../../images/back.png" />
+            </a>
+        </div>
+        <div class="icon-bar">
+            <div class="group">
+                <label class="muted" for="scale">顯示尺寸：<span data-bind="text:currentScale"></span>畫素/天</label>
+                <input data-bind="value:currentScale,valueUpdate: 'afterkeydown'" id="scale" max="1" min="0.5" step='0.1' name="points" type="range">
+            </div>
+            <div class="group"> <i data-bind="click:scrollNext" class="fa fa-arrow-down"></i> <i data-bind="click:scrollPrevious" class="fa fa-arrow-up"></i> </div>
+        </div>
+        <p class="muted" data-bind="text: subtitle"></p>
+    </header>
+    <div class="grid">
+        <div class="left-timeline col-sand-left" data-bind="template:{name:'event', foreach:leftEvents}"></div>
+        <div class="center-timeline col-sand-middle"></div>
+        <div class="right-timeline col-sand-right" data-bind="template:{name:'event', foreach:rightEvents}"></div>
+    </div>
+    <script id="event" type="text/html">
+        <div class="timeline-event" data-bind="style:{'top':top()+'px', 'height':height()+'px', 'borderLeftColor':color,'borderRightColor':color}, css:{'selected':selected},click:toggleSelected">
+            <figure>
+                <figcaption data-bind="text:title"></figcaption>
+                <h6><span data-bind="text:fromStart()"></span>
+                  <small>至</small>
+                  <span data-bind="text:fromEnd()"></span>
+                  </h6>
+                <div data-bind="template:{name:template.name,data:template.context}"></div>
+            </figure>
+        </div>
+    </script>
+    <script type="text/html" id="1991-01">
+        <p>制定排放廢（污）水於地面水體者應繳交水污染防治費之規定。</p>
+    </script>
+    <script type="text/html" id="1998-01">
+        <p>原定87年7月1日起向事業、污水下水道系統及家戶徵收，惟各界質疑對家戶徵收之法律授權不明確等因素，於87年6月30日修正該收費辦法，暫緩徵收。</p>
+    </script>
+    <script type="text/html" id="2002-01">
+        <p>明定徵收對象、計費依據、用途、相關子法之授權範圍訂定等。</p>
+    </script>
+    <script type="text/html" id="2004-01">
+        <p>歷次立院法議延緩徵收水污染防治費，且開徵後針對徵收對象須採階段徵收。</p>
+    </script>
+    <script type="text/html" id="2005-01">
+        <p>並編列95年基金預算送立法院審查，開徵時間暫定為經立法院審查通過基金預算後之下一期開徵：同年發布「水污染防治費費率審議委員會設置辦法」：明定委員會組織及任務。</p>
+    </script>
+    <script type="text/html" id="2006-01">
+        <p>明定徵收對象、項目、方式及流程、計費方式、繳費流程、方式、頻率及期程、審理查核及核銷、獎勵措施、銀行代收、基金管理及審議委員會之組織等相關徵收制度。</p>
+    </script>
+    <script type="text/html" id="2007-01">
+        <p>水污染防治基金預算連續6年皆遭立法院刪減為1千元，至今尚未徵收。</p>
+    </script>
+    <script type="text/html" id="2010-01">
+        <p>積極輔導相關產業處理廢水及完成相關配套措施，並函報「水污染防治費徵收作業規劃及相關配套措施」送立法院審議，期能順利辦理水污費開徵作業。</p>
+    </script>
+    <script type="text/html" id="2015-01">
+        <p>主要係配合立法院決議內容將畜牧業納入第3年起徵收，有害健康物質由第4年調整為第1年起徵收外，並定於104年5月1日開徵水污染防治費。</p>
+    </script>
+    <script src="src/vendor/moment.min.js"></script>
+    <script src="src/vendor/knockout.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="src/vendor/jquery.scrollTo.min.js"></script>
+    <script src="src/js/app.js"></script>
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36251023-1']);
+    _gaq.push(['_setDomainName', 'jqueryscript.net']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+</body>
+
+</html>

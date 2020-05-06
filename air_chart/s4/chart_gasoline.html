@@ -1,0 +1,288 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="../../css/P3.css" rel="stylesheet" />
+    <script src="../../js/jquery-1.10.2.js"></script>
+
+    <script src="../../js/highchats/highstock.js"></script>
+    <script src="../../js/highchats/map.js"></script>
+    <script src="../../js/highchats/drilldown.js"></script>
+    <script src="../../js/highchats/exporting.js"></script>
+    <script src="../../js/highchats/offline-exporting.js"></script>
+
+    <script src="../../js/common/chart.js"></script>
+    <script src="../../js/common/map.js"></script>
+    <script src="../../js/common/play.js"></script>
+    <script src="../../js/common/area_code.js"></script>
+
+    <!-- co value -->
+    <script src="../../js/gasoline/co_oil.js"></script>
+    <script src="../../js/AirQualityChart/chart_pb_all.js"></script>
+    <script src="../../js/AirQualityMap/map_pb_all.js"></script>
+
+    <!-- geo json -->
+    <script src="../../Geojson/airqualityarea.geojson.js"></script>
+    <script src="../../Geojson/Country.geojson.js"></script>
+    <script src="../../Geojson/station.geojson.js"></script>
+
+    <title>無鉛汽油</title>
+    <style type="text/css">
+    </style>
+    <script type="text/javascript">
+
+        var current_area = "";
+        var current_area_code = "";
+        var data_sy, data_sm;
+
+        var current_sy = 0;
+        var current_sm = 0;
+        var current_map_value_name = "鉛-幾何平均(μg/m<sup>3</sup>)";
+
+        var co_map = map_pb_all;
+        var co_chart = chart_pb_all;
+
+        function set_default_ym() {
+            var d1 = new Date(stock_chart.xAxis[0].getExtremes().max);
+            //var d1 = new Date(co_chart[0].time_value[0][0]);
+            current_sy = d1.getFullYear();
+            current_sm = d1.getMonth() + 1;
+
+            data_sy = current_sy;
+            data_sm = current_sm;
+        }
+
+        var map_opts = {
+            legend: {
+                width: 130,
+                title: {
+                    text:  "鉛-幾何平均<br>"
+                    + ((map_legend_sub_text == null) ? "月平均濃度值" : map_legend_sub_text)
+                }
+            }
+        }
+
+        map_tooltip_value_func = function (value) {
+            return value.toFixed(2);
+        }
+
+        function get_chart_opts() {
+            var chart_opts = {
+                chart: {
+                    spacing: [0, -80, 0, -120],
+                },
+                exporting: {
+                    buttons: {
+                        contextButton: {
+                            x: -100
+                        }
+                    }
+                },
+                legend:{
+                    useHTML: true
+                },
+                yAxis: [
+                 {
+                     title: {
+                         text: '無鉛汽油使用率(%)',
+                         rotation: 0,
+                         align: 'high',
+                         x: -80,
+                         y: -25
+                     },
+                     min: 0,
+                     max: 1.2,
+                     gridLineWidth: 0,
+                     opposite: true,
+                     offset: 30,
+                     labels: {
+                         formatter: function () {
+                             return (this.value * 100).toFixed(0) + ' %';
+                         }
+                     }
+                 },
+                 {
+                     title: {
+                         text: '有鉛汽油含鉛量標準(g/L)',
+                         rotation: 0,
+                         align: 'high',
+                         x: 120,
+                         y: -25,
+                         useHTML: true
+                     },
+                     opposite: false,
+                     gridLineWidth: 0
+                 }
+                ]
+
+            , series: [
+                  {
+                      name: '鉛-幾何平均(μg/m<sup>3</sup>)',
+                      type: 'spline',
+                      zIndex: 4,
+                      yAxis: 1,
+                      color: line_color[0],
+                      marker: {
+                          enabled: true,
+                          radius: 0
+                      },
+                      tooltip: {
+                          pointFormatter: function (obj) {
+                              var s = '<span style="color:' + obj.color + '">\u25CF</span> ' + obj.series.name + ': <b>';
+                              var v = obj.y.toFixed(2);
+                              s = s + v + ' </b><br/>';
+                              return s;
+                          }
+                      }
+                  },
+                  {
+                      name: '有鉛汽油含鉛量標準(g/L)',
+                      data: co_oil.gas_has,
+                      zIndex: 0,
+                      type: 'area',
+                      yAxis: 1,
+                      color: area_color[1],
+                      step: true
+                  },
+                {
+                    name: '無鉛汽油使用率(%)',
+                    data: co_oil.gas_no,
+                    zIndex: 1,
+                    type: 'spline',
+                    yAxis: 0,
+                    fillOpacity: 1,
+                    step: false,
+                    marker: {
+                        enabled: true,
+                        radius: 0
+                    },
+                    color: line_color[1],
+                    tooltip: {
+                        pointFormatter: function (obj) {
+                            var s = '<span style="color:' + obj.color + '">\u25CF</span> ' + obj.series.name + ': <b>';
+                            var v = obj.y * 100;
+                            s = s + v + ' %</b><br/>';
+                            //var driver = get_driver_count(obj.x);
+                            //s = s + driver;
+                            return s;
+                        }
+                    }
+                }
+            ]
+            };
+
+            return chart_opts;
+        }
+
+        $(document).ready(function () {
+
+            current_area = "ALL";
+            current_area_code = "ALL";
+
+            //chart
+            var opts = get_chart_opts();
+            DrawChart(current_area, "data_chart", opts);
+
+            //chart data
+            change_chart_data();
+            set_default_ym(); // 找出最小日期
+
+            //set map;
+            show_map(current_area, "data_map", map_opts);
+            var map_class_value = [0.02, 0.03, 0.05, 0.08];
+            set_color_class(map_class_value, 0, false);
+            change_year_data(current_sy, current_sm);
+
+            map_level_ary.push("ALL");
+
+            change_chart_title();
+
+            //auto play;
+            //play_year();
+        });
+
+    </script>
+
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="container">
+
+            <div class="print_page">
+                <div>
+                    <a href="javascript: return false;" onclick="window.print();">
+                        <img src="../../images/print.png" />
+                    </a>
+                </div>
+            </div>
+
+            <div class="back">
+                <div>
+                    <a href="../../air_page/p2_subject_4.html">
+                        <img src="../../images/air/back.png" />
+                    </a>
+                </div>
+            </div>
+
+            <div class="title">
+
+                <div class="h1">
+                    推廣無鉛汽油的使用
+                </div>
+                <div class="h2">
+                    民國79年強制規定新車一律使用無鉛汽油，加上有鉛汽油含鉛量管制，有效降低空氣中鉛濃度，維護國民身體健康。
+                </div>
+                <div class="h3">
+                    資料來源：有鉛汽油含鉛量標準：<a href="http://www.epa.gov.tw/lp.asp?ctNode=31646&CtUnit=1436&BaseDSD=7&mp=epa"><u>臺灣環境品質報告1987-2014</a></u>；無鉛汽油使用率：<a href="http://www.epa.gov.tw/lp.asp?ctNode=31646&CtUnit=1436&BaseDSD=7&mp=epa"><u>空氣品質保護36年紀實</a></u>；重要環境保護統計指標：
+                    <a href="http://erdb.epa.gov.tw/DataRepository/ReportAndStatistics/StatEnqInd.aspx"><u>環境資源資料庫</a></u>
+                </div>
+            </div>
+
+            <div class="map">
+                <div id="data_map">
+                </div>
+
+            </div>
+            <div class="chart">
+
+                <div class="site_menu">
+                    <div class="map_static_change" style="display: none;">
+                        <div onclick="open_map_change_list();" style="cursor: pointer;">
+                            <img src="../../images/change.png" />切換 
+                        </div>
+                        <div class="list">
+                            <div>
+                                <a>
+                                    工業測站
+                                </a>
+                            </div>
+                            <div>
+                                <a>
+                                    全部測站
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="data_chart">
+                </div>
+
+                <div class="action_bar">
+                    <div id="div_action_left" onclick="go_year_start();">
+                        <img src="../../images/right.png" />
+                    </div>
+                    <div onclick="btn_action();">
+                        <img src="../../images/play.png" id="img_action_play" />
+                    </div>
+                    <div id="div_action_right" onclick="go_year_end();">
+                        <img src="../../images/left.png" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</body>
+</html> 

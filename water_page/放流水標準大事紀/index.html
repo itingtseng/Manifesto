@@ -1,0 +1,1370 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="src/stylesheets/app.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta content="width=device-width; initial-scale=1.0;" name="viewport">
+    <title>放流水標準大事紀</title>
+    <style type="text/css">
+    .chart_btn {
+        position: relative;
+        float: right;
+        width: 65px;
+        margin-top: 2%;
+    }
+    
+    .chart_btn img {
+        width: 100%;
+    }
+    </style>
+</head>
+
+<body data-bind="css:{'modalShown':itemSelected}">
+    <header>
+        <h1 data-bind="text:title"></h1>
+        <div class="chart_btn">
+            <a href="../p1_water_year.html">
+                <img src="../../images/back.png" />
+            </a>
+        </div>
+        <div class="icon-bar">
+            <div class="group">
+                <label class="muted" for="scale">顯示尺寸：<span data-bind="text:currentScale"></span>畫素/天</label>
+                <input data-bind="value:currentScale,valueUpdate: 'afterkeydown'" id="scale" max="1" min="0.5" step='0.1' name="points" type="range">
+            </div>
+            <div class="group"> <i data-bind="click:scrollNext" class="fa fa-arrow-down"></i> <i data-bind="click:scrollPrevious" class="fa fa-arrow-up"></i> </div>
+        </div>
+        <div class="chart_btn">
+            <a href="../../water_chart/s8/chart_s8_factory.html">
+                <img src="../../images/chart.png" />
+            </a>
+        </div>
+        </div>
+        <p class="muted" data-bind="text: subtitle"></p>
+    </header>
+    <div class="grid">
+        <div class="left-timeline col-sand-left" data-bind="template:{name:'event', foreach:leftEvents}"></div>
+        <div class="center-timeline col-sand-middle"></div>
+        <div class="right-timeline col-sand-right" data-bind="template:{name:'event', foreach:rightEvents}"></div>
+    </div>
+    <script id="event" type="text/html">
+        <div class="timeline-event" data-bind="style:{'top':top()+'px', 'height':height()+'px', 'borderLeftColor':color,'borderRightColor':color}, css:{'selected':selected},click:toggleSelected">
+            <figure>
+                <figcaption data-bind="text:title"></figcaption>
+                <h6>
+                    <span data-bind="text:fromStart()"></span>
+                    <small>to</small>
+                    <span data-bind="text:fromEnd()"></span>
+                </h6>
+                <div data-bind="template:{name:template.name,data:template.context}"></div>
+            </figure>
+        </div>
+    </script>
+    <script type="text/html" id="2010-01">
+        <p>
+            <br>99年
+            <br>增訂發布光電材料及元件製造業及石油化學專業區以外之工業區污水下水道系統之銦、鎵、鉬、總毒性有機物及生物急毒性標準
+            <br>100年
+            <br>獨立增訂石油化學業、石油化學專區污水下水道系統、晶圓製造及半導體製造業之放流水標準
+            <br>增到氨氮、苯等6項擇毒性有機物及DEHP等6項塑化劑限值、總毒性有機物
+        </p>
+    </script>
+    <script type="text/html" id="2000-01">
+        <p>
+            <br>89年
+            <br>將82年及87年之放流水標準整併檢討，並修正真色色度管制限值
+            <br>90年2月
+            <br>增列晶圓及半導體製造業，並明列醱酵業及石化業之定義
+            <br>90年11月
+            <br>針對印染整理業中不同製程分別規範其管制標準
+            <br>92年
+            <br>針對製革業中不同製種分別規範其管制標準，另修正畜牧業之化學需氧量限值
+            <br>96年
+            <br>酌修部分事業名稱，如照相沖洗業及製版業改為製版業、照相沖洗業
+            <br>規定自來水廠因應暴雨及天然災害期間得緊急放流，免符合放流水標準規定
+            <br>編訂冷卻或循環用水排放原取水區位主管制規定
+            <br>針對新設與既設立建築物污水處理設施及公共與社區下水道， 依污水量訂定不同管制要求
+            <br>增訂兩種以上不同業別或同一業別有不同之製程廢水混合處理及排放，符合各業別之放流水標準
+            <br>98年
+            <br>增訂石油化學專業區及石油化學專業區以外之工業區100年及105年兩階段故流水管制項目之七日平均值管制限值，並加嚴最大限值
+        </p>
+    </script>
+    <script type="text/html" id="1991-01">
+        <p>
+            80年1月
+            <br>修正發布82年及87年放流水標準，於82年起新增水源水質水量保護區內氨氮及磷酸鹽管制標準
+            <Br>80年11月
+            <br>增列洗車場、遊樂園（區）、貯煤場等管制項目及限值，依放流水流量大小區分甲、乙、丙三類，並增列玻璃業、製粉業、環境檢驗測定機構或學校實驗室等管制項目及限值
+            <br>增列專用下水道管制項目及限值
+            <br>增列建築物污水處理設施管制項目及限值
+            <br>86年3月
+            <br>全面刪除透視度管制項目
+            <br>酌修部分事業名稱，如染整業改為印染整理業
+            <br>修正農藥類管制限值
+            <br>省（市）主管機關得增加管制項目及加嚴限值
+            <br>86年12月
+            <br>酌修部分事業名稱，如養殖業改為水產養殖業
+            <br>增列農藥業；增列真色色度管制項目及檢驗方法
+            <br>要求化工業、造紙業、紙漿製造業、石油化學業、畜牧業（一）、製革業、印染整理業於限期內提出水質限值改善計畫
+            <br>88年
+            <br>增訂授權地方主管機關得增加管制項目或加嚴標準之規定
+        </p>
+    </script>
+    <script type="text/html" id="1983-01">
+        <p>
+            <br>76年5月
+            <br>核定公告「放流水標準」，納入養殖業、醫院、實驗室、垃圾場及代處理業，訂定共同標準（如：水溫、pH 、硝酸鹽氮、重金屬、有毒有機物、農藥等）及個別標準（如：生化需氧量、化學需氧量、懸浮固體及真色色度等），以二級處理為目標
+        </p>
+    </script>
+    <script type="text/html" id="1974-01">
+        <p>
+            <br>65年
+            <br>臺灣省、臺北市、高雄市訂定工廠礦場放流水標準。臺灣省工廠礦場放流水標準開始針對特定事業（包含土礦業及畜牧業）進行管制，依廢水濃度特性及處理難易度分為九大類管制限值，並以初級處理為管制目標
+            <br>70年
+            <br>公告修訂臺灣省工廠礦場放流水標準，增加農藥管制項目
+        </p>
+    </script>
+    <script type="text/html" id="1970-01">
+        <p>
+            <br>59年
+            <br>臺灣省政府水污染防治委員會研擬「臺灣地區放流水標準草案」，增加大腸菌類、重金屬、放射性物質及部分有毒性之化合物等項目
+            <br>59年
+            <br>經濟部發布工廠廢水管理辦法，管制水溫、pH、BOD、COD 、SS、DO及油脂，以承受水體之稀釋率為10制定，各種事業統一濃度管制標準
+        </p>
+    </script>
+    <script type="text/html" id="1987-05-05">
+        <p>
+            研訂82、87年二階段
+            <table>
+                <tr>
+                    <td nowrap=""> 生效日期 </td>
+                    <td nowrap=""> 80年 </td>
+                    <td nowrap=""> 82年 </td>
+                    <td nowrap=""> 87年 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> pH(無單位) </td>
+                    <td nowrap=""> 5~9 </td>
+                    <td nowrap=""> 6~9 </td>
+                    <td nowrap=""> 6~9 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 生化需氧量最大值 </td>
+                    <td nowrap=""> 80~400 </td>
+                    <td nowrap=""> 50~100 </td>
+                    <td nowrap=""> 30~80 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 化學需氧量最大值 </td>
+                    <td nowrap=""> 200~500 </td>
+                    <td nowrap=""> 100~650 </td>
+                    <td nowrap=""> 100~450 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 懸浮固體最大值 </td>
+                    <td nowrap=""> 100~400 </td>
+                    <td nowrap=""> 50~200 </td>
+                    <td nowrap=""> 30~150 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 氨氮 </td>
+                    <td nowrap=""> - </td>
+                    <td nowrap=""> 20 </td>
+                    <td nowrap=""> 10 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 磷酸鹽 </td>
+                    <td nowrap=""> - </td>
+                    <td nowrap=""> 10 </td>
+                    <td nowrap=""> 4 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 砷 </td>
+                    <td nowrap=""> 0.5 </td>
+                    <td nowrap=""> 0.5 </td>
+                    <td nowrap=""> 0.5 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 總汞 </td>
+                    <td nowrap=""> 0.005 </td>
+                    <td nowrap=""> 0.005 </td>
+                    <td nowrap=""> 0.005 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 有機汞 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 鎘 </td>
+                    <td nowrap=""> 0.1 </td>
+                    <td nowrap=""> 0.03 </td>
+                    <td nowrap=""> 0.03 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 氰化物 </td>
+                    <td nowrap=""> 1.0 </td>
+                    <td nowrap=""> 1.0 </td>
+                    <td nowrap=""> 1.0 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 毒殺芬 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 飛佈達及其衍生物 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 靈丹 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 四氯丹 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                </tr>
+            </table>
+        </p>
+    </script>
+    <script type="text/html" id="1997-12-24">
+        <p>
+            <table>
+                <tr>
+                    <td nowrap=""> 生效日期 </td>
+                    <td nowrap=""> 86年 </td>
+                    <td nowrap=""> 87年 </td>
+                    <td> 88.12.31前特定行業改善其緩衝 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> pH(無單位) </td>
+                    <td nowrap=""> 6~9 </td>
+                    <td nowrap=""> 6~9 </td>
+                    <td nowrap=""> - </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 生化需氧量最大值 </td>
+                    <td nowrap=""> 50~100 </td>
+                    <td nowrap=""> 30~80 </td>
+                    <td nowrap=""> 40~50 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 化學需氧量最大值 </td>
+                    <td nowrap=""> 100~650 </td>
+                    <td nowrap=""> 100~450 </td>
+                    <td nowrap=""> 150~400 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 懸浮固體最大值 </td>
+                    <td nowrap=""> 30~150 </td>
+                    <td nowrap=""> 50 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 氨氮 </td>
+                    <td nowrap=""> 20 </td>
+                    <td nowrap=""> 10 </td>
+                    <td nowrap=""> - </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 磷酸鹽 </td>
+                    <td nowrap=""> 10 </td>
+                    <td nowrap=""> 4 </td>
+                    <td nowrap=""> - </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 砷 </td>
+                    <td nowrap=""> 0.5 </td>
+                    <td nowrap=""> 0.5 </td>
+                    <td nowrap=""> - </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 總汞 </td>
+                    <td nowrap=""> 0.005 </td>
+                    <td nowrap=""> 0.005 </td>
+                    <td nowrap=""> - </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 有機汞 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                    <td nowrap=""> - </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 鎘 </td>
+                    <td nowrap=""> 0.03 </td>
+                    <td nowrap=""> 0.03 </td>
+                    <td nowrap=""> - </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 氰化物 </td>
+                    <td nowrap=""> 1.0 </td>
+                    <td nowrap=""> 1.0 </td>
+                    <td nowrap=""> - </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 毒殺芬 </td>
+                    <td nowrap=""> 0.005 </td>
+                    <td nowrap=""> 0.005 </td>
+                    <td nowrap=""> - </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 飛佈達及其衍生物 </td>
+                    <td nowrap=""> 0.001 </td>
+                    <td nowrap=""> 0.001 </td>
+                    <td nowrap=""> - </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 靈丹 </td>
+                    <td nowrap=""> 0.004 </td>
+                    <td nowrap=""> 0.004 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 四氯丹 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                    <td nowrap=""> - </td>
+                </tr>
+            </table>
+        </p>
+    </script>
+    <script type="text/html" id="1999-09-22">
+        <p>
+            <table>
+                <tr>
+                    <td nowrap=""> 生效日期 </td>
+                    <td nowrap=""> 88.9.22修正 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> pH(無單位) </td>
+                    <td nowrap=""> 6~9 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 生化需氧量最大值 </td>
+                    <td nowrap=""> 30~80 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 化學需氧量最大值 </td>
+                    <td nowrap=""> 100~450 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 懸浮固體最大值 </td>
+                    <td nowrap=""> 30~150 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 氨氮 </td>
+                    <td nowrap=""> 10 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 磷酸鹽 </td>
+                    <td nowrap=""> 4 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 砷 </td>
+                    <td nowrap=""> 0.5 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 總汞 </td>
+                    <td nowrap=""> 0.005 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 有機汞 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 鎘 </td>
+                    <td nowrap=""> 0.03 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 氰化物 </td>
+                    <td nowrap=""> 1.0 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 毒殺芬 </td>
+                    <td nowrap=""> 0.005 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 飛佈達及其衍生物 </td>
+                    <td nowrap=""> 0.001 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 靈丹 </td>
+                    <td nowrap=""> 0.004 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 四氯丹 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                </tr>
+            </table>
+        </p>
+    </script>
+    <script type="text/html" id="2000-02-09">
+        <p>
+            <table>
+                <tr>
+                    <td nowrap=""> 生效日期 </td>
+                    <td nowrap=""> 89.2.9修正 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> pH(無單位) </td>
+                    <td nowrap=""> 6~10 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 生化需氧量最大值 </td>
+                    <td nowrap=""> 30~80 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 化學需氧量最大值 </td>
+                    <td nowrap=""> 100~450 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 懸浮固體最大值 </td>
+                    <td nowrap=""> 30~150 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 氨氮 </td>
+                    <td nowrap=""> 10 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 磷酸鹽 </td>
+                    <td nowrap=""> 4 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 砷 </td>
+                    <td nowrap=""> 0.5 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 總汞 </td>
+                    <td nowrap=""> 0.005 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 有機汞 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 鎘 </td>
+                    <td nowrap=""> 0.03 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 氰化物 </td>
+                    <td nowrap=""> 1.0 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 毒殺芬 </td>
+                    <td nowrap=""> 0.005 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 飛佈達及其衍生物 </td>
+                    <td nowrap=""> 0.001 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 靈丹 </td>
+                    <td nowrap=""> 0.004 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 四氯丹 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                </tr>
+            </table>
+        </p>
+    </script>
+    <script type="text/html" id="2001-02-07">
+        <p>
+            <table>
+                <tr>
+                    <td nowrap=""> 生效日期 </td>
+                    <td nowrap=""> 90.2.7修正 </td>
+                    <td nowrap=""> 90.11.21修正 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> pH(無單位) </td>
+                    <td nowrap=""> 6~11 </td>
+                    <td nowrap=""> 6~12 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 生化需氧量最大值 </td>
+                    <td nowrap=""> 30~80 </td>
+                    <td nowrap=""> 30~80 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 化學需氧量最大值 </td>
+                    <td nowrap=""> 100~450 </td>
+                    <td nowrap=""> 100~450 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 懸浮固體最大值 </td>
+                    <td nowrap=""> 30~150 </td>
+                    <td nowrap=""> 30~150 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 氨氮 </td>
+                    <td nowrap=""> 10 </td>
+                    <td nowrap=""> 10 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 磷酸鹽 </td>
+                    <td nowrap=""> 4 </td>
+                    <td nowrap=""> 4 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 砷 </td>
+                    <td nowrap=""> 0.5 </td>
+                    <td nowrap=""> 0.5 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 總汞 </td>
+                    <td nowrap=""> 0.005 </td>
+                    <td nowrap=""> 0.005 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 有機汞 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 鎘 </td>
+                    <td nowrap=""> 0.03 </td>
+                    <td nowrap=""> 0.03 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 氰化物 </td>
+                    <td nowrap=""> 1.0 </td>
+                    <td nowrap=""> 1.0 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 毒殺芬 </td>
+                    <td nowrap=""> 0.005 </td>
+                    <td nowrap=""> 0.005 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 飛佈達及其衍生物 </td>
+                    <td nowrap=""> 0.001 </td>
+                    <td nowrap=""> 0.001 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 靈丹 </td>
+                    <td nowrap=""> 0.004 </td>
+                    <td nowrap=""> 0.004 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 四氯丹 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                </tr>
+            </table>
+        </p>
+    </script>
+    <script type="text/html" id="2003-11-26">
+        <p>
+            <table>
+                <tr>
+                    <td nowrap=""> 生效日期 </td>
+                    <td nowrap=""> 92.11.26修正 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> pH(無單位) </td>
+                    <td nowrap=""> 6~9 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 生化需氧量最大值 </td>
+                    <td nowrap=""> 30~80 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 化學需氧量最大值 </td>
+                    <td nowrap=""> 100~600 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 懸浮固體最大值 </td>
+                    <td nowrap=""> 30~150 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 氨氮 </td>
+                    <td nowrap=""> 10 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 磷酸鹽 </td>
+                    <td nowrap=""> 4 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 砷 </td>
+                    <td nowrap=""> 0.5 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 總汞 </td>
+                    <td nowrap=""> 0.005 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 有機汞 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 鎘 </td>
+                    <td nowrap=""> 0.03 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 氰化物 </td>
+                    <td nowrap=""> 1.0 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 毒殺芬 </td>
+                    <td nowrap=""> 0.005 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 飛佈達及其衍生物 </td>
+                    <td nowrap=""> 0.001 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 靈丹 </td>
+                    <td nowrap=""> 0.004 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 四氯丹 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                </tr>
+            </table>
+        </p>
+    </script>
+    <script type="text/html" id="2007-09-03">
+        <p>
+            <table>
+                <tr>
+                    <td nowrap=""> 生效日期 </td>
+                    <td nowrap=""> 96.9.3修正 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> pH(無單位) </td>
+                    <td nowrap=""> 6~9 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 生化需氧量最大值 </td>
+                    <td nowrap=""> 30~80 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 化學需氧量最大值 </td>
+                    <td nowrap=""> 100~600 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 懸浮固體最大值 </td>
+                    <td nowrap=""> 30~150 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 氨氮 </td>
+                    <td nowrap=""> 10 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 磷酸鹽 </td>
+                    <td nowrap=""> 4 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 砷 </td>
+                    <td nowrap=""> 0.5 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 總汞 </td>
+                    <td nowrap=""> 0.005 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 有機汞 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 鎘 </td>
+                    <td nowrap=""> 0.03 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 氰化物 </td>
+                    <td nowrap=""> 1.0 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 毒殺芬 </td>
+                    <td nowrap=""> 0.005 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 飛佈達及其衍生物 </td>
+                    <td nowrap=""> 0.001 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 靈丹 </td>
+                    <td nowrap=""> 0.004 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 四氯丹 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                </tr>
+            </table>
+        </p>
+    </script>
+    <script type="text/html" id="2009-07-28">
+        <p>
+            增訂工業區專用污水下水道系統兩階段放流水七日平均值管制
+            <table>
+                <tr>
+                    <td nowrap=""> 生效日期 </td>
+                    <td nowrap=""> 100年 </td>
+                    <td nowrap=""> 105年 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> pH(無單位) </td>
+                    <td nowrap=""> 6~9 </td>
+                    <td nowrap=""> 6~9 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 生化需氧量最大值 </td>
+                    <td nowrap=""> 30~80 </td>
+                    <td nowrap=""> 25~80 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 生化需氧量工業區七日平均值 </td>
+                    <td nowrap=""> 25 </td>
+                    <td nowrap=""> 20~25 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 化學需氧量最大值 </td>
+                    <td nowrap=""> 100~600 </td>
+                    <td nowrap=""> 80~600 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 化學需氧量工業區七日平均值 </td>
+                    <td nowrap=""> 80 </td>
+                    <td nowrap=""> 65~70 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 懸浮固體最大值 </td>
+                    <td nowrap=""> 30~150 </td>
+                    <td nowrap=""> 25~150 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 懸浮固體工業區七日平均值 </td>
+                    <td nowrap=""> 25 </td>
+                    <td nowrap=""> 20 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 氨氮 </td>
+                    <td nowrap=""> 10 </td>
+                    <td nowrap=""> 10 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 磷酸鹽 </td>
+                    <td nowrap=""> 4 </td>
+                    <td nowrap=""> 4 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 砷 </td>
+                    <td nowrap=""> 0.5 </td>
+                    <td nowrap=""> 0.5 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 總汞 </td>
+                    <td nowrap=""> 0.005 </td>
+                    <td nowrap=""> 0.005 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 有機汞 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 鎘 </td>
+                    <td nowrap=""> 0.03 </td>
+                    <td nowrap=""> 0.03 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 氰化物 </td>
+                    <td nowrap=""> 1.0 </td>
+                    <td nowrap=""> 1.0 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 毒殺芬 </td>
+                    <td nowrap=""> 0.005 </td>
+                    <td nowrap=""> 0.005 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 飛佈達及其衍生物 </td>
+                    <td nowrap=""> 0.001 </td>
+                    <td nowrap=""> 0.001 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 靈丹 </td>
+                    <td nowrap=""> 0.004 </td>
+                    <td nowrap=""> 0.004 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 四氯丹 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                </tr>
+            </table>
+        </p>
+    </script>
+    <script type="text/html" id="2010-12-15">
+        <p>
+            增訂光電業總毒性有機物及生物急毒性放流水標準管制項目
+            <table>
+                <tr>
+                    <td nowrap="" colspan="3"> 管制項目 </td>
+                    <td colspan="3"> 適用於光電材料及元件製造業及石油化學專業區以外之工業區 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 生效日期 </td>
+                    <td nowrap=""> 100年 </td>
+                    <td nowrap=""> 105年 </td>
+                    <td nowrap=""> 生效日期 </td>
+                    <td nowrap=""> 100年 </td>
+                    <td nowrap=""> 105年 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> pH(無單位) </td>
+                    <td nowrap=""> 6~9 </td>
+                    <td nowrap=""> 6~9 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 生化需氧量最大值 </td>
+                    <td nowrap=""> 30~80 </td>
+                    <td nowrap=""> 25~80 </td>
+                    <td nowrap=""> 銦 </td>
+                    <td nowrap="" colspan="2"> 0.1(101年施行) </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 生化需氧量工業區七日平均值 </td>
+                    <td nowrap=""> 25 </td>
+                    <td nowrap=""> 20~25 </td>
+                    <td nowrap=""> 鎵 </td>
+                    <td nowrap="" colspan="2"> 0.1(101年施行) </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 化學需氧量最大值 </td>
+                    <td nowrap=""> 100~600 </td>
+                    <td nowrap=""> 80~600 </td>
+                    <td nowrap=""> 鉬 </td>
+                    <td nowrap="" colspan="2"> 0.6(101年施行) </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 化學需氧量工業區七日平均值 </td>
+                    <td nowrap=""> 80 </td>
+                    <td nowrap=""> 65~70 </td>
+                    <td nowrap=""> 總毒性有機物 </td>
+                    <td nowrap="" colspan="2"> 1.37(101年施行) </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 懸浮固體最大值 </td>
+                    <td nowrap=""> 30~150 </td>
+                    <td nowrap=""> 25~150 </td>
+                    <td nowrap=""> 生物急毒性(無單位) </td>
+                    <td nowrap="" colspan="2"> 1.43(101年施行) </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 懸浮固體工業區七日平均值 </td>
+                    <td nowrap=""> 25 </td>
+                    <td nowrap=""> 20 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 氨氮 </td>
+                    <td nowrap=""> 10 </td>
+                    <td nowrap=""> 10 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 磷酸鹽 </td>
+                    <td nowrap=""> 4 </td>
+                    <td nowrap=""> 4 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 砷 </td>
+                    <td nowrap=""> 0.5 </td>
+                    <td nowrap=""> 0.5 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 總汞 </td>
+                    <td nowrap=""> 0.005 </td>
+                    <td nowrap=""> 0.005 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 有機汞 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 鎘 </td>
+                    <td nowrap=""> 0.03 </td>
+                    <td nowrap=""> 0.03 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 氰化物 </td>
+                    <td nowrap=""> 1.0 </td>
+                    <td nowrap=""> 1.0 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 毒殺芬 </td>
+                    <td nowrap=""> 0.005 </td>
+                    <td nowrap=""> 0.005 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 飛佈達及其衍生物 </td>
+                    <td nowrap=""> 0.001 </td>
+                    <td nowrap=""> 0.001 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 靈丹 </td>
+                    <td nowrap=""> 0.004 </td>
+                    <td nowrap=""> 0.004 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 四氯丹 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                </tr>
+            </table>
+        </p>
+    </script>
+    <script type="text/html" id="2011-12-01">
+        <p>
+            增訂石化業、晶圓製造及半導體製造業、石油化學專區污水下水道系統、海洋放流管線等放流標準
+            <table>
+                <tr>
+                    <td nowrap="" colspan="3"> 管制項目 </td>
+                    <td colspan="4"> 適用於光電材料及元件製造業及石油化學專業區以外之工業區 </td>
+                    <td colspan="4"> 適用於石油化學業石油化學專業區污水下水道系統 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 生效日期 </td>
+                    <td nowrap=""> 100年 </td>
+                    <td nowrap=""> 105年 </td>
+                    <td nowrap="" colspan="2"> 生效日期 </td>
+                    <td nowrap=""> 100年 </td>
+                    <td nowrap=""> 105年 </td>
+                    <td nowrap="" colspan="2"> 生效日期 </td>
+                    <td nowrap=""> 100年 </td>
+                    <td nowrap=""> 105年 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> pH(無單位) </td>
+                    <td nowrap=""> 6~9 </td>
+                    <td nowrap=""> 6~9 </td>
+                    <td nowrap="" colspan="2"> 銦 </td>
+                    <td nowrap="" colspan="2"> 0.1(101年施行) </td>
+                    <td nowrap="" colspan="2"> 氨氮(水源水質保護區內) </td>
+                    <td nowrap="" colspan="2"> 10 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 生化需氧量最大值 </td>
+                    <td nowrap=""> 30~80 </td>
+                    <td nowrap=""> 25~80 </td>
+                    <td nowrap="" colspan="2"> 鎵 </td>
+                    <td nowrap="" colspan="2"> 0.1(101年施行) </td>
+                    <td nowrap="" colspan="2"> 氨氮(水源水質保護區外) </td>
+                    <td nowrap="" colspan="2"> 新設事業20；既設事業150(103年施行)、
+                        <br>60(105年施行) </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 生化需氧量工業區七日平均值 </td>
+                    <td nowrap=""> 25 </td>
+                    <td nowrap=""> 20 </td>
+                    <td nowrap="" colspan="2"> 鉬 </td>
+                    <td nowrap="" colspan="2"> 0.6(101年施行) </td>
+                    <td nowrap="" colspan="2"> 苯 </td>
+                    <td nowrap="" colspan="2"> 0.05(101年施行) </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 化學需氧量最大值 </td>
+                    <td nowrap=""> 100~600 </td>
+                    <td nowrap=""> 80~600 </td>
+                    <td nowrap="" colspan="2"> 總毒性有機物 </td>
+                    <td nowrap="" colspan="2"> 1.37(101年施行) </td>
+                    <td nowrap="" colspan="2"> 乙苯 </td>
+                    <td nowrap="" colspan="2"> 0.4(101年施行) </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 化學需氧量工業區七日平均值 </td>
+                    <td nowrap=""> 80 </td>
+                    <td nowrap=""> 65(石化專區外)70(石化專區) </td>
+                    <td nowrap="" colspan="2"> 生物急毒性(無單位) </td>
+                    <td nowrap="" colspan="2"> 1.43(101年施行) </td>
+                    <td nowrap="" colspan="2"> 二氯甲烷 </td>
+                    <td nowrap="" colspan="2"> 0.2(101年施行) </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 懸浮固體最大值 </td>
+                    <td nowrap=""> 30~150 </td>
+                    <td nowrap=""> 25~150 </td>
+                    <td nowrap="" colspan="4"> 適用於晶圓製造及半導體製造業 </td>
+                    <td nowrap="" colspan="2"> 三氯甲烷 </td>
+                    <td nowrap="" colspan="2"> 0.6(101年施行) </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 懸浮固體工業區七日平均值 </td>
+                    <td nowrap=""> 25 </td>
+                    <td nowrap=""> 20 </td>
+                    <td nowrap="" colspan="2"> 生效日期 </td>
+                    <td nowrap=""> 100年 </td>
+                    <td nowrap=""> 105年 </td>
+                    <td nowrap="" colspan="2"> 1,2-二氯乙烷 </td>
+                    <td nowrap="" colspan="2"> 0.10(101年施行) </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 氨氮 </td>
+                    <td nowrap=""> 10 </td>
+                    <td nowrap=""> 10 </td>
+                    <td nowrap="" colspan="2"> 氨氮(水源水質保護區內) </td>
+                    <td nowrap="" colspan="2"> 10 </td>
+                    <td nowrap="" colspan="2"> 氯乙烯 </td>
+                    <td nowrap="" colspan="2"> 0.10(101年施行) </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 磷酸鹽 </td>
+                    <td nowrap=""> 4 </td>
+                    <td nowrap=""> 4 </td>
+                    <td nowrap="" colspan="2"> 氨氮(水源水質保護區外) </td>
+                    <td nowrap="" colspan="2"> 新設事業20；既設事業75(101年施行)、
+                        <br>30(104年施行) </td>
+                    <td nowrap="" colspan="2"> 鄰苯酸酯 </td>
+                    <td nowrap="" colspan="2"> 0.2(101年施行) </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 砷 </td>
+                    <td nowrap=""> 0.5 </td>
+                    <td nowrap=""> 0.5 </td>
+                    <td nowrap="" colspan="2"> 總毒性有機物 </td>
+                    <td nowrap="" colspan="2"> 1.37 </td>
+                    <td nowrap="" colspan="2"> 鄰苯酸二乙酯 </td>
+                    <td nowrap="" colspan="2"> 0.4(101年施行) </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 總汞 </td>
+                    <td nowrap=""> 0.005 </td>
+                    <td nowrap=""> 0.005 </td>
+                    <td nowrap="" colspan="2"> 鄰苯酸二丁酯 </td>
+                    <td nowrap="" colspan="2"> 0.4(101年施行) </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 有機汞 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                    <td nowrap=""> 不得檢出(甲基汞) </td>
+                    <td nowrap="" colspan="2"> 鄰苯酸丁基苯甲酯 </td>
+                    <td nowrap="" colspan="2"> 0.4(101年施行) </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 鎘 </td>
+                    <td nowrap=""> 0.03 </td>
+                    <td nowrap=""> 0.03 </td>
+                    <td nowrap="" colspan="2"> 鄰苯酸二辛酯 </td>
+                    <td nowrap="" colspan="2"> 0.6(101年施行) </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 氰化物 </td>
+                    <td nowrap=""> 1.0 </td>
+                    <td nowrap=""> 1.0 </td>
+                    <td nowrap="" colspan="2"> 鄰苯酸二(2-乙基己基酯) </td>
+                    <td nowrap="" colspan="2"> 0.2(101年施行) </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 毒殺芬 </td>
+                    <td nowrap=""> 0.005 </td>
+                    <td nowrap=""> 0.005 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 飛佈達及其衍生物 </td>
+                    <td nowrap=""> 0.001 </td>
+                    <td nowrap=""> 0.001 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 靈丹 </td>
+                    <td nowrap=""> 0.004 </td>
+                    <td nowrap=""> 0.004 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 四氯丹 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                </tr>
+            </table>
+        </p>
+    </script>
+    <script type="text/html" id="2012-10-12">
+        <p>
+            <table>
+                <tr>
+                    <td nowrap=""> 生效日期 </td>
+                    <td nowrap=""> 101.10.12修正 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> pH(無單位) </td>
+                    <td nowrap=""> 6~9 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 生化需氧量最大值 </td>
+                    <td nowrap=""> 30~80 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 生化需氧量工業區七日平均值 </td>
+                    <td nowrap=""> 20~25 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 化學需氧量最大值 </td>
+                    <td nowrap=""> 80~600 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 化學需氧量工業區七日平均值 </td>
+                    <td nowrap=""> 65~80 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 懸浮固體最大值 </td>
+                    <td nowrap=""> 30~150 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 懸浮固體工業區七日平均值 </td>
+                    <td nowrap=""> 25 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 氨氮 </td>
+                    <td nowrap=""> 10 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 磷酸鹽 </td>
+                    <td nowrap=""> 4 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 砷 </td>
+                    <td nowrap=""> 0.5 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 總汞 </td>
+                    <td nowrap=""> 0.005 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 有機汞 </td>
+                    <td nowrap=""> 不得檢出(甲基汞) </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 鎘 </td>
+                    <td nowrap=""> 0.03 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 氰化物 </td>
+                    <td nowrap=""> 1.0 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 毒殺芬 </td>
+                    <td nowrap=""> 0.005 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 飛佈達及其衍生物 </td>
+                    <td nowrap=""> 0.001 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 靈丹 </td>
+                    <td nowrap=""> 0.004 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 四氯丹 </td>
+                    <td nowrap=""> 不得檢出 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 戴奧辛(pg I-TEQ/L) </td>
+                    <td> 10(適用於101年10月12日前完成工程招標、建造中或已完成建造之事業)； 5(適用於101年10月12日前尚未完成規劃者，或已完成規劃，但尚未完成工程招標之事業) </td>
+                </tr>
+            </table>
+        </p>
+    </script>
+    <script type="text/html" id="2014-01-22">
+        <p>
+            <table>
+                <tr>
+                    <td nowrap=""> 生效日期 </td>
+                    <td nowrap=""> 103.1.22修正 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> pH(無單位) </td>
+                    <td nowrap=""> 6~9 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 生化需氧量最大值 </td>
+                    <td nowrap=""> 30~80 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 生化需氧量工業區七日平均值 </td>
+                    <td nowrap=""> 20~25 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 化學需氧量最大值 </td>
+                    <td nowrap=""> 100~600 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 化學需氧量工業區七日平均值 </td>
+                    <td nowrap=""> 65~80 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 懸浮固體最大值 </td>
+                    <td nowrap=""> 30~150 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 懸浮固體工業區七日平均值 </td>
+                    <td nowrap=""> 25 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 氨氮 </td>
+                    <td nowrap=""> 10 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 磷酸鹽 </td>
+                    <td nowrap=""> 4 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 砷 </td>
+                    <td nowrap=""> 0.5 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 總汞 </td>
+                    <td nowrap=""> 0.005 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 有機汞 </td>
+                    <td nowrap=""> 0.0000002 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 鎘 </td>
+                    <td nowrap=""> 0.03 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 氰化物 </td>
+                    <td nowrap=""> 1.0 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 毒殺芬 </td>
+                    <td nowrap=""> 0.005 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 飛佈達及其衍生物 </td>
+                    <td nowrap=""> 0.001 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 靈丹 </td>
+                    <td nowrap=""> 0.004 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 四氯丹 </td>
+                    <td nowrap=""> 0.00025 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 戴奧辛(pg I-TEQ/L) </td>
+                    <td> 10(適用於101年10月12日前完成工程招標、建造中或已完成建造之事業)； 5(適用於101年10月12日前尚未完成規劃者，或已完成規劃，但尚未完成工程招標 之事業) </td>
+                </tr>
+            </table>
+        </p>
+    </script>
+    <script type="text/html" id="2016-01-06">
+        <p>
+            <table>
+                <tr>
+                    <td nowrap=""> 生效日期 </td>
+                    <td nowrap=""> 105.1.6修正 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> pH(無單位) </td>
+                    <td nowrap=""> 6~9 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 生化需氧量最大值 </td>
+                    <td nowrap=""> 25~80 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 生化需氧量工業區七日平均值 </td>
+                    <td nowrap=""> 20~25 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 化學需氧量最大值 </td>
+                    <td nowrap=""> 80~600 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 化學需氧量工業區七日平均值 </td>
+                    <td nowrap=""> 65~80 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 懸浮固體最大值 </td>
+                    <td nowrap=""> 30~150 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 懸浮固體工業區七日平均值 </td>
+                    <td nowrap=""> 20 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 氨氮 </td>
+                    <td nowrap=""> 10 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 磷酸鹽 </td>
+                    <td nowrap=""> 4 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 砷 </td>
+                    <td nowrap=""> 0.5 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 總汞 </td>
+                    <td nowrap=""> 0.005 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 有機汞 </td>
+                    <td nowrap=""> 0.0000002 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 鎘 </td>
+                    <td nowrap=""> 0.03 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 氰化物 </td>
+                    <td nowrap=""> 1.0 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 毒殺芬 </td>
+                    <td nowrap=""> 0.005 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 飛佈達及其衍生物 </td>
+                    <td nowrap=""> 0.001 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 靈丹 </td>
+                    <td nowrap=""> 0.004 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 四氯丹 </td>
+                    <td nowrap=""> 0.00025 </td>
+                </tr>
+                <tr>
+                    <td nowrap=""> 戴奧辛(pg I-TEQ/L) </td>
+                    <td> 10(適用於101年10月12日前完成工程招標、建造中或已完成建造之事業)； 5(適用於101年10月12日前尚未完成規劃者，或已完成規劃，但尚未完成工程招標 之事業) </td>
+                </tr>
+            </table>
+        </p>
+    </script>
+    <script src="src/vendor/moment.min.js"></script>
+    <script src="src/vendor/knockout.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="src/vendor/jquery.scrollTo.min.js"></script>
+    <script src="src/js/app.js"></script>
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36251023-1']);
+    _gaq.push(['_setDomainName', 'jqueryscript.net']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+</body>
+
+</html>

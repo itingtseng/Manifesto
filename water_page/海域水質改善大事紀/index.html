@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="src/stylesheets/app.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta content="width=device-width; initial-scale=1.0;" name="viewport">
+    <title>海域水質改善大事紀</title>
+    <style type="text/css">
+        .chart_btn {
+            position: relative;
+            float: right;
+             width: 65px;
+            margin-top: 2%;
+        }
+
+            .chart_btn img {
+                width: 100%;
+            }
+    </style>
+</head>
+
+<body data-bind="css:{'modalShown':itemSelected}">
+    <header>
+        <h1 data-bind="text:title"></h1>
+        <div class="chart_btn">
+                <a href="../p1_water_year.html">
+                <img src="../../images/back.png" />
+                </a>
+        </div>
+        <div class="icon-bar">
+            <div class="group">
+                <label class="muted" for="scale">顯示尺寸：<span data-bind="text:currentScale"></span>畫素/天</label>
+                <input data-bind="value:currentScale,valueUpdate: 'afterkeydown'" id="scale" max="0.5" min="0.3" step='0.1' name="points" type="range">
+            </div>
+            <div class="group"> <i data-bind="click:scrollNext" class="fa fa-arrow-down"></i> <i data-bind="click:scrollPrevious" class="fa fa-arrow-up"></i> </div>
+        </div>
+        <div class="chart_btn">
+            <a href="../../water_chart/s6/chart_s6.html">
+                <img src="../../images/chart.png" />
+            </a>
+        </div>
+        <p class="muted" data-bind="text: subtitle"></p>
+    </header>
+    <div class="grid">
+        <div class="left-timeline col-sand-left" data-bind="template:{name:'event', foreach:leftEvents}"></div>
+        <div class="center-timeline col-sand-middle"></div>
+        <div class="right-timeline col-sand-right" data-bind="template:{name:'event', foreach:rightEvents}"></div>
+    </div>
+    <script id="event" type="text/html">
+        <div class="timeline-event" data-bind="style:{'top':top()+'px', 'height':height()+'px', 'borderLeftColor':color,'borderRightColor':color}, css:{'selected':selected},click:toggleSelected">
+            <figure>
+                <figcaption data-bind="text:title"></figcaption>
+                <h6><span data-bind="text:fromStart()"></span>
+                  <small>to</small>
+                  <span data-bind="text:fromEnd()"></span>
+                  </h6>
+                <div data-bind="template:{name:template.name,data:template.context}"></div>
+            </figure>
+        </div>
+    </script>
+    <script type="text/html" id="2012-01-01">
+        <p>100年5月18 日行政院核定101~106年「水體環境水質改善及經營管理計畫」，以強化海洋污染緊急應變能力，在海洋污染防治法規定屬地方政府管轄範圍發生油污染事件時，以接獲通報4小時內將緊急應變器材運抵現場﹔港口環境「不腥、不臭、不髒、不亂」為綠色港灣指標，106年完成構建2處綠色港灣為目標。
+        </p>
+    </script>
+    <script type="text/html" id="2008-01-01">
+        <p>96年7月24日行政院核定97至100年「河川及海洋水質維護改善計畫（第二期）」， 以有效控制各類海洋污染源，使海域水體品質符合「海域環境分類及海洋環境品質標準」為目標。
+        </p>
+    </script>
+    <script type="text/html" id="2005-01-01">
+        <p>93年11月19日行政院核定94-96年「河川及海洋水質維護改善計畫」（一期），並以持續強化我國海洋污染防治緊急應變能力，提昇油污染應變層級，以外海發生洩漏500噸油污染處理之緊急應變為目標，減輕海洋污染危害程度。
+        </p>
+    </script>
+    <script type="text/html" id="2001-01-01">
+        <p>89年9月行政院核定90-93年「臺灣地區河川流域及海洋經營管理方案」擴大海洋污染防治工作，以健全海洋污染防治法規，建立緊急應變體系為目標。
+        </p>
+    </script>
+    <script type="text/html" id="1988-01-01">
+        <p>77年本署推動碧海計畫，以港灣及海域污染為目標，以期有效維護臺灣沿海生態環境及漁業生物資源，該計畫先由基隆港港灣污染整治規劃、臺灣沿海海域水質及生態之監測，以及海洋投棄與海洋放流對海域生態之影響評估等方向著手。本計畫預計於88年完成港灣污染防治整治，92年完成沿海海域污染防治整治之目標。
+        </p>
+    </script>
+    <script type="text/html" id="2000-01-01">
+        <p>89年11月1日公布「海洋污染防治法」整合交通部、海巡署相關單位資源及管制方式，化為實質法制管理，全面展開污染防治及應變工作，為海洋水質保護工作繼歷年海域污染管制及水質監控外，跨出一大步，隨後於90年12月26日發布「海域環境分類及海洋環境品質標準」，以作為國家整體海洋環境保護目的之目標值。
+        </p>
+    </script>
+    <script type="text/html" id="2001-01-01">
+        <p>90年1月14日希臘籍貨輪阿瑪斯號漏油事件，突顯國內海洋污染緊急應變之不足，促使行政院於90年4月10日核定『重大海洋油污染緊急應變計畫」（ 93年10月12日修正核定），以落實處理重大海洋污染緊急事件，各地方政府亦儘速設置海洋污染事件處理工作小組，並擬訂海洋污染緊急應變計畫，以達成安全、即時、有效且協調的處理海洋污染事件。
+        </p>
+    </script>
+    <script type="text/html" id="2009-01-01">
+        <p><table> <tr>
+  <td> 許可種類 </td> <td> 法源依據 </td> <td> 許可內容項目 </td> </tr> <tr> <td> 陸上污染源廢（污）水 排放於特定海域許可 </td> <td> 海洋污染防治法第15條，陸上污染源非經許可，廢（污）水不得排放於海域<br>許可辦法第11條，排放廢（污）水應製作排放記錄 </td> <td> 基本資料、廢（污）水處理單元、廢（污）水排放設施、海域環境調查報告、海域環境監測計畫、緊急應變計畫 </td> </tr> <tr> <td> 海域工程排放廢（污）水至特定海域許可 </td> <td> 海洋污染防治法第18條，排放廢（污）水於海洋應申請許可，並製作排放紀錄<br>海洋污染防治法細則14條，海洋環境之監測方法頻率及項目<br>海域工程排放廢（污）水至特定海域許可辦法 </td> <td> 基本資料、廢（污）水處理單元、廢（污）水排放設施、減輕不利影響之海洋環境管理措施、海域環境監測計畫、緊急應變計畫 </td> </tr> <tr> <td> 海洋棄置許可 </td> <td> 海洋污染防治法第20條，進行海洋棄置應申請許可<br>海洋污染防治法23條，製作執行海洋棄置及海上焚化作業之紀錄<br>海洋棄置許可管理辦法 </td> <td> 基本資料、海域環境調查報告、海域環境監測計畫、緊急應變計畫、海洋棄置船舶或機具污染損害賠償責任保險或提供擔保、海洋棄置作業計畫書 </td> </tr> <tr> <td> 海洋污染緊急應變計畫 </td> <td> 海洋污染防治法第13條，提出計畫書申請<br>海洋污染防治法施行細則第11條，計畫書內容包括事項 </td> <td> 基本資料、緊急應變計畫 </td> </tr> <tr> <td> 海洋污染防治計畫 </td> <td> 海洋污染防治法第17條，執行海洋監測，並定期向主管機關申報監測記錄。利用海洋設施探採油礦或輸送油者， 應製作探課或輸送記錄<br>海洋污染防治法施行細則第14條，海洋環境之監測方法、頻率及項目 </td> <td> 基本資料、廢（污）水處理單元、廢（污）水排放設施、減輕不利影響之海洋環境管理措施、海域環境監測計畫、緊急應變計畫 </td> </tr></table>
+        </p>
+    </script>
+    <script src="src/vendor/moment.min.js"></script>
+    <script src="src/vendor/knockout.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="src/vendor/jquery.scrollTo.min.js"></script>
+    <script src="src/js/app.js"></script>
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36251023-1']);
+    _gaq.push(['_setDomainName', 'jqueryscript.net']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+</body>
+
+</html>

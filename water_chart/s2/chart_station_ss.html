@@ -1,0 +1,242 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="../../css/P3.css" rel="stylesheet" />
+    <script src="../../js/jquery-1.10.2.js"></script>
+
+    <script src="../../js/highchats/highstock.js"></script>
+    <script src="../../js/highchats/map.js"></script>
+    <script src="../../js/highchats/drilldown.js"></script>
+    <script src="../../js/highchats/exporting.js"></script>
+    <script src="../../js/highchats/offline-exporting.js"></script>
+
+    <script src="../../js/common_water/chart.js"></script>
+    <script src="../../js/common_water/map.js"></script>
+    <script src="../../js/common_water/play.js"></script>
+    <script src="../../js/common_water/area_code.js"></script>
+
+    <!-- co value -->
+    <script src="../../js/WaterChart/chart_ss_all.js"></script>
+    <script src="../../js/WaterMap/map_ss_all.js"></script>
+
+    <!-- geo json -->
+    <script src="../../Geojson/velly.geojson.js"></script>
+    <script src="../../js/map_tool.js"></script>
+
+    <title>懸浮固體</title>
+    <script type="text/javascript">
+
+        var current_area = "";
+        var current_area_code = "";
+
+        var data_sy, data_sm;
+
+        var current_sy = 0;
+        var current_sm = 0;
+        var current_map_value_name = "懸浮固體(mg/L)";
+        var current_site_name = "";
+
+        var co_map = map_ss_all;
+        var co_chart = chart_ss_all;
+
+        function set_default_ym() {
+            var d1 = new Date(stock_chart.xAxis[0].getExtremes().max);
+            //var d1 = new Date(co_chart[0].time_value[0][0]);
+            current_sy = d1.getFullYear();
+            current_sm = d1.getMonth() + 1;
+
+            data_sy = current_sy;
+            data_sm = current_sm;
+        }
+
+        function get_chart_opts() {
+            var chart_opts = {
+                chart: {
+                    spacing: [0, -100, 0, 60],
+                },
+                exporting: {
+                    buttons: {
+                        contextButton: {
+                            x: -130, y: 0
+                        }
+                    }
+                },
+                yAxis: [
+            {
+                title: {
+                    text: '懸浮固體(mg/L)',
+                    rotation: 0,
+                    align: 'high',
+                    x: -100,
+                    y: -40
+                },
+                min: 0,
+                gridLineWidth: 1,
+                offset: 25
+            }
+                ]
+
+        , series: [
+            {
+                name: '懸浮固體(mg/L)',
+                data: [],
+                zIndex: 1,
+                type: 'spline',
+                yAxis: 0,
+                marker: {
+                    enabled: true,
+                    radius: 0
+                },
+                fillOpacity: 1,
+                color: line_color[0],
+                tooltip: {
+                    pointFormatter: function (obj) {
+                        var s = '<span style="color:' + obj.color + '">\u25CF</span> ' + obj.series.name + ': <b>';
+                        var v = parseFloat(obj.y.toFixed(2));
+                        s = s + v + ' </b><br/>';
+                        return s;
+                    }
+                }
+            }
+        ]
+            };
+
+            return chart_opts;
+        }
+
+        var map_tooltip_value_func = function map_tooltip_value_func(value) {
+            return value.toFixed(2);
+        }
+
+        var map_opts = {
+            colorAxis: {
+                min: 0,
+                max: 1.5
+            },
+            legend: {
+                width: 120
+            }
+        }
+
+        $(document).ready(function () {
+
+            //設定地圖資料來源
+            current_area = "ALL";
+            current_area_code = "ALL";
+
+            //chart
+            var opts = get_chart_opts();
+            DrawChart(current_area, "data_chart", opts);
+
+            //chart data
+            change_chart_data();
+            set_default_ym(); // 找出最小日期
+
+            //set map;
+            show_map(current_area, "data_map", map_opts);
+            var map_class_value = [20, 49, 100];
+            set_color_class(map_class_value, 0, false, 0);
+            change_year_data(current_sy, current_sm);
+
+            map_level_ary.push("ALL");
+
+            change_chart_title();
+
+            //auto play;
+            //play_year();
+        });
+
+        map_tooltip_value_func = function (value) {
+            if (value == null) return "無";
+            if (value == "無") return "無";
+            return value.toFixed(2);
+        }
+
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="container">
+
+            <div class="print_page">
+                <div>
+                    <a href="javascript: return false;" onclick="window.print();">
+                        <img src="../../images/print.png" />
+                    </a>
+                </div>
+            </div>
+
+            <div class="back">
+                <div>
+                    <a href="../../water_page/p2_subject_2.html">
+                        <img src="../../images/air/back.png" />
+                    </a>
+                </div>
+            </div>
+
+            <div class="title">
+                <div class="h1">
+                    <div class="text">河川污染指標及水質監測</div>
+                    <div class="drop chart_change" onclick="open_change_list();">
+                        ▼
+                        <div class="list">
+                            <div>
+                                <a href="chart_station_do.html">
+                                    溶氧
+                                </a>
+                            </div>
+                            <div>
+                                <a href="chart_station_bod.html">
+                                    生化需氧量
+                                </a>
+                            </div>
+                            <div>
+                                <a class="select">
+                                    懸浮固體
+                                </a>
+                            </div>
+                            <div>
+                                <a href="chart_station_amm.html">
+                                    氨氮
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="h2">
+                    民國82年起由<a href="chart_station_do.html"><u>溶氧</u></a>、<a href="chart_station_bod.html"><u>生化需氧量</u></a>、<a href="chart_station_ss.html"><u>懸浮固體</u></a>以及<a href="chart_station_amm.html"><u>氨氮</u></a>四項數值計算評估河川污染指標(RPI)。
+                </div>
+                <div class="h3">
+                    資料來源：河川水質監測與指標資料：<a href="http://erdb.epa.gov.tw/DataRepository/EnvMonitor/RiverWaterQualityMonitoringData.aspx"><u>環境資源資料庫</a></u>
+                </div>
+            </div>
+
+            <div class="map">
+                <div id="data_map">
+                </div>
+                
+            </div>
+            <div class="chart">
+
+                <div id="data_chart">
+                </div>
+
+                <div class="action_bar">
+                    <div id="div_action_left" onclick="go_year_start();">
+                        <img src="../../images/right.png" />
+                    </div>
+                    <div onclick="btn_action();">
+                        <img src="../../images/play.png" id="img_action_play" />
+                    </div>
+                    <div id="div_action_right" onclick="go_year_end();">
+                        <img src="../../images/left.png" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</body>
+</html>

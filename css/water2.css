@@ -1,0 +1,324 @@
+﻿body {
+    padding: 0 1% 0 1%;
+    margin: 0px;
+}
+
+img {
+    width: 100%;
+}
+
+.content {
+    width: 100% !important;
+    max-width: 1000px !important;
+    margin: 0 auto 0 auto;
+    clear: both;
+    display: block;
+    padding-top: 1%;
+}
+
+.circle {
+    clear: both;
+    display: none;
+}
+
+    .circle div {
+        float: left;
+        position: relative;
+        width: 2.2%;
+    }
+
+.select_dot img {
+    width: 100% !important;
+    margin-left: -50%;
+    margin-top: -12%;
+}
+
+.circle div img {
+    width: 50%;
+}
+
+.dot1 {
+    left: 3%;
+}
+
+.dot2 {
+    left: 6.7%;
+}
+
+.dot3 {
+    left: 19.5%;
+}
+
+.dot4 {
+    left: 25.4%;
+}
+
+.dot5 {
+    left: 31.85%;
+}
+
+.dot6 {
+    left: 35.43%;
+}
+
+.dot7 {
+    left: 44.7%;
+}
+
+.dot8 {
+    left: 48.17%;
+}
+
+.dot9 {
+    left: 57.8%;
+}
+
+.circle_text {
+    clear: both;
+    padding-top: 0.2%;
+    font-family: 微軟正黑體;
+    font-size: 90%;
+    color: #aaa;
+    white-space: nowrap;
+       display: none;
+}
+
+    .circle_text div {
+        float: left;
+        position: relative;
+    }
+
+        .circle_text div img {
+            width: 90%;
+            height: 10%;
+        }
+
+        .circle_text .select_text{
+            font-weight: bold;
+            color: #666;
+        }
+
+.dot_text1 {
+    width: 6.2%;
+    left: -1.5%;
+}
+
+.dot_text2 {
+    width: 9%;
+    left: 1.5%;
+}
+
+.dot_text3 {
+    width: 9%;
+    left: 1.9%;
+}
+
+.dot_text4 {
+    width: 9%;
+    left: 4%;
+}
+
+.dot_text5 {
+    width: 7.5%;
+    left: 2.5%;
+}
+
+.dot_text6 {
+    width: 10.5%;
+    left: 4%;
+}
+
+.dot_text7 {
+    width: 7.7%;
+    left: 3.5%;
+}
+
+.dot_text8 {
+    width: 11%;
+    left: 3.5%;
+}
+
+.dot_text9 {
+    width: 7.7%;
+    left: 4%;
+}
+
+.back {
+    width: 6%;
+    float: right;
+    margin-top: -3%;
+}
+
+.left_block {
+    clear: left;
+    width: 41%;
+    padding-top: 4%;
+    float: left;
+}
+
+    .left_block .text {
+        width: 40%;
+        margin-left: 29%;
+    }
+
+    .left_block .img {
+        padding-top: 10%;
+    }
+
+.rigth_block {
+    clear: right;
+    width: 54%;
+    float: right;
+    padding-left: 5%;
+    padding-top: 2%;
+}
+
+    .rigth_block .text1 {
+        width: 40%;
+    }
+
+    .rigth_block .text2 {
+        width: 95%;
+        padding-top: 4%;
+    }
+
+    .rigth_block .text3 div {
+        float: left;
+        padding-top: 3%;
+    }
+
+.history {
+    width: 25%;
+    margin-left: 50%;
+    margin-top: 5.5%;
+}
+
+.history_img {
+    width: 15% !important;
+    padding-left: 2%;
+}
+
+.g_title {
+    clear: both;
+}
+
+    .g_title div {
+        float: left;
+        position: relative;
+        padding-top: 2%;
+    }
+
+    .g_title .t1 {
+        width: 14%;
+    }
+
+    .g_title .t2 {
+        width: 14%;
+        left: 14%;
+    }
+
+    .g_title .t3 {
+        width: 20.2%;
+        left: 47%;
+        margin-top: 0.5%;
+    }
+
+.row_1 {
+    clear: both;
+}
+
+    .row_1 div {
+        float: left;
+        position: relative;
+    }
+
+    .row_1 .item1 {
+        width: 22%;
+        left: -3.5%;
+    }
+
+    .row_1 .item2 {
+        width: 12%;
+        left: 6.9%;
+        margin-top: 5%;
+    }
+
+    .row_1 .item3 {
+        width: 14%;
+        left: 18.5%;
+        margin-top: 5%;
+    }
+
+    .row_1 .item4 {
+        width: 18%;
+        left: 28.5%;
+        margin-top: 7%;
+    }
+
+.row_2 {
+    clear: both;
+    margin-top: -6%;
+}
+
+    .row_2 div {
+        float: left;
+        position: relative;
+    }
+
+    .row_2 .item1 {
+        width: 22%;
+        left: -3.5%;
+        margin-top: -6%;
+    }
+
+    .row_2 .item2 {
+        width: 8%;
+        left: 8.5%;
+        margin-top: 1.5%;
+    }
+
+    .row_2 .item3 {
+        width: 14%;
+        left: 22.4%;
+        margin-top: -1%;
+    }
+
+    .row_2 .item4 {
+        width: 18%;
+        left: 32.5%;
+        margin-top: 1%;
+    }
+
+
+.row_3 {
+    clear: both;
+}
+
+    .row_3 div {
+        float: left;
+        position: relative;
+    }
+
+    .row_3 .item1 {
+        width: 22%;
+        left: -3.5%;
+        margin-top: -6%;
+    }
+
+    .row_3 .item2 {
+        width: 4%;
+        left: 10.1%;
+        margin-top: 4%;
+    }
+
+    .row_3 .item3 {
+        width: 14%;
+        left: 26.5%;
+        margin-top: -1%;
+    }
+
+    .row_3 .item4 {
+        width: 24%;
+        left: 33.5%;
+        margin-top: 1%;
+    }

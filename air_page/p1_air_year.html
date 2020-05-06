@@ -1,0 +1,208 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" style="height: 100%;">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>空氣品質大事紀</title>
+    <script src="../js/jquery-1.10.2.js"></script>
+    <script src="../js/common/line_canvas.js"></script>
+    <link href="../css/air.css" rel="stylesheet" />
+    <script type="text/javascript">
+        var cx = null;
+        var i = 0;
+        $(document).ready(function () {
+
+            var go_url = [
+                "空氣品質大事紀/index.html", //1
+                "p2_subject_11.html", //2
+                "空氣品質大事紀/index.html", //3
+                "p2_subject_2.html", //4
+                "空氣污染防制費大事紀/index.html", //5
+                "../air_chart/s11/chart_air_o3.html", //6
+                "p2_subject_4.html", //7
+                "p2_subject_1.html", //8
+                "p2_subject_9.html", //9
+                "p2_subject_3.html", //10
+                "空氣污染防制費大事紀/index.html", //11
+                "p2_subject_1.html", //12
+                "p2_subject_1.html", //13
+                "p2_subject_3.html", //14
+                "p2_subject_10.html", //15
+            ]
+
+            for (var i = 1; i <= 15; i++) {
+                var url = go_url[i - 1];
+                $("#line" + i + " a").attr("href", url);
+                if (url == "") $("#line" + i + " a").hide();
+                var go_event = (function (url) {
+                    return function () {
+                        location.href = url;
+                    }
+                })(url);
+
+                $("#line" + i).bind("click", go_event);
+            }
+
+            //建立年
+            var def_left = 11.7;
+            var year_css = [
+                { year: 73, height: 290, left: 0, top: 47, width: 0 },
+                { year: 74, height: 250, left: 0, top: 44, width: 0 },
+                { year: 75, height: 310, left: 0.1, top: 49, width: 0 },
+                { year: 76, height: 310, left: 0.3, top: 49, width: 0 },
+                { year: 77, height: 290, left: 0.4, top: 47, width: 0 },
+                { year: 78, height: 290, left: 0.4, top: 47, width: 0 },
+                { year: 79, height: 290, left: 0.4, top: 47, width: 0 },
+                { year: 80, height: 290, left: 0.58, top: 47, width: 0 },
+                { year: 81, height: 200, left: 0.4, top: 40, width: 0 },
+                { year: 82, height: 140, left: 0.7, top: 35, width: 0 },
+                { year: 83, height: 140, left: 0.7, top: 35, width: 0 },
+                { year: 84, height: 140, left: 1.1, top: 35, width: 0 },
+                { year: 85, height: 140, left: 1, top: 35, width: 0 },
+                { year: 86, height: 140, left: 1.2, top: 35, width: 0 },
+                { year: 87, height: 105, left: 1.2, top: 32, width: 0 },
+                { year: 88, height: 105, left: 1.2, top: 32, width: 0 },
+                { year: 89, height: 105, left: 1.5, top: 32, width: 0 },
+                { year: 90, height: 105, left: 1.5, top: 32, width: 0 },
+                { year: 91, height: 105, left: 1.5, top: 32, width: 0 },
+                { year: 92, height: 105, left: 1.8, top: 32, width: 0 },
+                { year: 93, height: 105, left: 1.8, top: 32, width: 0 },
+                { year: 94, height: 105, left: 2.0, top: 32, width: 0 },
+                { year: 95, height: 105, left: 1.8, top: 32, width: 0.5 },
+                { year: 96, height: 105, left: 2.4, top: 32, width: 0 },
+                { year: 97, height: 105, left: 2.4, top: 32, width: 0 },
+                { year: 98, height: 105, left: 2.4, top: 32, width: 0 },
+                { year: 99, height: 50, left: 2.4, top: 27, width: 0 },
+                { year: 00, height: 50, left: 2.6, top: 27, width: 0 },
+                { year: 01, height: 50, left: 2.6, top: 27, width: 0 },
+                { year: 02, height: 50, left: 2.9, top: 27, width: 0 },
+                { year: 03, height: 50, left: 2.9, top: 27, width: 0 },
+                { year: 04, height: 50, left: 2.9, top: 27, width: 0 }
+            ];
+
+            for (var i = 73; i <= 104; i++) {
+                var div = $("<div></div>").css("position", "relative");
+                var left = (def_left) + ((i - 73) * 2.55) + year_css[i - 73].left;;
+                var width = (2.5 + year_css[i - 73].width) + "%";
+                var top = (year_css[i - 73].top + 4.8) * -1 + "%";
+                var height = year_css[i - 73].height + "px";
+
+                div.css("left", left + "%").css("width", width).css("margin-top", top).css("height", height);
+
+                var tip_left = left + (2.5 + year_css[i - 73].width);
+                var show_func = (function (year, top, left) {
+                    return function () {
+                        show_year_tip(year, top, left);
+                    };
+                })(i, top, tip_left);
+
+                div.bind("mouseover", show_func);
+                div.bind("mouseout", hide_year_top);
+
+                $(".year").append(div);
+            }
+
+        });
+
+        function show_year_tip(year, top, left) {
+            var url = "../images/air_year_tip/air" + year + ".png";
+            $(".year .tip").find("img").attr("src", url);
+            $(".year .tip").find("img").bind("error", function () {
+                $(this).hide();
+            });
+            $(".year .tip").find("img").bind("load", function () {
+                $(this).show();
+            });
+
+            if (year > 89) {
+                left -= 38
+            }
+
+            $(".year .tip").css("left", left + "%").css("margin-top", top);
+            $(".year .tip").show();
+        }
+
+        function hide_year_top() {
+            $(".year .tip").hide();
+        }
+
+    </script>
+</head>
+<body>
+    <form id="form1">
+        <div class="content">
+
+            <div>
+                <div class="air_all">
+                    <img src="../images/air_page.jpg" />
+                </div>
+                <!-- 民國 -->
+
+                <div class="year">
+                    <div class="tip" style="display: none;">
+                        <img src="" />
+                    </div>
+                </div>
+
+                <!-- line / img -->
+                <div class="line">
+                    <div id="line1">
+                        <a href=""></a>
+                    </div>
+                    <div id="line2">
+                        <a href=""></a>
+                    </div>
+                    <div id="line3">
+                        <a href=""></a>
+                    </div>
+                    <div id="line4">
+                        <a href=""></a>
+                    </div>
+                    <div id="line5">
+                        <a href=""></a>
+                    </div>
+                    <div id="line6">
+                        <a href=""></a>
+                    </div>
+                    <div id="line7">
+                        <a href=""></a>
+                    </div>
+                    <div id="line8">
+                        <a href=""></a>
+                    </div>
+                    <div id="line9">
+                        <a href=""></a>
+                    </div>
+                    <div id="line10">
+                        <a href=""></a>
+                    </div>
+                    <div id="line11">
+                        <a href=""></a>
+                    </div>
+                    <div id="line12">
+                        <a href=""></a>
+                    </div>
+                    <div id="line13">
+                        <a href=""></a>
+                    </div>
+                    <div id="line14">
+                        <a href=""></a>
+                    </div>
+                    <div id="line15">
+                        <a href=""></a>
+                    </div>
+                </div>
+
+                <!-- go back -->
+                <div class="back">
+                    <a href="../index.htm">
+                    </a>
+                </div>
+
+
+
+            </div>
+        </div>
+    </form>
+</body>
+</html>

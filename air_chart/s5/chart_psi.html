@@ -1,0 +1,421 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="../../css/P3.css" rel="stylesheet" />
+    <script src="../../js/jquery-1.10.2.js"></script>
+
+    <script src="../../js/highchats/highstock.js"></script>
+    <script src="../../js/highchats/map.js"></script>
+    <script src="../../js/highchats/drilldown.js"></script>
+    <script src="../../js/highchats/exporting.js"></script>
+    <script src="../../js/highchats/offline-exporting.js"></script>
+
+    <script src="../../js/common/chart.js"></script>
+    <script src="../../js/common/map.js"></script>
+    <script src="../../js/common/play.js"></script>
+    <script src="../../js/common/area_code.js"></script>
+
+    <!-- co value -->
+    <script src="../../js/AirQualityMap/map_psi_count_industry.js"></script>
+    <script src="../../js/AirQualityMap/map_psi_count_normal.js"></script>
+    <script src="../../js/AirQualityMap/map_psi_count_traffic.js"></script>
+    <script src="../../js/AirQualityMap/map_psi_industry.js"></script>
+    <script src="../../js/AirQualityMap/map_psi_normal.js"></script>
+    <script src="../../js/AirQualityMap/map_psi_traffic.js"></script>
+
+    <script src="../../js/AirQualityChart/chart_psi_count_industry.js"></script>
+    <script src="../../js/AirQualityChart/chart_psi_count_normal.js"></script>
+    <script src="../../js/AirQualityChart/chart_psi_count_traffic.js"></script>
+    <script src="../../js/AirQualityChart/chart_psi_industry.js"></script>
+    <script src="../../js/AirQualityChart/chart_psi_normal.js"></script>
+    <script src="../../js/AirQualityChart/chart_psi_traffic.js"></script>
+
+    <!-- geo json -->
+    <script src="../../Geojson/airqualityarea.geojson.js"></script>
+    <script src="../../Geojson/Country.geojson.js"></script>
+    <script src="../../Geojson/station.geojson.js"></script>
+
+    <title>空氣污染指標</title>
+    <script type="text/javascript">
+
+        var current_area = "";
+        var current_area_code = "";
+
+        var data_sy, data_sm;
+
+        var current_sy = 0;
+        var current_sm = 0;
+        var current_map_value_name = "PSI";
+        var current_site_name = "一般測站";
+
+        var co_map = map_psi_normal;
+        var co_chart = chart_psi_normal;
+        data_unit = "year";
+
+        var psi_count = chart_psi_count_normal;
+
+        function set_default_ym() {
+            //var d1 = new Date(co_chart[0].time_value[0][0]);
+            var d1 = new Date(stock_chart.xAxis[0].getExtremes().max);
+            current_sy = d1.getFullYear();
+            current_sm = d1.getMonth() + 1;
+
+            data_sy = current_sy;
+            data_sm = current_sm;
+        }
+
+        function get_chart_opts() {
+            var z1 = 1;
+            var z2 = 2;
+            var z3 = 3;
+            var chart_opts = {
+                chart: {
+                    spacing: [0, -100, 0, 0],
+                    events: {
+                        load: function () {
+                        },
+                        click: function (event) {
+                            var d = new Date(event.xAxis[0].value);
+
+                            play_current = d;
+                            current_sy = play_current.getFullYear();
+                            var mm = d.getMonth() + 1;
+                            if (mm > 6) {
+                                current_sy += 1;
+                            }
+
+                            //draw plot line
+                            ShowPlotLine(current_sy, current_sm);
+
+                            //change map data
+                            change_year_data(current_sy, current_sm);
+                        }
+                    }
+                },
+                exporting: {
+                    buttons: {
+                        contextButton: {
+                            x: -200,
+                            y: -5
+                        }
+                    }
+                },
+                legend: {
+                    enabled: true,
+                    itemMarginTop: 10,
+                    y: 10,
+                    useHTML: true
+                },
+                xAxis: {
+                    labels: {
+                        formatter: function () {
+                            var d = this.value;
+                            var d1 = new Date(d);
+                            var v = d1.getYear() + 1900 - 1911 + '';
+                            return v;
+                        },
+                    },
+                    tickInterval: 365 * 24 * 3600 * 1000,
+                    endOnTick: true,
+                    title: {
+                        text: "年",
+                    }
+                },
+                yAxis: [
+               {
+                   title: {
+                       text: 'PSI',
+                       rotation: 0,
+                       align: 'high',
+                       x: 25,
+                       y: -15
+                   },
+                   gridLineWidth: 0,
+                   opposite: false
+               },
+               {
+                   title: {
+                       text: 'PSI>100站日數百分比(%)',
+                       rotation: 0,
+                       align: 'high',
+                       x: -130,
+                       y: -15
+                   },
+                   gridLineWidth: 0,
+                   opposite: true,
+                   labels: {
+                       formatter: function () {
+                           var v = this.value * 100;
+                           return v.toFixed(0) + " %"
+                       }
+                   }
+               },
+                ]
+        , series: [
+              {
+                  name: 'PSI',
+                  zIndex: 20,
+                  type: 'spline',
+                  yAxis: 0,
+                  marker: {
+                      enabled: true,
+                      radius: 0
+                  },
+                  color: line_color[0],
+                  tooltip: {
+                      pointFormatter: function (obj) {
+                          var s = '<span style="color:' + obj.color + '">\u25CF</span> ' + obj.series.name + ': <b>';
+                          var v = parseFloat(obj.y.toFixed(2));
+                          s = s + v + ' </b><br/>';
+                          return s;
+                      }
+                  }
+              },
+              {
+                  name: 'PSI>100站日數百分比(%)',
+                  zIndex: 20,
+                  type: 'spline',
+                  yAxis: 1,
+                  marker: {
+                      enabled: true,
+                      radius: 0
+                  },
+                  color: line_color[1],
+                  tooltip: {
+                      pointFormatter: function (obj) {
+                          var s = '<span style="color:' + obj.color + '">\u25CF</span> ' + obj.series.name + ': <b>';
+                          var v = parseFloat(obj.y) * 100;
+                          var v = v.toFixed(2);
+                          s = s + v + ' %</b><br/>';
+                          return s;
+                      }
+                  }
+              }
+        ]
+            };
+
+            return chart_opts;
+        }
+
+        var map_opts = {
+            colorAxis: {
+                min: 0,
+                max: 30
+            },
+            legend: {
+                width: 120,
+                title: {
+                    text: "空氣污染指標PSI<br>"
+                    + ((map_legend_sub_text == null) ? "月平均值" : map_legend_sub_text)
+                }
+            }
+        }
+
+        $(document).ready(function () {
+
+            current_area = "ALL";
+            current_area_code = "ALL";
+
+            //chart
+            var opts = get_chart_opts();
+            DrawChart(current_area, "data_chart", opts);
+
+            //chart data
+            change_chart_data();
+            set_default_ym(); // 找出最小日期
+
+            //set map;
+            show_map(current_area, "data_map", map_opts);
+            var map_class_value = [47, 52, 57, 65];
+            set_color_class(map_class_value, 0, false, 0);
+            change_year_data(current_sy, current_sm);
+
+            map_level_ary.push("ALL");
+
+            change_chart_title();
+
+            //auto play;
+            //play_year();
+        });
+
+        function change_chart_data(level, code) {
+            code = (code) ? code : current_area_code;
+            level = (level) ? level : current_area;
+
+            if (stock_chart) {
+                var find = false;
+                for (var i = 0; i < co_chart.length; i++) {
+                    if ((co_chart[i].area == code) && (co_chart[i].level == level)) {
+                        stock_chart.series[0].setData(co_chart[i].time_value, true, 5000, true);
+                        //排除回到全台資料沒有更新的問題, 全台建二筆資料
+                        if (i == 1) {
+                            stock_chart.series[0].setData(co_chart[0].time_value, true, 5000, true);
+                        }
+                        find = true;
+                        break;
+                    }
+                }
+                if (find == false) {
+                    stock_chart.series[0].setData([], true, 5000, true);
+                }
+
+                find = false;
+                for (var i = 0; i < psi_count.length; i++) {
+                    if ((psi_count[i].area == code) && (psi_count[i].level == level)) {
+                        stock_chart.series[1].setData(psi_count[i].time_value, true, 5000, true);
+                        //排除回到全台資料沒有更新的問題, 全台建二筆資料
+                        if (i == 1) {
+                            stock_chart.series[1].setData(psi_count[0].time_value, true, 5000, true);
+                        }
+                        find = true;
+                        break;
+                    }
+                }
+                if (find == false) {
+                    stock_chart.series[1].setData([], true, 5000, true);
+                }
+            }
+        }
+
+        map_tooltip_value_func = function (value) {
+            if (value == null) return "無";
+            if (value == "無") return "無";
+            return value.toFixed(2);
+        }
+
+        function change_site(site_type) {
+            switch (site_type) {
+                case "traffic":
+                    psi_count = chart_psi_count_traffic;
+                    co_map = map_psi_traffic;
+                    co_chart = chart_psi_traffic;
+                    current_site_name = "交通測站";
+                    break;
+                    break;
+                case "normal":
+                    psi_count = chart_psi_count_normal;
+                    co_map = map_psi_normal;
+                    co_chart = chart_psi_normal;
+                    current_site_name = "一般測站";
+                    break;
+                case "industry":
+                    psi_count = chart_psi_count_industry;
+                    co_map = map_psi_industry;
+                    co_chart = chart_psi_industry;
+                    current_site_name = "工業測站";
+                    break;
+            }
+
+            change_chart_data(current_area, current_area_code);
+            change_chart_title(current_area, current_area_code);
+
+            change_year_data(current_sy, current_sm);
+            $(".map_static_change .list").hide();
+
+        }
+
+        function go_next_month() {
+
+            if (play_current > play_d2) play_current = play_d1;
+
+            current_sy = play_current.getFullYear() + 1;
+            current_sm = 1;
+
+            //draw plot line
+            ShowPlotLine(current_sy, current_sm);
+
+            //change map data
+            change_year_data(current_sy, current_sm);
+
+            //play month ++
+            play_current = new Date(current_sy, current_sm, 1);
+        }
+
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="container">
+
+            <div class="print_page">
+                <div>
+                    <a href="javascript: return false;" onclick="window.print();">
+                        <img src="../../images/print.png" />
+                    </a>
+                </div>
+            </div>
+
+            <div class="back">
+                <div>
+                    <a href="../../air_page/p2_subject_5.html">
+                        <img src="../../images/air/back.png" />
+                    </a>
+                </div>
+            </div>
+
+            <div class="title">
+                <div class="h1">
+                    空氣污染指標
+                </div>
+                <div class="h2">
+                    民國81年訂定我國空氣品質標準，讓民眾掌握空氣品質狀況，並瞭解對健康影響程度。
+                </div>
+                <div class="h3">
+                    資料來源：空氣品質監測日值：<a href="http://erdb.epa.gov.tw/DataRepository/EnvMonitor/AirQualityMonitorDayData.aspx"><u>環境資源資料庫</a></u>
+                </div>
+            </div>
+
+            <div class="map">
+                <div id="data_map">
+                </div>
+
+            </div>
+            <div class="chart">
+
+                <div class="site_menu">
+                    <div class="map_static_change">
+                        <div onclick="open_map_change_list();" style="cursor: pointer;">
+                             <img src="../../images/change.png" /> 切換
+                        </div>
+                        <div class="list">
+                            <div>
+                                <a href="javascript: change_site('normal');" onclick="change_site('normal');">
+                                    一般測站
+                                </a>
+                            </div>
+                            <div>
+                                <a href="javascript: change_site('traffic');" onclick="change_site('traffic');">
+                                    交通測站
+                                </a>
+                            </div>
+                            <div>
+                                <a href="javascript: change_site('industry');" onclick="change_site('industry');">
+                                    工業測站
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="data_chart">
+                </div>
+
+                <div class="action_bar">
+                    <div id="div_action_left" onclick="go_year_start();">
+                        <img src="../../images/right.png" />
+                    </div>
+                    <div onclick="btn_action();">
+                        <img src="../../images/play.png" id="img_action_play" />
+                    </div>
+                    <div id="div_action_right" onclick="go_year_end();">
+                        <img src="../../images/left.png" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</body>
+</html>

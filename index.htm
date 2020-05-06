@@ -1,0 +1,156 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <title>圖表話環保 1.0 demo</title>
+    <script src="js/jquery-1.10.2.js"></script>
+    <link href="css/index.css" rel="stylesheet" />
+    <script type="text/javascript">
+
+        var cover_index = 0;
+        $(document).ready(function () {
+            $(".cover1").height($(document).height());
+            $(".cover2").height($(document).height());
+
+            var change_cover = function () {
+                switch (cover_index) {
+                    case 0:
+                        $(".cover1").animate({
+                            opacity: 0
+                        }, 5000, "linear",
+                        function () {
+                            $(".cover1").css("zIndex", 10).css("opacity", 100);
+                            $(".cover2").css("zIndex", 11);
+                        });
+                        break;
+                    case 1:
+                        $(".cover2").animate({
+                            opacity: 0
+                        }, 5000, "linear",
+                        function () {
+                            $(".cover1").css("zIndex", 11);
+                            $(".cover2").css("zIndex", 10).css("opacity", 100);
+                        });
+                        break;
+                }
+                cover_index++;
+                cover_index = cover_index % 2;
+            }
+            setInterval(change_cover, 10000);
+        });
+
+        $(window).resize(function () {
+            $(".cover1").height($(document).height());
+            $(".cover2").height($(document).height());
+        });
+
+    </script>
+</head>
+<body>
+    <form id="form1">
+        <div class="cover1">
+        </div>
+        <div class="cover2">
+        </div>
+        <div class="contain">
+            <div class="main">
+                <div class="title">
+                    <img src="images/index/logo.png" />
+                </div>
+                <div>
+                    <table style="width: 100%;" id="pc_table">
+                        <tr>
+                            <td class="left">
+                                <a href="air_page/p1_air_year.html">
+                                    <div>
+                                        <img src="images/index/air1.png" />
+                                    </div>
+                                    <div>
+                                        <img class="img_2" src="images/index/air2.png" />
+                                    </div>
+                                    <div>
+                                        <img src="images/index/air3.png" />
+                                    </div>
+                                </a>
+                            </td>
+                            <td class="center">
+                                <img src="images/index/title.png" />
+                            </td>
+                            <td class="right">
+                                <a href="water_page/p1_water_year.html">
+                                    <div>
+                                        <img src="images/index/water1.png" />
+                                    </div>
+                                    <div>
+                                        <img class="img_2" src="images/index/water2.png" />
+                                    </div>
+                                    <div>
+                                        <img src="images/index/water3.png" />
+                                    </div>
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="mobile_div">
+                    <div class="mobile_center">
+                        <img src="images/index/title.png" />
+                    </div>
+                    <div class="mobile_left">
+                        <a href="air_page/p1_air_year.html">
+                            <div>
+                                <img src="images/index/air1.png" />
+                            </div>
+                            <div>
+                                <img class="img_2" src="images/index/air2.png" />
+                            </div>
+                            <div>
+                                <img src="images/index/air3.png" />
+                            </div>
+                        </a>
+                    </div>
+                    <div class="mobile_right">
+                        <a href="water_page/p1_water_year.html">
+                            <div>
+                                <img src="images/index/water1.png" />
+                            </div>
+                            <div>
+                                <img class="img_2" src="images/index/water2.png" />
+                            </div>
+                            <div>
+                                <img src="images/index/water3.png" />
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div id="footer">
+                            <div style="color: white; line-height: 20px; margin-top: 30px; text-align: center">
+                                <p>
+                                    <br> 聯絡電話：02-23117722 聯絡地址：10024台北市中正區中華路一段83號
+                                    <br>
+                                    <a href="//www.epa.gov.tw/ct.asp?xItem=5278&amp;ctNode=30609&amp;mp=epa" target="_blank" title="隱私權保護政策">隱私權保護政策</a>
+                                    <a href="//www.epa.gov.tw/ct.asp?xItem=5277&amp;ctNode=30609&amp;mp=epa" target="_blank" title="網站安全政策">網站安全政策</a>
+                                    <a href="//www.epa.gov.tw/cpDownloadCtl.asp?id=5276" target="_blank" title="資訊安全規範">資訊安全規範</a>
+                                    <a href="//www.epa.gov.tw/ct.asp?xItem=5275&amp;ctNode=30609&amp;mp=epa" target="_blank" title="網站資料開放宣告">網站資料開放宣告</a>
+                                    <a href="//forum.epa.gov.tw/EPASPS/SPSB/SPSB01001.aspx" target="_blank" title="意見回饋">意見回饋</a>
+                                    <br>
+                                </p>
+                            </div>
+                            <!--<div style="float:left;color:white;line-height: 20px;margin-top: 30px;margin-left:20px">
+                                <p>
+                                <br>累積瀏覽量：<span id="totalVisit">41674</span> 
+                                </p>
+                            </div >
+                            <div style="float:right;margin-top: 50px">
+                                <p><div class="fb-share-button fb_iframe_widget" data-href="http://ienv.epa.gov.tw" data-layout="button_count" fb-xfbml-state="rendered" fb-iframe-plugin-query="app_id=1657646764493509&amp;container_width=222&amp;href=http%3A%2F%2Fienv.epa.gov.tw%2F&amp;layout=button_count&amp;locale=zh_TW&amp;sdk=joey"><span style="vertical-align: bottom; width: 86px; height: 20px;"><iframe name="f3d9187ebbf20b8" width="1000px" height="1000px" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" title="fb:share_button Facebook Social Plugin" src="http://www.facebook.com/v2.5/plugins/share_button.php?app_id=1657646764493509&amp;channel=http%3A%2F%2Fstaticxx.facebook.com%2Fconnect%2Fxd_arbiter.php%3Fversion%3D42%23cb%3Df2a739289917908%26domain%3Dienv.epa.gov.tw%26origin%3Dhttp%253A%252F%252Fienv.epa.gov.tw%252Ff3b3471cab10ed8%26relation%3Dparent.parent&amp;container_width=222&amp;href=http%3A%2F%2Fienv.epa.gov.tw%2F&amp;layout=button_count&amp;locale=zh_TW&amp;sdk=joey" style="border: none; visibility: visible; width: 86px; height: 20px;" class=""></iframe></span></div>
+                                <div id="___plus_0" style="text-indent: 0px; margin: 0px; padding: 0px; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; display: inline-block; width: 81px; height: 20px; background: transparent;"><iframe frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position: static; top: 0px; width: 81px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 20px;" tabindex="0" vspace="0" width="100%" id="I0_1461227361885" name="I0_1461227361885" src="https://apis.google.com/u/0/se/0/_/+1/sharebutton?plusShare=true&amp;usegapi=1&amp;action=share&amp;annotation=bubble&amp;origin=http%3A%2F%2Fienv.epa.gov.tw&amp;url=http%3A%2F%2Fienv.epa.gov.tw%2F&amp;gsrc=3p&amp;ic=1&amp;jsh=m%3B%2F_%2Fscs%2Fapps-static%2F_%2Fjs%2Fk%3Doz.gapi.zh_TW.TAFlJIPz1wk.O%2Fm%3D__features__%2Fam%3DAQ%2Frt%3Dj%2Fd%3D1%2Frs%3DAGLTcCOWX0fWpTVCYoiI0aUjRtFkT4mwrw#_methods=onPlusOne%2C_ready%2C_close%2C_open%2C_resizeMe%2C_renderstart%2Concircled%2Cdrefresh%2Cerefresh&amp;id=I0_1461227361885&amp;parent=http%3A%2F%2Fienv.epa.gov.tw&amp;pfname=&amp;rpctoken=52103427" data-gapiattached="true" title="+分享"></iframe></div></p>
+                            </div>-->
+                        </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

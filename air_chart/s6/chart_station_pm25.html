@@ -1,0 +1,331 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="../../css/P3.css" rel="stylesheet" />
+    <script src="../../js/jquery-1.10.2.js"></script>
+
+    <script src="../../js/highchats/highstock.js"></script>
+    <script src="../../js/highchats/map.js"></script>
+    <script src="../../js/highchats/drilldown.js"></script>
+    <script src="../../js/highchats/exporting.js"></script>
+    <script src="../../js/highchats/offline-exporting.js"></script>
+
+
+    <script src="../../js/common/chart.js"></script>
+    <script src="../../js/common/map.js"></script>
+    <script src="../../js/common/play.js"></script>
+    <script src="../../js/common/area_code.js"></script>
+
+    <!-- co value -->
+    <script src="../../js/AirQualityMap/map_pm10_industry.js"></script>
+    <script src="../../js/AirQualityMap/map_pm10_normal.js"></script>
+    <script src="../../js/AirQualityMap/map_pm10_traffic.js"></script>
+
+    <script src="../../js/AirQualityChart/chart_pm10_industry.js"></script>
+    <script src="../../js/AirQualityChart/chart_pm10_normal.js"></script>
+    <script src="../../js/AirQualityChart/chart_pm10_traffic.js"></script>
+
+    <!-- geo json -->
+    <script src="../../Geojson/airqualityarea.geojson.js"></script>
+    <script src="../../Geojson/Country.geojson.js"></script>
+    <script src="../../Geojson/station.geojson.js"></script>
+    <title>懸浮微粒濃度</title>
+
+    <style type="text/css">
+        .chart_change .list {
+        }
+    </style>
+
+    <script type="text/javascript">
+
+        var current_area = "";
+        var current_area_code = "";
+
+        var data_sy, data_sm;
+
+        var current_sy = 0;
+        var current_sm = 0;
+        var current_map_value_name = "懸浮微粒濃度 (μg/m<sup>3</sup>)";
+        var current_site_name = "一般測站";
+
+        var co_map = map_pm10_normal;
+        var co_chart = chart_pm10_normal;
+
+        function set_default_ym() {
+            var d1 = new Date(stock_chart.xAxis[0].getExtremes().max);
+            //var d1 = new Date(co_chart[0].time_value[0][0]);
+            current_sy = d1.getFullYear();
+            current_sm = d1.getMonth() + 1;
+
+            data_sy = current_sy;
+            data_sm = current_sm;
+        }
+
+        function get_chart_opts() {
+            var chart_opts = {
+                chart: {
+                    spacing: [0, -80, 0, 60],
+                },
+                exporting: {
+                    buttons: {
+                        contextButton: {
+                            x: -180, y:0
+                        }
+                    }
+                },
+                title:{
+                    x: -140
+                },
+                legend: {
+                    useHTML: true,
+                    itemStyle: {
+                        fontSize: "13px"
+                    },
+                    x:-140
+                },
+                yAxis: [
+            {
+                title: {
+                    text: '單位：(μg/m<sup>3</sup>)',
+                    rotation: 0,
+                    align: 'high',
+                    x: -80,
+                    y: -40,
+                    useHTML: true
+                },
+                gridLineWidth: 1,
+                offset: 35
+            }
+                ]
+
+        , series: [
+            {
+                name: '懸浮微粒濃度',
+                zIndex: 1,
+                type: 'spline',
+                yAxis: 0,
+                marker: {
+                    enabled: true,
+                    radius: 0
+                },
+                fillOpacity: 1,
+                color: line_color[0],
+                tooltip: {
+                    pointFormatter: function (obj) {
+                        var s = '<span style="color:' + obj.color + '">\u25CF</span> ' + "懸浮微粒濃度" + ': <b>';
+                        var v = parseFloat(obj.y.toFixed(2));
+                        s = s + v + ' </b><br/>';
+                        return s;
+                    }
+                }
+            }
+        ]
+            };
+
+            return chart_opts;
+        }
+
+        var map_tooltip_value_func = function map_tooltip_value_func(value) {
+            return value.toFixed(2);
+        }
+
+        var map_opts = {
+            colorAxis: {
+                min: 0,
+                max: 60
+            },
+            legend: {
+                width: 135,
+                title: {
+                    text: "懸浮微粒濃度<br>"
+                    + ((map_legend_sub_text == null) ? "月平均濃度值" : map_legend_sub_text)
+                }
+            }
+        }
+
+        $(document).ready(function () {
+
+            current_area = "ALL";
+            current_area_code = "ALL";
+
+            //chart
+            var opts = get_chart_opts();
+            DrawChart(current_area, "data_chart", opts);
+
+            //chart data
+            change_chart_data();
+            set_default_ym(); // 找出最小日期
+
+            //set map;
+            show_map(current_area, "data_map", map_opts);
+            var map_class_value = [37, 47, 59, 79];
+            set_color_class(map_class_value, 0, false, 0);
+            change_year_data(current_sy, current_sm);
+
+            map_level_ary.push("ALL");
+
+            change_chart_title();
+
+            //auto play;
+            //play_year();
+        });
+
+        map_tooltip_value_func = function (value) {
+            if (value == null) return "無";
+            if (value == "無") return "無";
+            return value.toFixed(2);
+        }
+
+        function change_site(site_type) {
+            switch (site_type) {
+                case "traffic":
+                    co_map = map_pm10_traffic;
+                    co_chart = chart_pm10_traffic;
+                    current_site_name = "交通測站";
+                    break;
+                    break;
+                case "industry":
+                    co_map = map_pm10_industry;
+                    co_chart = chart_pm10_industry;
+                    current_site_name = "工業測站";
+                    break;
+                case "normal":
+                    co_map = map_pm10_normal;
+                    co_chart = chart_pm10_normal;
+                    current_site_name = "一般測站";
+                    break;
+            }
+
+            change_chart_data(current_area, current_area_code);
+            change_chart_title(current_area, current_area_code);
+
+            change_year_data(current_sy, current_sm);
+            $(".map_static_change .list").hide();
+
+        }
+
+
+    </script>
+
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="container">
+
+            <div class="print_page">
+                <div>
+                    <a href="javascript: return false;" onclick="window.print();">
+                        <img src="../../images/print.png" />
+                    </a>
+                </div>
+            </div>
+
+            <div class="back">
+                <div>
+                    <a href="../../air_page/p2_subject_6.html">
+                        <img src="../../images/air/back.png" />
+                    </a>
+                </div>
+            </div>
+
+            <div class="title">
+                <div class="h1">
+                    <div class="text">空氣品質監測項目</div>
+                    <div class="drop chart_change" onclick="open_change_list();">
+                        ▼
+                        <div class="list">
+                            <div>
+                                <a class="select">
+                                    懸浮微粒濃度變化趨勢圖
+                                </a>
+                            </div>
+                            <div>
+                                <a href="chart_station_so2.html">
+                                    二氧化硫濃度變化趨勢圖
+                                </a>
+                            </div>
+                            <div>
+                                <a href="chart_station_no2.html">
+                                    二氧化氮濃度變化趨勢圖
+                                </a>
+                            </div>
+                            <div>
+                                <a href="chart_station_co.html">
+                                    一氧化碳濃度變化趨勢圖
+                                </a>
+                            </div>
+                            <div>
+                                <a href="chart_station_o3.html">
+                                    臭氧濃度變化趨勢圖
+                                </a>
+                            </div>
+                            <div>
+                                <a href="chart_pm25.html">
+                                    細懸浮微粒濃度變化趨勢圖
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="h2">
+                    民國82年完成我國空氣品質監測網，24小時自動連續監測<a href="chart_station_pm25.html"><u>懸浮微粒</a></u>、<a href="chart_station_so2.html"><u>二氧化硫</a></u>、<a href="chart_station_no2.html"><u>二氧化氮</a></u>、<a href="chart_station_co.html"><u>一氧化碳</a></u>以及<a href="chart_station_o3.html"><u>臭氧</a></u>等5種空氣污染物濃度。並於民國94年起全面監測<a href="chart_pm25.html"><u>細懸浮微粒</a></u>濃度。
+                </div>
+                <div class="h3">
+                    資料來源：空氣品質監測月值：<a href="http://erdb.epa.gov.tw/DataRepository/EnvMonitor/AirQualityMonitorMonData.aspx"><u>環境資源資料庫</a></u>；細懸浮微粒手動監測濃度：<a href="http://taqm.epa.gov.tw/pm25/tw/PM25Data.aspx?site=1"><u>空氣品質監測網</a></u>
+                </div>
+            </div>
+
+            <div class="map">
+                <div id="data_map">
+                </div>
+
+            </div>
+            <div class="chart">
+
+                <div class="site_menu">
+                    <div class="map_static_change">
+                        <div onclick="open_map_change_list();" style="cursor: pointer;">
+                            <img src="../../images/change.png" />切換 
+                        </div>
+                        <div class="list">
+                            <div>
+                                <a href="javascript: change_site('normal');" onclick="change_site('normal');">
+                                    一般測站
+                                </a>
+                            </div>
+                            <div>
+                                <a href="javascript: change_site('traffic');" onclick="change_site('traffic');">
+                                    交通測站
+                                </a>
+                            </div>
+                            <div>
+                                <a href="javascript: change_site('industry');" onclick="change_site('industry');">
+                                    工業測站
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="data_chart">
+                </div>
+
+                <div class="action_bar">
+                    <div id="div_action_left" onclick="go_year_start();">
+                        <img src="../../images/right.png" />
+                    </div>
+                    <div onclick="btn_action();">
+                        <img src="../../images/play.png" id="img_action_play" />
+                    </div>
+                    <div id="div_action_right" onclick="go_year_end();">
+                        <img src="../../images/left.png" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</body>
+</html>

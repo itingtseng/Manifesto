@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="src/stylesheets/app.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta content="width=device-width; initial-scale=1.0;" name="viewport">
+    <title>空氣品質大事紀</title>
+    <style type="text/css">
+    .chart_btn {
+        position: relative;
+        float: right;
+        width: 65px;
+        margin-top: 2%;
+    }
+    
+    .chart_btn img {
+        width: 100%;
+    }
+    </style>
+</head>
+
+<body data-bind="css:{'modalShown':itemSelected}">
+    <header>
+        <h1 data-bind="text:title"></h1>
+        <div class="chart_btn">
+            <a href="../p1_air_year.html">
+                <img src="../../images/back.png" />
+            </a>
+        </div>
+        <div class="icon-bar">
+            <div class="group">
+                <label class="muted" for="scale">顯示尺寸：<span data-bind="text:currentScale"></span>畫素/天</label>
+                <input data-bind="value:currentScale,valueUpdate: 'afterkeydown'" id="scale" max="1" min="0.5" step='0.1' name="points" type="range">
+            </div>
+            <div class="group"> <i data-bind="click:scrollNext" class="fa fa-arrow-down"></i> <i data-bind="click:scrollPrevious" class="fa fa-arrow-up"></i> </div>
+        </div>
+        <p class="muted" data-bind="text: subtitle"></p>
+    </header>
+    <div class="grid">
+        <div class="left-timeline col-sand-left" data-bind="template:{name:'event', foreach:leftEvents}"></div>
+        <div class="center-timeline col-sand-middle"></div>
+        <div class="right-timeline col-sand-right" data-bind="template:{name:'event', foreach:rightEvents}"></div>
+    </div>
+    <script id="event" type="text/html">
+        <div class="timeline-event" data-bind="style:{'top':top()+'px', 'height':height()+'px', 'borderLeftColor':color,'borderRightColor':color}, css:{'selected':selected},click:toggleSelected">
+            <figure>
+                <figcaption data-bind="text:title"></figcaption>
+                <h6><span data-bind="text:fromStart()"></span>
+                  <small>至</small>
+                  <span data-bind="text:fromEnd()"></span>
+                  </h6>
+                <div data-bind="template:{name:template.name,data:template.context}"></div>
+            </figure>
+        </div>
+    </script>
+    <script type="text/html" id="1991-01-01">
+        <p><table> <tr>
+  <td> 適用情形 </td> <td> CO<br>（克／公里）</td> <td> HC+NOx<br>（克／公里）</td> <td>  CO<br>（心）</td> <td>  HC<br>（ppm）</td> <td>  粒狀污染物<br>（不透光率心）</td> <td> 粒狀污染物<br>（不透光率心）</td> </tr> <tr> <td>  新車型審驗（原型車）</td> <td>   3.75  </td> <td>   2.4  </td> <td>   4.5  </td> <td>   7000  </td> <td> - </td> <td>   15 </td> </tr> <tr> <td>  新車型審驗（量產車）新車檢驗 </td> <td>   4.5  </td> <td>   3.0  </td> <td>   4.5  </td> <td>   7000  </td> <td> - </td> <td>   15 </td> </tr> <tr> <td>   使用中車輛檢驗 </td> <td> - </td> <td> - </td> <td>   4.5  </td> <td>   9000  </td> <td>   30 </td> <td>   30 </td> </tr></table>
+    </script>
+    <script type="text/html" id="1988-01-01">
+        <p><table> <tr>
+  <td> 適用情形 </td> <td> CO<br>（克 ／公里） </td> <td> HC+NOx<br>（克／公里） </td> <td> CO<br>（心） </td> <td> HC<br>（ppm） </td> <td> 粒狀污染物<br>（不透光率心） </td> <td> 粒狀污染物<br>（不透光率心） </td> </tr> <tr> <td> 新車型審驗新車檢驗 </td> <td> - </td> <td> - </td> <td> 4.5 </td> <td> 7000  </td> <td> - </td> <td> - </td> </tr> <tr> <td> 使用中車輛檢驗 </td> <td> - </td> <td> - </td> <td> 4.5 </td> <td> 9000  </td> <td> - </td> <td> - </td> </tr> <tr> <td> 新車型審驗（原型車）（七十七年一月一日以後量產之車型） </td> <td> 7.3 </td> <td> 4.4 </td> <td> 4.5  </td> <td> 7000  </td> <td> - </td> <td> 15 </td> </tr> <tr> <td> 新車型審驗（量 產車）新車檢驗（七十七年一月一日以後量產之車型）  </td> <td> 8.8 </td> <td> 5.5 </td> <td> 4.5  </td> <td> 7000  </td> <td> - </td> <td> 15 </td> </tr> <tr> <td> 新車型審驗新車檢驗（七十六年十二月卅一日以前量產之車型） </td> <td> 10.2 </td> <td> 6.5 </td> <td> 4.5  </td> <td> 7000  </td> <td> - </td> <td> 15 </td> </tr> <tr> <td> 使用中車輛檢驗 </td> <td> - </td> <td> - </td> <td> 4.5 </td> <td> 9000 </td> <td> 30 </td> <td> 30 </td> </tr></table>
+    </script>
+    <script type="text/html" id="1987-01-01">
+        <p>成立之初，下設綜合計畫處、空氣品質保護及噪音管制處、水質保護處、廢棄物管理處、環境衛生及毒物管理處、管制考核及糾紛處理處、環境監測及資訊管理處等7個業務處。
+        </p>
+    </script>
+    <script type="text/html" id="1986-01-01">
+        <p>臺北市、臺灣省及高雄市分別於民國75~76年公告其固定污染源空氣污染物排放標準，為最早期以空氣污染物濃度標準進行空氣污染管制之法規。
+        </p>
+    </script>
+    <script type="text/html" id="2012-01">
+        <p>中華民國一百零一年一月一日起施行之汽油成分標準，如下表：<br><br><table> <tr>
+  <td> 項　　　目 </td> <td> 標　準　值 </td> </tr> <tr> <td> 苯含量 </td> <td> 1.0 %(v/v), max </td> </tr> <tr> <td> 硫含量 </td> <td> 10 mg/kg, max </td> </tr> <tr> <td> 雷氏蒸氣壓 </td> <td> 60 kPa, max </td> </tr> <tr> <td> 氧含量 </td> <td> 2.7 %(m/m), max </td> </tr> <tr> <td> 芳香烴含量 </td> <td> 35 %(v/v), max </td> </tr> <tr> <td> 烯烴含量 </td> <td> 18 %(v/v), max </td> </tr> <tr> <td colspan="2"> 備註： </td> </tr> <tr> <td colspan="2"> 1. E3 酒精汽油全國上線實施前，雷氏蒸氣壓標準值為 66.9kPa、氧含量標準 </td> </tr> <tr> <td colspan="2"> 值為 3.24 %(m/m)，其餘管制項目如表列標準值。 </td> </tr> <tr> <td colspan="2"> 2. 1psi = 6.895 kPa。 </td> </tr> <tr> <td colspan="2"> 3.煉油廠出廠之汽油應於一百零一年一月一日起符合本標準值，油庫及加油 </td> </tr> <tr> <td colspan="2"> 站應於一百零一年七月一日前完成換儲作業以符合本標準值。 </td> </tr> <tr> <td colspan="2"> 4.進口之汽油油品應於一百零一年一月一日起符合本標準值。 </td> </tr></table>
+        </p>
+    </script>
+    <script type="text/html" id="2011-01">
+        <p>中華民國一百年七月一日起施行之柴油成分標準，如下表：<br><br><table> <tr>
+  <td> 項　　　目 </td> <td> 標　準　值 </td> </tr> <tr> <td> 硫含量 </td> <td> 10 mg/kg, max </td> </tr> <tr> <td> 十六烷指數 </td> <td> 48 min </td> </tr> <tr> <td> 多環芳香烴含量 </td> <td> 11 %(m/m), max </td> </tr> <tr> <td colspan="2"> 備註：<br>1.煉油廠出廠之柴油應於一百年七月一日起符合本標準值，油庫及加油站應<br>於一百零一年一月一日前完成換儲作業以符合本標準值。<br>2.進口之柴油油 品應於一百年七月一日起符合本標準值。<br>3.生質柴油應符合本標準值。 </td> </tr></table>
+        </p>
+    </script>
+    <script type="text/html" id="2007-01">
+        <p>為減少管制加油站排放之揮發性有機物，具體有效防止及降低油氣逸散污染，環保署自86 年起補助原有及新設加油站業者設置真空輔助式油槍油氣回收設備，至民國100年底止，油氣回收設備設置率已達100 ％。
+        </p>
+    </script>
+    <script type="text/html" id="2000-01">
+        <p>臺灣地區各項油品品質歷年變化情形<br><br><table> <tr>
+  <td> 油品 </td> <td> 燃料油 </td> <td> 柴油 </td> <td> 汽油 </td> </tr> <tr> <td> 品質項目 </td> <td> 含硫量 </td> <td> 含硫量 </td> <td> 含鉛量(g/L) </td> </tr> <tr> <td> 62.06 </td> <td> 3.50% </td>  <td> 0.72 </td> </tr> <tr> <td> 71.01  </td> <td> 臺北市、高雄市2.0% 其他地區3.5%  </td>  <td> 0.56 </td> </tr> <tr> <td> 72.07  </td>   <td> 0.34 </td> </tr> <tr> <td> 75.07  </td> <td> 2.00% </td> <td> 0.50% </td>  </tr> <tr> <td> 75.09  </td>   <td> 0.2 </td> </tr> <tr> <td> 76.01  </td>   <td> 0.15 </td> </tr> <tr> <td> 78.07  </td>   <td> 0.12 </td> </tr> <tr> <td> 79.07  </td> <td> 1.50% </td>   </tr> <tr> <td> 82.07 </td> <td> 1.00%  </td> <td> 0.30%  </td> <td> 0.08 </td> </tr> <tr> <td> 85.07 </td> <td> 都會區0.5% 其他地區1.0% </td>   </tr> <tr> <td> 86.07 </td> <td> 三都會區及基隆市0.5±0.1% 其他地區1.0% </td> <td> 0.15%  </td> <td> 0.06 </td> </tr> <tr> <td> 87.07  </td>  <td> 0.05%  </td> <td> 0.06 </td> </tr> <tr> <td> 89.07  </td>  <td> 0.05%  </td> <td> － </td> </tr> <tr> <td> 91.01 </td> <td> 三都會區及其鄰近8 個縣市 0.5% </td> <td> 0.035%
+   </td> <td> － </td> </tr> <tr> <td> 91.07 </td> <td> 臺北市、高雄市、基隆市、臺北縣、桃園縣、臺中縣、臺中市、南投縣、彰化縣、臺南縣、<br>臺南市、高雄縣及屏東縣0.5±0.1% </td> <td> 0.035%  </td> <td> － </td> </tr> <tr> <td> 91.08 </td> <td> 臺北市、高雄市、基隆市、臺北縣、桃園縣、臺中縣、臺中市、南投縣、彰化縣、雲林縣、<br>嘉義縣、嘉義市、臺南縣、臺南市、高雄縣及屏東縣0.5±0.1% </td> <td> 0.035%  </td> <td> － </td> </tr> <tr> <td> 94.01 </td> <td> 自94.02 起於新竹縣、新竹市、苗栗縣、宜蘭縣、澎湖縣及連江縣實施限制只能使用含硫量<br>0.5%以下的液體燃料油，花蓮縣、臺東縣及金門縣則自94.07起實施 </td> <td> 0.005%  </td> <td> － </td> </tr> <tr> <td> 94.07 </td> <td> 0.5±0.1% </td> <td> 0.005%  </td> <td> － </td> </tr></table>
+        </p>
+    </script>
+    <script type="text/html" id="1998-01">
+        <p>臺灣地區各項油品品質歷年變化情形<br><br><table> <tr>
+  <td> 油品 </td> <td> 燃料油 </td> <td> 柴油 </td> <td> 汽油 </td> </tr> <tr> <td> 品質項目 </td> <td> 含硫量 </td> <td> 含硫量 </td> <td> 含鉛量(g/L) </td> </tr> <tr> <td> 62.06 </td> <td> 3.50% </td>  <td> 0.72 </td> </tr> <tr> <td> 71.01  </td> <td> 臺北市、高雄市2.0% 其他地區3.5%  </td>  <td> 0.56 </td> </tr> <tr> <td> 72.07  </td>   <td> 0.34 </td> </tr> <tr> <td> 75.07  </td> <td> 2.00% </td> <td> 0.50% </td>  </tr> <tr> <td> 75.09  </td>   <td> 0.2 </td> </tr> <tr> <td> 76.01  </td>   <td> 0.15 </td> </tr> <tr> <td> 78.07  </td>   <td> 0.12 </td> </tr> <tr> <td> 79.07  </td> <td> 1.50% </td>   </tr> <tr> <td> 82.07 </td> <td> 1.00%  </td> <td> 0.30%  </td> <td> 0.08 </td> </tr> <tr> <td> 85.07 </td> <td> 都會區0.5% 其他地區1.0% </td>   </tr> <tr> <td> 86.07 </td> <td> 三都會區及基隆市0.5±0.1% 其他地區1.0% </td> <td> 0.15%  </td> <td> 0.06 </td> </tr> <tr> <td> 87.07  </td>  <td> 0.05%  </td> <td> 0.06 </td> </tr> <tr> <td> 89.07  </td>  <td> 0.05%  </td> <td> － </td> </tr> <tr> <td> 91.01 </td> <td> 三都會區及其鄰近8 個縣市 0.5% </td> <td> 0.035%
+   </td> <td> － </td> </tr> <tr> <td> 91.07 </td> <td> 臺北市、高雄市、基隆市、臺北縣、桃園縣、臺中縣、臺中市、南投縣、彰化縣、臺南縣、<br>臺南市、高雄縣及屏東縣0.5±0.1% </td> <td> 0.035%  </td> <td> － </td> </tr> <tr> <td> 91.08 </td> <td> 臺北市、高雄市、基隆市、臺北縣、桃園縣、臺中縣、臺中市、南投縣、彰化縣、雲林縣、<br>嘉義縣、嘉義市、臺南縣、臺南市、高雄縣及屏東縣0.5±0.1% </td> <td> 0.035%  </td> <td> － </td> </tr> <tr> <td> 94.01 </td> <td> 自94.02 起於新竹縣、新竹市、苗栗縣、宜蘭縣、澎湖縣及連江縣實施限制只能使用含硫量<br>0.5%以下的液體燃料油，花蓮縣、臺東縣及金門縣則自94.07起實施 </td> <td> 0.005%  </td> <td> － </td> </tr> <tr> <td> 94.07 </td> <td> 0.5±0.1% </td> <td> 0.005%  </td> <td> － </td> </tr></table>
+        </p>
+    </script>
+    <script type="text/html" id="1993-01">
+        <p>臺灣地區各項油品品質歷年變化情形<br><br><table> <tr>
+  <td> 油品 </td> <td> 燃料油 </td> <td> 柴油 </td> <td> 汽油 </td> </tr> <tr> <td> 品質項目 </td> <td> 含硫量 </td> <td> 含硫量 </td> <td> 含鉛量(g/L) </td> </tr> <tr> <td> 62.06 </td> <td> 3.50% </td>  <td> 0.72 </td> </tr> <tr> <td> 71.01  </td> <td> 臺北市、高雄市2.0% 其他地區3.5%  </td>  <td> 0.56 </td> </tr> <tr> <td> 72.07  </td>   <td> 0.34 </td> </tr> <tr> <td> 75.07  </td> <td> 2.00% </td> <td> 0.50% </td>  </tr> <tr> <td> 75.09  </td>   <td> 0.2 </td> </tr> <tr> <td> 76.01  </td>   <td> 0.15 </td> </tr> <tr> <td> 78.07  </td>   <td> 0.12 </td> </tr> <tr> <td> 79.07  </td> <td> 1.50% </td>   </tr> <tr> <td> 82.07 </td> <td> 1.00%  </td> <td> 0.30%  </td> <td> 0.08 </td> </tr> <tr> <td> 85.07 </td> <td> 都會區0.5% 其他地區1.0% </td>   </tr> <tr> <td> 86.07 </td> <td> 三都會區及基隆市0.5±0.1% 其他地區1.0% </td> <td> 0.15%  </td> <td> 0.06 </td> </tr> <tr> <td> 87.07  </td>  <td> 0.05%  </td> <td> 0.06 </td> </tr> <tr> <td> 89.07  </td>  <td> 0.05%  </td> <td> － </td> </tr> <tr> <td> 91.01 </td> <td> 三都會區及其鄰近8 個縣市 0.5% </td> <td> 0.035%
+   </td> <td> － </td> </tr> <tr> <td> 91.07 </td> <td> 臺北市、高雄市、基隆市、臺北縣、桃園縣、臺中縣、臺中市、南投縣、彰化縣、臺南縣、<br>臺南市、高雄縣及屏東縣0.5±0.1% </td> <td> 0.035%  </td> <td> － </td> </tr> <tr> <td> 91.08 </td> <td> 臺北市、高雄市、基隆市、臺北縣、桃園縣、臺中縣、臺中市、南投縣、彰化縣、雲林縣、<br>嘉義縣、嘉義市、臺南縣、臺南市、高雄縣及屏東縣0.5±0.1% </td> <td> 0.035%  </td> <td> － </td> </tr> <tr> <td> 94.01 </td> <td> 自94.02 起於新竹縣、新竹市、苗栗縣、宜蘭縣、澎湖縣及連江縣實施限制只能使用含硫量<br>0.5%以下的液體燃料油，花蓮縣、臺東縣及金門縣則自94.07起實施 </td> <td> 0.005%  </td> <td> － </td> </tr> <tr> <td> 94.07 </td> <td> 0.5±0.1% </td> <td> 0.005%  </td> <td> － </td> </tr></table>
+        </p>
+    </script>
+    <script type="text/html" id="1990-01-01">
+        <p>臺灣地區各項油品品質歷年變化情形<br><br><table> <tr>
+  <td> 油品 </td> <td> 燃料油 </td> <td> 柴油 </td> <td> 汽油 </td> </tr> <tr> <td> 品質項目 </td> <td> 含硫量 </td> <td> 含硫量 </td> <td> 含鉛量(g/L) </td> </tr> <tr> <td> 62.06 </td> <td> 3.50% </td>  <td> 0.72 </td> </tr> <tr> <td> 71.01  </td> <td> 臺北市、高雄市2.0% 其他地區3.5%  </td>  <td> 0.56 </td> </tr> <tr> <td> 72.07  </td>   <td> 0.34 </td> </tr> <tr> <td> 75.07  </td> <td> 2.00% </td> <td> 0.50% </td>  </tr> <tr> <td> 75.09  </td>   <td> 0.2 </td> </tr> <tr> <td> 76.01  </td>   <td> 0.15 </td> </tr> <tr> <td> 78.07  </td>   <td> 0.12 </td> </tr> <tr> <td> 79.07  </td> <td> 1.50% </td>   </tr> <tr> <td> 82.07 </td> <td> 1.00%  </td> <td> 0.30%  </td> <td> 0.08 </td> </tr> <tr> <td> 85.07 </td> <td> 都會區0.5% 其他地區1.0% </td>   </tr> <tr> <td> 86.07 </td> <td> 三都會區及基隆市0.5±0.1% 其他地區1.0% </td> <td> 0.15%  </td> <td> 0.06 </td> </tr> <tr> <td> 87.07  </td>  <td> 0.05%  </td> <td> 0.06 </td> </tr> <tr> <td> 89.07  </td>  <td> 0.05%  </td> <td> － </td> </tr> <tr> <td> 91.01 </td> <td> 三都會區及其鄰近8 個縣市 0.5% </td> <td> 0.035%
+   </td> <td> － </td> </tr> <tr> <td> 91.07 </td> <td> 臺北市、高雄市、基隆市、臺北縣、桃園縣、臺中縣、臺中市、南投縣、彰化縣、臺南縣、<br>臺南市、高雄縣及屏東縣0.5±0.1% </td> <td> 0.035%  </td> <td> － </td> </tr> <tr> <td> 91.08 </td> <td> 臺北市、高雄市、基隆市、臺北縣、桃園縣、臺中縣、臺中市、南投縣、彰化縣、雲林縣、<br>嘉義縣、嘉義市、臺南縣、臺南市、高雄縣及屏東縣0.5±0.1% </td> <td> 0.035%  </td> <td> － </td> </tr> <tr> <td> 94.01 </td> <td> 自94.02 起於新竹縣、新竹市、苗栗縣、宜蘭縣、澎湖縣及連江縣實施限制只能使用含硫量<br>0.5%以下的液體燃料油，花蓮縣、臺東縣及金門縣則自94.07起實施 </td> <td> 0.005%  </td> <td> － </td> </tr> <tr> <td> 94.07 </td> <td> 0.5±0.1% </td> <td> 0.005%  </td> <td> － </td> </tr></table>
+        </p>
+    </script>
+    <script type="text/html" id="2006-01-01">
+        <p>空污法第六次修正 (民國95~99 年)修正公布第3 章『防制』之第59 條條文。針對規範違反國際環保公約管制之易致空氣污染物質管理辦法及輸入或輸出規定之罰則，刪除「以犯前項之罪為常業者，處一年以上七年以下有期徒刑，得併科新臺幣五十萬元以上二百五十萬元以下罰金。」，對於累犯之行為人，廢止其額外加重之刑則及罰金，避免執法上認定之疑義。
+        </p>
+    </script>
+    <script type="text/html" id="2005-01-01">
+        <p>空污法第五次修正 (民國94~95 年)修正公布第2 章『空氣品質維護』之第18 條條文。空氣污染防制費支用項目第11 項原為「關於空氣污染之健康風險評估」，修正後為「關於空氣污染之健康風險評估及管理相關事項」，以利主管機關彙整並管理空氣污染健康風險評估之成果及研發方向。
+        </p>
+    </script>
+    <script type="text/html" id="2002-01-01">
+        <p>空污法第四次修正 (民國91~94 年)共5 章86 條，第一章為總則，第二章為空氣品質維護，主要包括劃定三級防制區、總量管制、空氣品質惡化緊急防制措施、空污費徵收等相關規定。第三章為防制，主要包括固定源，交通工具及各級防制區之排放管制相關規定。第四章為罰則，第五章為附則，修正重點如下：
+<br><br>1. 配合行政程序法之施行增訂及修正授權規定，使其符合依法行政原則，並使其內容及範圍更為具體明確。
+<br><br>2. 修正放寬獎勵之適用對象，以鼓勵固定污染源主動減少臭氧前趨物排放。
+<br><br>3. 為掌握所有固定污染源實際排放量狀況，增列經指定公告之固定污染源，應每年申報其污染排放量義務之規定，作為總量管制或其他管制措施之基礎。
+<br><br>4. 賦予中央主管機關得委託政府其他機關（如加工出口區、科學園區及中央管理之工業區管理機關）辦理固定污染源設置變更及操作許可證之審查、核發。
+<br><br>5. 配合國際公約之管制規定，增列相對應之國內法規定，授權中央主管機關得限制或禁止國際環保公約管制易致空氣污染物質之製造等行為，並對違法走私者可處刑罰
+<br><br>6. 將現行條文中之「撤銷」予以區分為「撤銷」、「廢止」。
+<br><br>7. 將非法油品之使用者納入，並明列處罰之規定，並授權訂定相關管理辦法。
+<br><br>8. 因突發事故而大量排放空氣污染物致人於死者，加重罰則。
+<br><br>9. 將申報不實及無空氣污染防制設備而燃燒易生特殊健康有害物質行為，加重相關罰則。
+<br><br>10. 賦予主管機關在道路、港區等適當地點實施使用中交通工具排放空氣污染物不定期檢驗的權利。
+        </p>
+    </script>
+    <script type="text/html" id="1999-01-01">
+        <p>空污法第三次修正 (民國88~91 年)
+從固定污染源設置及操作許可、連續自動監測、專責單位及人員設置以及污染者付費等制度之建立，已奠定良好之空氣品質管理基礎。惟工廠不斷增加，雖然排放標準加嚴，污染源集中地區之空氣品質改善仍有待加強，因此引進更積極之總量管制策略。於民國88 年1 月公布空污法第三次修正，全文共78 條，較第二次修正內容增加23 條，其中固定污染源管制部份計有53 條，占全條文三分之二，對固定污染源管制較重大變革事項說明如下：
+<br><br>1. 將氣象、地形一致且空氣相互流通的地區劃為同一空氣品質區，並依序公告總量管制區，改善空氣品質。對既存污染源訂定總量削減目標及期程，新設污染源應採最佳可行控制技術(BACT)並取得排放權。從原來行政管制逐漸演變至以經濟誘因為導向之管制策略。
+<br><br>2. 增訂固定污染源自動監測設施應與主管機關連線規定：為有效掌握重大污染源之排放狀況，規定經公告為須設自動連續監測設施之污染源應與主管機關連線，以利主管機關可有效監控其污染物排放狀況，立即採取適當之管理措施。
+<br><br>3. 增列應訂定空氣污染行為管制執行準則：為使稽查人員執行稽查處分時，能有一定規範，保障污染源業者權益，避免發生困擾，乃增訂未經排放管道排放空氣污染物之執行準則。
+<br><br>4. 增列應訂定「固定污染源罰鍰額度裁罰準則」，俾使依空污法所為之處罰有一定之裁處準則。
+<br><br>5. 增列「情節重大」適用範圍：目前此部份係由各地方主管機關依職權認定，標準不一，致業界時有怨言，爰明定其適用範圍，以為依循。
+<br><br>6. 增訂「環境行政訴訟」條款：公私場所疏於遵行或主管機關疏於執行空污法或空污法授權訂定之相關命令時，任何個人或團體為維護空氣品質，得以該公私場所或主管機關為被告，直接向法院起訴，請求判令其遵行或執行。由於固定污染源之行業別及污染物排放種類眾多，且從生產之原物料、製造設備、燃燒設備、污染防制設備、產品儲存設備至廢氣排放管道等，皆可能產生空氣污染行為。因此在逐次修正空污法的過程中，不斷強化各項管制機制，將固定污染源從生產製程源頭至排放管末進行完整的規範。
+        </p>
+    </script>
+    <script type="text/html" id="1992-01-01">
+        <p>空污法第二次修正 (民國81~87 年)
+有鑑於工廠及汽機車造成之空氣污染日益嚴重，而民眾對空氣品質要求更加殷切，遂積極推動空污法第二次修正，於民國81 年2 月公布，全文共55 條，較第一次修正內容增加28 條，其中固定污染源管制部份計有36 條，增加19 條，使固定污染源管制更加落實，相關重大變革包括：
+<br><br>1. 授權地方政府得依特殊需要，對於特定業別或區域擬定個別較嚴之排放標準。
+<br><br>2. 增列應訂定固定污染源防制設施或監測設施之設置及操作規範。
+<br><br>3. 增訂經指定公告之公私場所須自行檢測或採連續自動監測方式記錄污染排放濃度及排放量，並規定應定期申報。
+<br><br>4. 增訂固定污染源許可制度。為防範污染於未然，利用污染源事先審查方式，許可污染源須設有適當防制設備、在符合排放標準下排放空氣污染物。
+<br><br>5. 增訂具數個排放相同污染物之固定污染源，得選擇經濟有效之污染防制措施，向主管機關申請審核，改善其污染物排放總量，即為污染泡管制。
+<br><br>6. 促使工廠有能力維持污染防制設備之正常操作，增訂設置專責單位及人員制度。
+<br><br>7. 採用經濟誘因策略，落實污染者付費精神，增訂空氣污染排放收費制度，並提供優惠費率及獎勵辦法，促使業者增設防制設備或提高防制效率。
+<br><br>8. 對於固定污染源管制而言，此階段可稱為成熟階段，大部分之管制工具皆於此階段擴增並逐漸成熟，加上具經濟誘因之污染泡及收費制度，使固定污染源管制更具彈性。
+        </p>
+    </script><script type="text/html" id="1995-01-01">
+        <p><table> <tr>
+  <td nowrap=""> 年分 </td> <td nowrap=""> 發展與沿革 </td> </tr> <tr> <td nowrap=""> 84-87 </td> <td nowrap=""> 開徵第一階段空污費依燃料油實際使用量徵收 </td> </tr> <tr> <td nowrap=""> 86 </td> <td> 落實污染者付費擴大空污費污染物徵收項目 依照工程類別開徵營建工程空污費(依照實際排放量徵收) </td> </tr> <tr> <td nowrap=""> 87 </td> <td> 開徵第二階段空污費依實際污染排放量徵收 開徵氮氧化物空污費 公告硫氧化物與氮氧化物排放係數及控制效率 7縣市燃料油含硫份限制；移動源調整費 </td> </tr> <tr> <td nowrap=""> 88 </td> <td> 修正空污費排放量計算要點與收費辦法 修正公告硫氧化物與氮氧化物排放係數及控制效率 配合空污法修正內容修正空污費相關徵收條文內容 </td> </tr> <tr> <td nowrap=""> 89 </td> <td nowrap=""> 11縣市燃料油含硫份限制；電廠污染改善 </td> </tr> <tr> <td nowrap=""> 90 </td> <td nowrap=""> 調整氮氧化物收費費率反映環境空氣品質之污染現況 </td> </tr> <tr> <td nowrap=""> 91 </td> <td nowrap=""> 16縣市燃料油含硫份限制 </td> </tr> <tr> <td nowrap=""> 93 </td> <td> 修正公告硫氧化物與氮氧化物空污費收費費率 依燃油種類、成分、數量、指定公告物質修正空污費費率 </td> <tr> <td nowrap=""> 95 </td> <td nowrap=""> 修正公告硫氧化物與氮氧化物排放及揮發性有機物空污費徵收費率 </td> </tr> <tr> <td nowrap=""> 96 </td> <td> 修正公告硫氧化物與氮氧化物排放係數及控制效率 公告揮發性有機物排放係數及控制效率 開徵揮發性有機物 96年度起增加徵收VOC項目 </td> </tr> <tr> <td nowrap=""> 98 </td> <td> 修正公告空污費費率 公告揮發性有機物自廠係數建置作業要點 </td> </tr> <tr> <td nowrap=""> 99 </td> <td nowrap=""> 公告揮發性有機物質量平衡計畫規定 </td> </tr> <tr> <td nowrap=""> 100 </td> <td> 修正公告空污費費率 100年7月起柴油硫含量降至100ppmw </td> </tr></table>
+        </p>
+    </script>
+    <script type="text/html" id="2015-01">
+        <p>提供單位：行政院環境保護署空保處
+            <br> 發布日期：2014.12.15
+            <br>
+            <br> 為進一步保障民眾健康，環保署依據空氣污染防制法推動高屏地區空氣污染物總量管制，預告訂定「高屏地區空氣污染物總量管制計畫」草案。這是15年來空氣品質管理制度重大變革，也是最新精進的作法。環保署將同步規劃協同相關中央部會（如：衛福部、教育部、內政部、交通部等）成立「空氣污染減量行動督導聯繫會報」，整合各部會對於空氣污染減量量能、分配減量工作及賦與責任；在此聯繫會報下將組成「空氣污染減量行動小組」，定期監督各區域空氣品質改善工作，同時也將邀請當地居民或團體代表參與。
+            <br>
+            <br> 高屏地區近來年空氣品質已有明顯改善，空氣品質對人體健康不良影響(PSI>100)站日數比率，已由83年的18.4%下降至102年3.75%，然而相較全國其它地區仍是空氣品質較差的區域。環保署為加速改善高屏地區空氣品質，優先擇定該區域實施空氣污染物總量管制。
+            <br>
+            <br> 依空氣污染防制法第8條第1項規定：「中央主管機關得依地形、氣象條件，將空氣污染物可能互相流通之一個或多個直轄市、縣(市)指定為總量管制區，訂定總量管制計畫，公告實施總量管制。」環保署已於100年6月24日修正發布「既存固定污染源污染物排放量認可準則」與100年7月6日訂定發布「固定污染源空氣污染物削減量差額認可保留抵換及交易辦法」，推動總量管制所需相關法制作業及建立登錄平台。
+            <br>
+            <br> 該署擬具「高屏地區空氣污染物總量管制計畫」，以作為實施總量管制後之作業準則，計畫內容包含：法令依據、計畫目標、環境負荷及變化趨勢、空氣品質現況及問題分析、空氣污染物排放清單及排放特性分析、空氣污染管制策略、既存固定污染源削減量差額認可保留抵換交易及作業方式、新設或變更固定污染源審核規則、各單位權責分工及組織運作方式等。
+            <br>
+            <br> 環保署表示，計畫草案將於預告日起3日後刊載於該署全球資訊網（http://ivy5.epa.gov.tw/epalaw/index.aspx/）法規命令草案預告區網頁，民眾可逕自上網參閱，對於公告內容有任何意見或修正建議者，請於本公告刊登公報之次日起14日內陳述意見（Email:yiclee@epa.gov.tw）。
+        </p>
+    </script>
+    <script type="text/html" id="67">
+        <p>針對怠速時間過長之汽機車應熄火、中央主管機關應於石化工業區廠區所在鄉鎮市區設置空氣品質監測站及要求使用中車輛逐車檢驗。
+            <br>怠速熄火之管制應將溫度或氣候條件列入考量，授權主管機關公告明定之，以避免事議及民怨。
+        </p>
+    </script>
+    <script type="text/html" id="3456">
+        <p>引進總量管制並增訂劃分空品區。
+            <br>增訂固定污染源自動監測設施應與主管機關連線規定。
+            <br>修正放寬獎勵之適用對象。
+            <br>將申報不實及無空氣污染防制設備致害行為加重相關罰則。
+            <br>賦予主管機關在適當地點實施使用中交通工具排放空氣污染物不定期檢驗之權。
+            <br>修正公布第18條條文，修正為「關於空氣污染之健康風險評估及管理相關事項」，以利主管機關彙整並管理空氣污染健康風險評估之成果及研發方向。
+            <br>修正公布第59條條文，廢止累犯之行為人其額外加重之刑則及罰金。
+        </p>
+    </script>
+    <script type="text/html" id="2">
+        <p>對於特定業別或區域擬定個別較嚴之排放標準。
+            <br>增列應訂定固定污染源防制設施或監測設施之設置及操作規範。
+            <br>增訂經指定公告之公私場所須自行檢測或採連續自動監測方式記錄污染排放濃度及排放量，並規定應定期申報。
+            <br>增訂固定污染源許可制度。
+            <br>增訂污染泡管制。
+            <br>增訂設置專賣單位及人員制度。
+            <br>增訂空氣污染排放收費制度，並提供優惠費率及獎勵辦法。
+        </p>
+    </script>
+    <script type="text/html" id="1">
+        <p>增訂設置自動監測及警報系統之規定。
+            <br>增訂各級主管機關及公私場所應採取緊急防制措施之規定。
+        </p>
+    </script>
+    <script type="text/html" id="1975-01">
+        <p>主要以行為管制、生煤使用與販賣許可管制、及濃度標準管制為重點。
+        </p>
+    </script>
+    <script src="src/vendor/moment.min.js"></script>
+    <script src="src/vendor/knockout.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="src/vendor/jquery.scrollTo.min.js"></script>
+    <script src="src/js/app.js"></script>
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36251023-1']);
+    _gaq.push(['_setDomainName', 'jqueryscript.net']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+</body>
+
+</html>

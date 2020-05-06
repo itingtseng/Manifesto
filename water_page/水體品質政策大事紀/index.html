@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="src/stylesheets/app.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta content="width=device-width; initial-scale=1.0;" name="viewport">
+    <title>水域水體品質改善策略與沿革</title>
+</head>
+
+<body data-bind="css:{'modalShown':itemSelected}">
+    <header>
+        <h1 data-bind="text:title"></h1>
+        <div class="icon-bar">
+            <div class="group">
+                <label class="muted" for="scale">Scale: <span data-bind="text:currentScale"></span> pixels/day</label>
+                <input data-bind="value:currentScale,valueUpdate: 'afterkeydown'" id="scale" max="1" min="0.2" step='0.2' name="points" type="range">
+            </div>
+            <div class="group"> <i data-bind="click:scrollNext" class="fa fa-arrow-down"></i> <i data-bind="click:scrollPrevious" class="fa fa-arrow-up"></i> </div>
+        </div>
+        <p class="muted" data-bind="text: subtitle"></p>
+    </header>
+    <div class="grid">
+        <div class="left-timeline col-sand-left" data-bind="template:{name:'event', foreach:leftEvents}"></div>
+        <div class="center-timeline col-sand-middle"></div>
+        <div class="right-timeline col-sand-right" data-bind="template:{name:'event', foreach:rightEvents}"></div>
+    </div>
+    <script id="event" type="text/html">
+        <div class="timeline-event" data-bind="style:{'top':top()+'px', 'height':height()+'px', 'borderLeftColor':color,'borderRightColor':color}, css:{'selected':selected},click:toggleSelected">
+            <figure>
+                <figcaption data-bind="text:title"></figcaption>
+                <h6><span data-bind="text:fromStart()"></span>
+                  <small>to</small>
+                  <span data-bind="text:fromEnd()"></span>
+                  </h6>
+                <div data-bind="template:{name:template.name,data:template.context}"></div>
+            </figure>
+        </div>
+    </script>
+    <script type="text/html" id="2007-12">
+        <p>體恤畜牧業及減輕農民的負擔，調降畜牧業違反放流水標準之罰鍰額度
+            <br>置入微罪輕罰精神，調整裁罰額度
+            <br>增訂裁罰準則法源授權
+        </p>
+    </script>
+    <script type="text/html" id="2002-05">
+        <p>落實行政程序法，秉持依法行政原則，提高行政效能，保障人民權益
+            <br>落實經濟發展諮詢委員會決議﹒賦予工業區管理機構核發許可證照之權責，以縮短興辦工業人設廠的時程
+            <br>強化水污染防治費徵收之法源，並將徵收機關由地方改為中央
+            <br>大幅提高行政刑罰罰金額度，以期有效遇止重大污染事件及不當投機行為
+            <br>建置公民訴訟制度，以督促主管機關積極執法
+            <br>確立污染地面水體之清除處理措施及責任歸屬
+            <br>污染源資訊公開，促進行政程序之公開化與透明化
+        </p>
+    </script>
+    <script type="text/html" id="2000-04">
+        <p>配合精省作業，將省主管事項改由縣（市）辦理
+            <br>將直轄市主管機關由直轄市環境保護局改為直轄市政府
+        </p>
+    </script>
+    <script type="text/html" id="1991-05">
+        <p>中央主管機關改為行政院環境保護署
+            <br>增訂總量管制制度，以利河川水質目標之達成
+            <br>增訂水污染防治費之徵收，確立污染者付費原則
+            <br>增訂許可管理、技師簽證制度，以落實預防管理目的
+            <br>增訂檢測申報、專責人員設置規定，以責成事業自我管理
+            <br>增訂土壤處理、污水注入地下水體、貯留或稀釋、污水納入下水道系統處理之管制規定，使廢水管制更為周延
+            <br>授權地方可依中央主管機關訂定之標準加嚴之
+            <br>增訂突發事件處理規定，以避免污染之擴大
+            <br>大幅提高達規罰鍰金額並增訂刑責，提高守法誘因
+            <br>強調公共建設
+            <br>守法舉證責任反轉
+        </p>
+    </script>
+    <script type="text/html" id="1983-05">
+        <p>中央主管機關改為行政院衛生署
+            <br>擴大管制對象，增加中央主管機關指定事業的廢水管制
+            <br>增列廢水以管線排放於海洋之管制
+            <br>放流水標準改由授權中央主管機關訂定
+            <br>提高達規罰鍰之金額
+        </p>
+    </script>
+    <script type="text/html" id="1974-07">
+        <p>經濟部為水污染防治中央主管機關
+            <br>以管制工廠、礦場排放廢水為主
+            <br>授權省(市)政府訂定放流水標準，以為執行依據
+        </p>
+    </script>
+    <script type="text/html" id="1970-01">
+        <p>要求工廠進行廢水處理，規定工廠之放流水應符合相關標準、申請設立及審查核准程序，啟動對工廠廢水管制作業
+        </p>
+    </script>
+    <script type="text/html" id="1974-01">
+        <p>以工廠、礦場廢水管制為主，明定水污染防治之主管機關、水體之用途分類、放流水標準、水區內放流口芝設置申請、船舶廢污物之排放、管制區內之行為限制、設置水質監視站及賦予取締管制之權賣等重要規定，使我國水污染防治工作有法源的依循，歷經5次修正
+        </p>
+    </script>
+    <script type="text/html" id="1975-01">
+        <p>規範各級主管機關之權責，並明定河川水體分類水質標準、水污染防治措施計畫及各類許可證(文件)之申請審查程序等水污染防治法授權相關規定，歷經9次修正
+        </p>
+    </script>
+    <script type="text/html" id="1976-01">
+        <p>明定工廠礦場之放流水標準，於70年10月17日第1次修正，增列農藥管制項目及限值
+        </p>
+    </script>
+    <script type="text/html" id="1985-01">
+        <p>依水體特質規範其適用性質及其相關環境基準，以保護生活環境及人體健康。於82年8月2日改名為「地面水體分類及水質標準」，歷經3次修正
+        </p>
+    </script>
+    <script type="text/html" id="1987-01">
+        <p>依行業別特性訂定共同放流水標準及個別放流水標準，歷經13次修正。98年起因應高科技產業發展及其廣水特性，並納入風險管理之預防管制概念，訂定工業區放流水七曰平均值管制標準
+        </p>
+    </script>
+    <script type="text/html" id="1988-01">
+        <p>明定專賣單位或人員設置類型、專責人員資格、取得、撤銷、廢止及應遵行事頂，歷經3次修正，於84年6月21日整合各類專賣單位或人員設置辦法發布「環境保護專賣單位或人員設置及管理辦法」，歷經9次修正
+        </p>
+    </script>
+    <script type="text/html" id="1994-01">
+        <p>管制事業或污水下水道系統以海放管排放廢(污)水於海洋之水質標準，歷經3次修正，於100年12月1 日修正名稱為「海洋放流管線放流水標準」
+        </p>
+    </script>
+    <script type="text/html" id="1998-01">
+        <p>87年6月30日暫緩實施。於95年8月17日發布「水污染防治費收費辦法」作為水污費開徵依據，惟委員慮及水污費徵收將對產業造成衝擊，自95年起逐年刪減水污基金預算，致迄今尚未開徵
+        </p>
+    </script>
+    <script type="text/html" id="1999-01">
+        <p>管制以管線或溝渠輸送廢(污)水，排放、滲透於土壤之水質標準，並明定可採取土壤處理之對象、限制條件及許可申請程序，歷經3次修正
+        </p>
+    </script>
+    <script type="text/html" id="2003-01-01">
+        <p>明定建築物污水處理設施之建造、管理及清理規範．歷經3次修正
+        </p>
+    </script>
+    <script type="text/html" id="2003-01">
+        <p>對違法行為，除處行政罰鍰外，病限期改善，屆期未完成改善，執行按日連續處罰
+        </p>
+    </script>
+    <script type="text/html" id="2006-01">
+        <p>依不同違法級別而給予不同限期改善期限，要求業者儘速改善違法情事，杜絕「違法假期」
+           <br>建立許可及申報管理等污染預防機制，歷經3次修正。為強化污染源頭預防管理及廢水處理設施正常操作管理，於95年10月16日整合成為「水污染防治措施及檢測申報管理辦法」
+           <br>為簡化並確立許可申請程序，及強化許可功能性審查，於95年10月16日整合成為「水污染防治措施計畫及許可申請審查辦法」
+           <br>
+        </p>
+    </script>
+    <script type="text/html" id="2008-01">
+        <p>依污染行為的水量差異、污染物濃度、承受水體和可責程度等，漸進加重罰鍰額度，遏止惡行或重大的水污染行為
+        </p>
+    </script>
+    <script src="src/vendor/moment.min.js"></script>
+    <script src="src/vendor/knockout.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="src/vendor/jquery.scrollTo.min.js"></script>
+    <script src="src/js/app.js"></script>
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36251023-1']);
+    _gaq.push(['_setDomainName', 'jqueryscript.net']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+</body>
+
+</html>

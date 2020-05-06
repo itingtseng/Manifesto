@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+	<meta charset="utf-8" />
+
+    <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/highchats/highmaps.js"></script>
+    <script src="js/highchats/map.js"></script>
+    <script src="js/highchats/drilldown.js"></script>
+    <script src="Geojson/Country.geojson.js"></script>
+    <script src="Geojson/airqualityarea.geojson.js"></script>
+    <script src="js/highchats/exporting.js"></script>
+
+    <script type="text/javascript">
+
+        var obj = null;
+        $(document).ready(function () {
+            var map_opts = {
+
+                chart: {
+                    type: "map",
+                    events: {
+                        drillup: function () { 
+                        },
+                        drilldown: function (e) {
+                            alert(1);
+                        },
+                        load: function (e) {
+                          
+                        }
+                    }
+                },
+                mapNavigation: {
+                    enableButtons: false
+                },
+                colorAxis:{
+                    dataClassColor: "tween"
+                },
+                credits: {
+                    enabled: false
+                },
+                series: [{
+                    animation: {
+                        duration: 1000
+                    },
+                    allAreas: true,
+                    joinBy: ['sn', 'code'],
+                    mapData: geo_all,
+                    data: [{ "code": 2, "value": 200, "drilldown": 2 }, { "code": 1, "value": 300, "drilldown": 1 }],
+                    name: '全國空品區',
+                    nullColor: "#fff",
+                }]
+            };
+
+
+            obj = $("#map").highcharts('Map', map_opts).highcharts();
+
+            //add s
+
+
+
+        });
+        
+        function a() {
+            var ary = new Array();
+            ary.push({
+                code: 2,
+                value: 300,
+                drilldown: 2
+            })
+            ary.push({
+                code: 4,
+                value: 200,
+                drilldown: 4
+            })
+
+            obj.series[0].setData([{ "code": 2, "value": 200, "drilldown": 2 }, { "code": 1, "value": null, "drilldown": 1 }], true);
+        };
+    </script>
+</head>
+<body>
+    <button id="aaa" onclick="a();">test</button>
+    <div id="map">
+
+    </div>
+</body>
+</html>

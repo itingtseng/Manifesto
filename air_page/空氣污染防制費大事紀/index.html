@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="src/stylesheets/app.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta content="width=device-width; initial-scale=1.0;" name="viewport">
+    <title>空氣污染防制費大事紀</title>
+    <style type="text/css">
+    .chart_btn {
+        position: relative;
+        float: right;
+        width: 65px;
+        margin-top: 2%;
+    }
+    
+    .chart_btn img {
+        width: 100%;
+    }
+    </style>
+</head>
+
+<body data-bind="css:{'modalShown':itemSelected}">
+    <header>
+        <h1 data-bind="text:title"></h1>
+        <div class="chart_btn">
+            <a href="../p1_air_year.html">
+                <img src="../../images/back.png" />
+            </a>
+        </div>
+        <div class="icon-bar">
+            <div class="group">
+                <label class="muted" for="scale">顯示尺寸：<span data-bind="text:currentScale"></span>畫素/天</label>
+                <input data-bind="value:currentScale,valueUpdate: 'afterkeydown'" id="scale" max="1" min="0.5" step='0.1' name="points" type="range">
+            </div>
+            <div class="group"> <i data-bind="click:scrollNext" class="fa fa-arrow-down"></i> <i data-bind="click:scrollPrevious" class="fa fa-arrow-up"></i> </div>
+        </div>
+        <div class="chart_btn">
+            <a href="../../air_chart/s7/chart_air_money.html">
+                <img src="../../images/chart.png" />
+            </a>
+        </div>
+        <p class="muted" data-bind="text: subtitle"></p>
+    </header>
+    <div class="grid">
+        <div class="left-timeline col-sand-left" data-bind="template:{name:'event', foreach:leftEvents}"></div>
+        <div class="center-timeline col-sand-middle"></div>
+        <div class="right-timeline col-sand-right" data-bind="template:{name:'event', foreach:rightEvents}"></div>
+    </div>
+    <script id="event" type="text/html">
+        <div class="timeline-event" data-bind="style:{'top':top()+'px', 'height':height()+'px', 'borderLeftColor':color,'borderRightColor':color}, css:{'selected':selected},click:toggleSelected">
+            <figure>
+                <figcaption data-bind="text:title"></figcaption>
+                <h6><span data-bind="text:fromStart()"></span>
+                  <small>至</small>
+                  <span data-bind="text:fromEnd()"></span>
+                  </h6>
+                <div data-bind="template:{name:template.name,data:template.context}"></div>
+            </figure>
+        </div>
+    </script>
+    <script type="text/html" id="1995-01">
+        <p>84-87年開徵第1階段空污費，由環保署統籌對固定污染源（工廠）及移動污染源（車輛），依其使用的油燃料量徵收。</p>
+    </script>
+    <script type="text/html" id="1997-01">
+        <p>第一次修訂，將原公告中先後二階段之二種收費方式併列，並增列營建工程依工程類別徵收之條文，由地方政府徵收。</p>
+    </script>
+    <script type="text/html" id="1998-01">
+        <p>第二次修正公告收費辦法，固定源改依硫氧化物與氮氧化物實際排放量並配合優惠費率徵收，並自民國87 年7 月1 日起開始實施，稱之為第二階段固定污染源空污費，促使固定污染源主動採取最合適、最有效之污染排放控制措施，減少空氣污染排放量。</p>
+    </script>
+    <script type="text/html" id="1999-01">
+        <p>第三次修訂乃配合釋憲後空氣污染防制法修正內容，原收費辦法條文中有關徵收之具體規定，已於母法中載明者則予以刪除；同年第四次修訂乃修正發布第11 條條文，針對固定污染源每季應繳費額或每件營建工程核算應繳費額在新臺幣一百元以下者，得免徵收。</p>
+    </script>
+    <script type="text/html" id="2001-01">
+        <p>第五次修訂乃將固定污染源排放量計算要點納入收費辦法中，統一進行規範。</p>
+    </script>
+    <script type="text/html" id="2004-01">
+        <p>第六次修訂乃係配合空氣污染防制法第四次修正公布，將空氣污染防制法所授權訂定之空污費相關規定，明訂於空氣污染防制費收費辦法中。</p>
+    </script>
+    <script type="text/html" id="2006-01">
+        <p>公告修正「固定污染源空氣污染防制費收費費率」，針對硫氧化物與氮氧化物收費費率以整廠排放量為計算基礎，以合理調整費率結構、反映空品現況，並落實「污染者付費」公平原則。</p>
+    </script>
+    <script type="text/html" id="2007-01">
+        <p>第七次修訂乃將石油焦之空氣污染防制費原係依其銷售量徵收，回歸為依污染物實際排放量徵收；明定燃料混燒之空氣污染防制費計算方式；另鑑於近年臭氧已成為國內空氣品質不良PSI>100 主要污染物，因此針對造成臭氧前驅物之揮發性有機物，增訂揮發性有機物空氣污染防制費費率。</p>
+    </script>
+    <script type="text/html" id="2009-01">
+        <p>修正發布「固定污染源空氣污染防制費收費費率」。</p>
+    </script>
+    <script type="text/html" id="2010-01">
+        <p>採用質量平衡計算空氣污染物排放量之固定污染源計量方式規定。</p>
+    </script>
+    <script type="text/html" id="2011-01">
+        <p>兼顧業者衝擊、經濟誘因及鼓勵公私場所裝置防制設備或製程改善。針對採行減量控制技術者，SOx/NOx低於法定排放限值、VOCs高於法定處理效率值一定規模者，始給予優惠獎勵。
+        </p>
+    </script>
+    <script type="text/html" id="2012-01">
+        <p>公告修正VOCS空污費之排放係數
+        <br>
+        <br>考量平版印刷製程具有產品中留存揮發性有機物（VOCs）之特性，增訂經空氣污染防制設備控制前之平版印刷程序所使用油墨之排放量計算式，以反映VOCs實際排放量。
+        <br>
+        <br>公告修正SOx/NOx排放係數
+        <br>
+        <br>增訂以燃燒或氧化處理VOCs之防制設施之SOx與NOx排放係數，以反映SOx、NOx實際排放量。
+        </p>
+    </script>
+    <script type="text/html" id="2012">
+        <p>修正固定污染源空氣污染防制費收費費率之適用零費率範圍
+        <br>
+        <br>為持續鼓勵公私場所使用對環境污染較低之氣體燃料，及簡化以往業者檢附資料及環保機關認定是否符合低污染性氣體燃料之繁瑣過程，明訂使用氫氣、符合CNS驗證之天然氣或液化石油氣為燃料者，適用零費率。
+        <br>
+        <br>修正固定污染源空氣污染防制費收費費率之適用零費率範圍
+        <br>
+        <br>為使空氣污染防制費徵收作業順利執行，以及配合政府電子化及簡化申報作業，修正發布「空氣污染防制費收費辦法」 ，及公告「公私場所固定污染源設備元件抽測原則及揮發性有機物排放量重新計算規定」。
+        </p>
+    </script>
+    <script type="text/html" id="2013-01">
+        <p>藉由明確規範計量方式之計算過程，確保申報數據之正確性，並提升主管機關執行固定污染源空氣污染防制費徵收作業之整體管制品質。
+        </p>
+    </script>
+    <script type="text/html" id="2014-01">
+        <p>為增加業者繳交固定源空污費便利性，大幅擴展代收服務作業至全國四大超商及郵局等約1萬1千餘處代收據點，並建置線上列印電子化代收繳費單功能。
+        </p>
+    </script>
+    <script type="text/html" id="2014">
+        <p>推動VOCs簡化申報表單及新版系統之開放
+        <br>
+        <br>為減少業者申報VOCs空污費，因表單填寫錯誤困擾，於103年修正表單，及同步開發簡化網路申報系統。
+        <br>
+        <br>公告修正FLARE之SOx、NOx空污費排放係數，以符合實際排放現況
+        <br>
+        <br>修正燃燒塔硫氧化物與氮氧化物係數，除可降低異常排放使用，亦可促使公私場所進行製程尾氣回收。
+        </p>
+    </script>
+    <script src="src/vendor/moment.min.js"></script>
+    <script src="src/vendor/knockout.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="src/vendor/jquery.scrollTo.min.js"></script>
+    <script src="src/js/app.js"></script>
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36251023-1']);
+    _gaq.push(['_setDomainName', 'jqueryscript.net']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+</body>
+
+</html>

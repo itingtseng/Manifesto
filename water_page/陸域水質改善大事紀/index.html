@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="src/stylesheets/app.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta content="width=device-width; initial-scale=1.0;" name="viewport">
+    <title>陸域水質改善大事紀</title>
+    <style type="text/css">
+    .chart_btn {
+        position: relative;
+        float: right;
+        width: 65px;
+        margin-top: 2%;
+    }
+    
+    .chart_btn img {
+        width: 100%;
+    }
+    </style>
+</head>
+
+<body data-bind="css:{'modalShown':itemSelected}">
+    <header>
+        <h1 data-bind="text:title"></h1>
+        <div class="chart_btn">
+            <a href="../p1_water_year.html">
+                <img src="../../images/back.png" />
+            </a>
+        </div>
+        <div class="icon-bar">
+            <div class="group">
+                <label class="muted" for="scale">顯示尺寸：<span data-bind="text:currentScale"></span>畫素/天</label>
+                <input data-bind="value:currentScale,valueUpdate: 'afterkeydown'" id="scale" max="0.5" min="0.3" step='0.1' name="points" type="range">
+            </div>
+            <div class="group"> <i data-bind="click:scrollNext" class="fa fa-arrow-down"></i> <i data-bind="click:scrollPrevious" class="fa fa-arrow-up"></i> </div>
+        </div>
+        <div class="chart_btn">
+            <a href="../../water_chart/s1/chart_s1_1.html">
+                <img src="../../images/chart.png" />
+            </a>
+        </div>
+        <p class="muted" data-bind="text: subtitle"></p>
+    </header>
+    <div class="grid">
+        <div class="left-timeline col-sand-left" data-bind="template:{name:'event', foreach:leftEvents}"></div>
+        <div class="center-timeline col-sand-middle"></div>
+        <div class="right-timeline col-sand-right" data-bind="template:{name:'event', foreach:rightEvents}"></div>
+    </div>
+    <script id="event" type="text/html">
+        <div class="timeline-event" data-bind="style:{'top':top()+'px', 'height':height()+'px', 'borderLeftColor':color,'borderRightColor':color}, css:{'selected':selected},click:toggleSelected">
+            <figure>
+                <figcaption data-bind="text:title"></figcaption>
+                <h6><span data-bind="text:fromStart()"></span>
+                  <small>至</small>
+                  <span data-bind="text:fromEnd()"></span>
+                  </h6>
+                <div data-bind="template:{name:template.name,data:template.context}"></div>
+            </figure>
+        </div>
+    </script>
+    <script type="text/html" id="1979-01-01">
+        <p>68年行政院頒布實施「臺灣地區環境保護方案」，劃定19條河川水體分類及水質標準，並選定幾條河川劃定管制區，建立水質監測網，開始推動水污染防治規劃方案及研究。
+        </p>
+    </script>
+    <script type="text/html" id="1987-01-01">
+        <p>76年環保署成立後，基於水質保護長程發展之需要，並委託專家學者進行「水質保護政策與執行評估」、「海洋污染防治政策研析」。
+        </p>
+    </script>
+    <script type="text/html" id="1985-01-01">
+        <p>依水體特質規範其適用性質及其相關環境基準，以保護生活環境及人體健康。於82年8月2日改名為「地面水體分類及水質標準」，歷經3次修正。
+        </p>
+    </script>
+    <script type="text/html" id="2012-01-01">
+        <p>為延續整治成效以實現淡水河符合水質標準之目標，於100年12月19日策定「淡水河污染整治後續實施方案第二期中程（六年）執行計畫」持續推動，推動期間為101年至106年，並以達到污染削減率75%（以目標年計算）為目標。
+        </p>
+    </script>
+    <script type="text/html" id="2008-01">
+        <p>96年7月24日行政院核定97至100年「河川及海洋水質維護改善計畫（第二期）」，持續執行水質改善，以完成5條重點都會型河川復育與整治工作、改善15處中度污染河段至輕度污染、辦理4座重點水庫及金門縣湖庫上游集水區保育工作為目標。
+        </p>
+    </script>
+    <script type="text/html" id="2005-01-01">
+        <p>93年11月19日行攻院核定「河川及海洋水質維護改善計畫」（ 94~96)。重點工作以中度污染河段為整治主要範圍，於區域內全力推動污染減量，改善中度污染河段至輕度污染河段，目標以至96年可改善20處中度污染河段至輕度污染河段為主。
+        </p>
+    </script>
+    <script type="text/html" id="2001-01-01">
+        <p>89年9月行政院核定「臺灣地區河川流域及海洋經營管理方案」第一期計畫(90年修正），以加速改善河川污染情況，並全面進行水質保護工作，選擇淡水河系等13條重點河川，優先執行河川流域之污染防治工作。計畫於93年執行完畢，並獲致初步成效。朴子溪溶氧水體分類水質標準達成率，已自90年52%，提昇至93年84%﹔北港溪氫氮水體分類水質標準達成率，自90年2%，提昇至93年18.3%﹔南崁溪嚴重污染河段長度比例，自90年92%，下降至93年28.9%﹔典寶溪水質異色問題已獲解決，其中長潤橋測站水中之鐵含量測值，自90年25 mg/L ﹒下降至93年2.66 mg/L，其餘河川水質皆持續改善中。
+        </p>
+    </script>
+    <script type="text/html" id="1998-01-01">
+        <p>87年12月1日行政院核定「飲用水水源水質保護綱要計畫」，推動高屏溪、基隆河、大漢溪、大甲溪、頭前溪等五大流域水源區養豬戶之依法拆除補償作業，90年12月底前完成，大幅改善五大流域飲用水水源之水質。耗費64億5,632萬3,660元，執行受理5,719場養豬戶申辦依法拆除補償，扣除資格不符及已農政離牧申領差額者，計應拆除4,960場，其中完成拆除4,919場養豬場，拆除比例達99.2%。五大流域豬隻頭數自89年11月之56.76萬頭削減至91年1月9,000頭，整體削減率達98.41%。
+        </p>
+    </script>
+    <script type="text/html" id="1993-01-01">
+        <p>82年至89年起策定「流域整體性環保計畫」，推動河川綠美化工作，選定適當河段，進行垃圾與髒亂清除，再加以整理、植栽、舖設步道的工程，一方面提供國人假日的遊憩空間，一方面將河川兩岸的腹地加以美化利用，減少流域污染產生及排放總量，保育自然資源、綠化環境景觀，提升流域整體生活品質。
+        </p>
+    </script>
+    <script type="text/html" id="1992-01-01">
+        <p>81年7月策定「臺灣地區重要河川污染整治中長期計畫」，在中程目標方面，計畫期程配合六年國建計畫自81年7月至85年12月共計5年，目標在改善各流域水質、增加水資源利用價值及各類用水安全，以期減少污染糾紛。推行之成效主要在使主要河川之嚴重污染河段由80年的297公里縮短至85年之224公里。在遠程目標方面，計畫於90年達到符合水體目的用途，水資源得以永續利用的遠景。
+        </p>
+    </script>
+    <script type="text/html" id="2012-01">
+        <p>100年5月18日行政院核定101~106年「水體環境水質改善及經營管理計畫」，以「不缺氧、不發臭及水庫活化」為願景目標，規劃101至106年目標及125年總體目標。
+        </p>
+    </script>
+    <script type="text/html" id="2008-01-01">
+        <p>本署爰於96年策定「淡水河系污染整治後續實施方案第二期近程（四年）執行計畫」，推動期間為97年至100年，以達到削減全流域60 %污染量（生化需氧量）為目標。
+        </p>
+    </script>
+    <script type="text/html" id="1998-01">
+        <p>行政院乃於87年1月9日核定「淡水河系污染整治後續實施方案」，以提昇水源區水體品質及減少污染河段為初期目標，以全河系水質符合水體正常用途為終期目標。第一期為87-96年，至95年底，淡水河系水污染總污染削減率可達42.7%﹔相較於85年27.6%的污染削減率，己提昇15.1%污染削減率，惟因污染總排出量仍超過淡水河系之污染涵容能力（每日54公噸生化需氧量）。
+        </p>
+    </script>
+    <script type="text/html" id="1988-01-01">
+        <p>77年行政院核定「淡水河整治先期工程」，核示本署成立跨中央機關及地方政府的「淡水河系污染整治計畫推動小組」，結合中央、省及地方的力量，開始全力投入淡水河的整治工作。該先期工程執行期限自77-86年共計8年，以80年完成各河段在旱季無缺氧，84年達到河川分類水質標準為目標。86年底淡水河先期工程所列總計畫投資金額380餘億之19項硬體工程多已完工並進行運轉，已發揮每日削減污染排出量（依生化需氧量計）約130公噸之效益，惟淡水河水質與達成「地面水體水質標準」之目標尚有差距。
+            <br>
+            <br> 77年臺灣省政府推動「臺灣省一縣市一河川污染防治方案」，於全省21縣市成立環境保護局後，使全國每個參與之縣市都真正認真的關心與思考及瞭解民眾所真正重視的河川污染問題，並與經濟部工業污染防治服務團合作，協助各縣市政府規劃整治計畫，促成主管機關與目的事業主管機關合作，共同完成河川水污染防治計畫。
+            <br>
+            <br> 77年本署推動清流計畫，以解決河川污染嚴重問題，計畫內容包括進行二仁溪污染整治規劃、急水溪海洋放流管工程規劃、烏溪流域污染整治規劃、新街溪、老街溪、南崁溪、社子溪等污染整治規劃、後勁溪及典寶溪污染整治及排水規劃、高雄近郊污水下水道系統規劃。清流計畫規劃出流域整治的方向，提供後來河川流域整治的寶貴參考，使河川流域整治在規劃部分跨出了一大步。
+            <br>
+            <br> 78年起本署推動甘泉計畫，以保護水庫、湖泊及地下水污染防治為目標，在水庫水質維護部分首先進行水庫水質維護方案研訂、金門、太湖、榮湖等水污染改善工程規劃，以及鳳山水庫優養化調查研究。在地下水方面開始進行地下水污染防治方案研訂、臺北盆地地下水污染及監測系統規劃、海水養殖對地下水及土壤鹽化研究，以及地下水中揮發性污染物質分析研究。甘泉計畫的推動使我國水庫、湖泊及地下水水質污染防治工作開始萌芽，邁出第一步。
+        </p>
+    </script>
+    <script type="text/html" id="1986-01-01">
+        <p>75年二仁溪茄萣海岸發生綠牡蠣事件，促使行政院於同年8月1日成立行政院環境保護小組，核定「臺灣地區水污染防治近程改善方案」，加強西南沿海河川水質及自來水水源水質保護工作。計畫內劃定水源水質水量保護區91區（含地面水源159處），並為維護西南沿海主要養殖區，選擇北港溪、朴子溪、八掌溪、急水溪、鹽水溪及二仁溪等六條河川，檢討改進水污染防治計畫，並於77年8月動用行政院預備金，優先辦理基隆河、二仁溪污染整治規劃。79年4月3日行政院核准「二仁溪污染整治規劃」計畫，由改制前臺灣省政府負責執行，透過污染源管制、重金屬污染移除等措施加速改善二仁溪河川水質，以恢復適合水產養殖立生態環境及達成灌溉用水之水質目標。
+        </p>
+    </script>
+    <script src="src/vendor/moment.min.js"></script>
+    <script src="src/vendor/knockout.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="src/vendor/jquery.scrollTo.min.js"></script>
+    <script src="src/js/app.js"></script>
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36251023-1']);
+    _gaq.push(['_setDomainName', 'jqueryscript.net']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+</body>
+
+</html>

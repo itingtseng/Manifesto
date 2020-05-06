@@ -1,0 +1,197 @@
+﻿    <!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>水體品質大事紀</title>
+    <script src="../js/jquery-1.10.2.js"></script>
+    <link href="../css/water/water.css" rel="stylesheet" />
+    <script type="text/javascript">
+        var cx = null;
+        var i = 0;
+        $(document).ready(function () {
+
+            var go_url = [
+                "水體品質大事紀/index.html",  //1
+                "p2_subject_11.html", //2
+                "放流水標準大事紀/index.html", //3
+                "陸域水質改善大事紀/index.html", //4
+                "水質改善大事紀/index.html", //5
+                "../water_chart/s4/chart_s1_house.html", //6
+                "水污染防治費大事紀/index.html", //7
+                "海域水質改善大事紀/index.html", //8
+                "../water_chart/s8/chart_s8_farm2.html", //9
+                "陸域水質改善大事紀/index.html", //10
+                "../water_chart/s4/chart_s1_house.html", //11
+                "水污染防治費大事紀/index.html", //12
+                "放流水標準大事紀/index.html", //13
+                "水污染防治費大事紀/index.html", //14
+            ]
+
+            for (var i = 1; i <= 14; i++) {
+                var url = go_url[i - 1];
+                $("#line" + i + " a").attr("href", url);
+                if (url == "") $("#line" + i + " a").hide();
+
+                var go_event = (function (url) {
+                    return function () {
+                        location.href = url;
+                    }
+                })(url);
+
+                $("#line" + i).bind("click", go_event);
+
+            }
+
+            //建立年
+            var def_left = 31.5;
+            var year_css = [
+                { year: 82, height: 200, left: 0, top: 40, width: 0 },
+                { year: 83, height: 200, left: 0, top: 40, width: 0 },
+                { year: 84, height: 200, left: 0.1, top: 40, width: 0 },
+                { year: 85, height: 200, left: 0.3, top: 40, width: 0 },
+                { year: 86, height: 180, left: 0.4, top: 38, width: 0 },
+                { year: 87, height: 180, left: 0.6, top: 38, width: 0 },
+                { year: 88, height: 180, left: 0.6, top: 38, width: 0 },
+                { year: 89, height: 180, left: 1.0, top: 38, width: 0 },
+                { year: 90, height: 200, left: 1.0, top: 40, width: 0 },
+                { year: 91, height: 200, left: 1.3, top: 40, width: 0 },
+                { year: 92, height: 200 , left: 1.3, top: 40, width: 0 },
+                { year: 93, height: 140, left: 1.7, top: 35, width: 0 },
+                { year: 94, height: 140, left: 1.7, top: 35, width: 0 },
+                { year: 95, height: 140, left: 2.0, top: 35, width: 0 },
+                { year: 96, height: 105, left: 2.0, top: 32, width: 0 },
+                { year: 97, height: 105, left: 2.4, top: 32, width: 0 },
+                { year: 98, height: 105, left: 2.4, top: 32, width: 0 },
+                { year: 99, height: 105, left: 2.7, top: 32, width: 0 },
+                { year: 00, height: 105, left: 2.7, top: 32, width: 0 },
+                { year: 01, height: 105, left: 2.9, top: 32, width: 0 },
+                { year: 02, height: 105, left: 3.3, top: 32, width: 0 },
+                { year: 03, height: 105, left: 3.3, top: 32, width: 0 },
+                { year: 04, height: 105, left: 3.7, top: 32, width: 0.5 },
+                { year: 05, height: 105, left: 4.2, top: 32, width: 0.5 }
+            ];
+
+            for (var i = 82; i <= 105; i++) {
+                var div = $("<div></div>").css("position", "relative");
+                var left = (def_left) + ((i - 82) * 2.55) + year_css[i - 82].left;;
+                var width = (2.5 + year_css[i - 82].width) + "%";
+                var top = (year_css[i - 82].top + 5) * -1 + "%";
+                var height = year_css[i - 82].height + "px";
+
+                div.css("left", left + "%").css("width", width).css("margin-top", top).css("height", height);
+
+                var tip_left = left + (2.5 + year_css[i - 82].width);
+                var show_func = (function (year, top, left) {
+                    return function () {
+                        show_year_tip(year, top, left);
+                    };
+                })(i, top, tip_left);
+
+                div.bind("mouseover", show_func);
+                div.bind("mouseout", hide_year_top);
+
+                $(".year").append(div);
+            }
+
+        });
+
+        function show_year_tip(year, top, left) {
+            var url = "../images/water_year_tip/aqua" + year + ".png";
+            $(".year .tip").find("img").attr("src", url);
+            $(".year .tip").find("img").bind("error", function () {
+                $(this).hide();
+            });
+            $(".year .tip").find("img").bind("load", function () {
+                $(this).show();
+            });
+
+            if (year > 89) {
+                left -= 38
+            }
+
+            $(".year .tip").css("left", left + "%").css("margin-top", top);
+            $(".year .tip").show();
+        }
+
+        function hide_year_top() {
+            $(".year .tip").hide();
+        }
+
+    </script>
+</head>
+<body>
+    <form id="form1">
+        <div class="content">
+
+            <div>
+                <div class="air_all">
+                    <img src="../images/water_page.jpg" />
+                </div>
+                <!-- 民國 -->
+
+                <div class="year">
+                    <div class="tip" style="display: none;">
+                        <img src="" />
+                    </div>
+                </div>
+
+                <!-- line / img -->
+                <div class="line">
+                    <div id="line1">
+                        <a href=""></a>
+                    </div>
+                    <div id="line2">
+                        <a href=""></a>
+                    </div>
+                    <div id="line3">
+                        <a href=""></a>
+                    </div>
+                    <div id="line4">
+                        <a href=""></a>
+                    </div>
+                    <div id="line5">
+                        <a href=""></a>
+                    </div>
+                    <div id="line6">
+                        <a href=""></a>
+                    </div>
+                    <div id="line7">
+                        <a href=""></a>
+                    </div>
+                    <div id="line8">
+                        <a href=""></a>
+                    </div>
+                    <div id="line9">
+                        <a href=""></a>
+                    </div>
+                    <div id="line10">
+                        <a href=""></a>
+                    </div>
+                    <div id="line11">
+                        <a href=""></a>
+                    </div>
+                    <div id="line12">
+                        <a href=""></a>
+                    </div>
+                    <div id="line13">
+                        <a href=""></a>
+                    </div>
+                    <div id="line14">
+                        <a href=""></a>
+                    </div>
+                </div>
+
+                <!-- go back -->
+                <div class="back">
+                    <a href="../index.htm">
+                    </a>
+                </div>
+
+
+
+            </div>
+        </div>
+    </form>
+</body>
+</html>

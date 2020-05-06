@@ -1,0 +1,393 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="../../css/P3.css" rel="stylesheet" />
+    <script src="../../js/jquery-1.10.2.js"></script>
+
+    <script src="../../js/highchats/highstock.js"></script>
+    <script src="../../js/highchats/map.js"></script>
+    <script src="../../js/highchats/drilldown.js"></script>
+    <script src="../../js/highchats/exporting.js"></script>
+    <script src="../../js/highchats/offline-exporting.js"></script>
+
+    <script src="../../js/common_water/chart.js"></script>
+    <script src="../../js/common_water/map_city.js"></script>
+    <script src="../../js/common_water/play.js"></script>
+    <script src="../../js/common/area_code.js"></script>
+
+    <!-- co value -->
+    <script src="../../js/WaterChart/chart_s8_man_all.js"></script>
+    <script src="../../js/WaterChart/chart_s8_life_d_all.js"></script>
+    <script src="../../js/WaterChart/chart_s8_life_m_all.js"></script>
+
+    <script src="../../js/WaterMap/map_s8_man_all.js"></script>
+    <script src="../../js/WaterMap/map_s8_life_d_all.js"></script>
+    <script src="../../js/WaterMap/map_s8_life_m_all.js"></script>
+
+    <!-- geo json -->
+    <script src="../../Geojson/Country.geojson.js"></script>
+    <script src="../../js/map_tool.js"></script>
+
+    <title>生活污水</title>
+    <script type="text/javascript">
+
+        var current_area = "";
+        var current_area_code = "";
+
+        var data_sy, data_sm;
+
+        var current_sy = 0;
+        var current_sm = 0;
+        var current_map_value_name = "生活污水趨勢圖";
+        var current_site_name = "";
+
+        var co_map = map_s8_man_all;
+        var co_chart = chart_s8_man_all;
+        map_legend_sub_text = "人口數(人)"
+        map_title_year = true;
+
+        chart_data_ary = [
+            chart_s8_man_all,
+            chart_s8_life_m_all,
+            chart_s8_life_d_all
+        ];
+
+        function set_default_ym() {
+            var d1 = new Date(stock_chart.xAxis[0].getExtremes().max);
+            //var d1 = new Date(co_chart[0].time_value[0][0]);
+            current_sy = d1.getFullYear();
+            current_sm = d1.getMonth() + 1;
+
+            data_sy = current_sy;
+            data_sm = current_sm;
+        }
+
+        function get_chart_opts() {
+            var chart_opts = {
+                chart: {
+                    spacing: [0, -50, 0, -100],
+                    events: {
+                        click: function (event) {
+                            var d = new Date(event.xAxis[0].value);
+
+                            play_current = d;
+                            current_sy = play_current.getFullYear();
+                            current_sm = play_current.getMonth() + 1;
+                            if (current_sm > 6) {
+                                current_sy += 1;
+                            }
+                            current_sm = 1;
+
+                            //draw plot line
+                            ShowPlotLine(current_sy, current_sm);
+
+                            //change map data
+                            change_year_data(current_sy, current_sm);
+                        }
+                    }
+                },
+                exporting: {
+                    buttons: {
+                        contextButton: {
+                            x: -100, y: 0
+                        }
+                    }
+                },
+                tooltip: {
+                    formatter: function () {
+                        var d = new Date(this.x);
+                        var str_d = d.getFullYear() - 1911 + "年";
+
+                        var s = "<b>" + str_d + "</b><br />";
+                        $.each(this.points, function () {
+                            if ((this.series.options.tooltip) && (this.series.options.tooltip.pointFormatter)) {
+                                s += this.series.options.tooltip.pointFormatter(this);
+                            }
+                            else {
+                                s += '<span style="color:' + this.color + '">\u25CF</span> ' + this.series.name + ': <b>'
+                               + this.y + "</b><br/>";
+                            }
+
+                        });
+                        return s;
+                    }
+                },
+                xAxis: {
+                    labels: {
+                        formatter: function () {
+                            var d = this.value;
+                            var d1 = new Date(d);
+                            var v = d1.getYear() + 1900 - 1911 + "";
+                            return v;
+                        }
+                    },
+                    title: {
+                        text: "年",
+                    },
+                    tickInterval: 365 * 24 * 3600 * 1000,
+                    showFirstLabel: true,
+                    tickPixelInterval: 10,
+                    crosshair: {
+                        color: "#888",
+                        zIndex: 999,
+                    }
+                },
+
+                yAxis: [
+                    {
+                        title: {
+                            text: '人口數(千人)',
+                            rotation: 0,
+                            align: 'high',
+                            x: -55,
+                            y: -40
+                        },
+                        labels: {
+                            formatter: function () {
+                                return this.value / 1000;
+                            }
+                        },
+                        min: 0,
+                        gridLineWidth: 1,
+                        offset: 40
+                    },
+                    {
+                        title: {
+                            text: '生活污水(公噸/日)',
+                            rotation: 0,
+                            align: 'high',
+                            x: 100,
+                            y: -40
+                        },
+                        labels: {
+                            format: "{value}"
+                        },
+                        min: 0,
+                        gridLineWidth: 1,
+                        offset: 0,
+                        opposite: false,
+                    }
+                ]
+
+        , series: [
+            {
+                name: '人口數(千人)',
+                data: [],
+                zIndex: 1,
+                type: 'spline',
+                yAxis: 0,
+                color: line_color[0],
+                marker: {
+                    enabled: true,
+                    radius: 0
+                },
+                fillOpacity: 1,
+                tooltip: {
+                    pointFormatter: function (obj) {
+                        var s = '<span style="color:' + obj.color + '">\u25CF</span> ' + obj.series.name + ': <b>';
+                        var v = parseFloat(obj.y.toFixed(2));
+                        s = s + v + ' </b><br/>';
+                        return s;
+                    }
+                }
+            },
+             {
+                 name: '生活污水產生量(公噸/日)',
+                 data: [],
+                 zIndex: 1,
+                 type: 'spline',
+                 yAxis: 1,
+                 color: line_color[1],
+                 marker: {
+                     enabled: true,
+                     radius: 0
+                 },
+                 fillOpacity: 1,
+                 tooltip: {
+                     pointFormatter: function (obj) {
+                         var s = '<span style="color:' + obj.color + '">\u25CF</span> ' + obj.series.name + ': <b>';
+                         var v = parseFloat(obj.y.toFixed(2));
+                         s = s + v + ' </b><br/>';
+                         return s;
+                     }
+                 }
+             },
+              {
+                  name: '生活污水削減量(公噸/日)',
+                  data: [],
+                  zIndex: 1,
+                  type: 'spline',
+                  yAxis: 1,
+                  color: line_color[2],
+                  marker: {
+                      enabled: true,
+                      radius: 0
+                  },
+                  fillOpacity: 1,
+                  tooltip: {
+                      pointFormatter: function (obj) {
+                          var s = '<span style="color:' + obj.color + '">\u25CF</span> ' + obj.series.name + ': <b>';
+                          var v = parseFloat(obj.y.toFixed(2));
+                          s = s + v + ' </b><br/>';
+                          return s;
+                      }
+                  }
+              }
+        ]
+            };
+
+            return chart_opts;
+        }
+
+        var map_tooltip_value_func = function map_tooltip_value_func(value) {
+            return value.toFixed(2);
+        }
+
+        var map_opts = {
+            colorAxis: {
+                min: 0,
+                max: 1.5
+            },
+            legend: {
+                width: 140
+            }
+        }
+
+        $(document).ready(function () {
+
+            //設定地圖資料來源
+            current_area = "ALL";
+            current_area_code = "ALL";
+
+            //chart
+            var opts = get_chart_opts();
+            DrawChart(current_area, "data_chart", opts);
+
+            //chart data
+            change_chart_data();
+            set_default_ym(); // 找出最小日期
+
+            //set map;
+            show_map(current_area, "data_map", map_opts);
+            var map_class_value = [270879, 461594, 716834, 1486567];
+            set_color_class(map_class_value, 0, false, 0);
+            change_year_data(current_sy, current_sm);
+
+            map_level_ary.push("ALL");
+
+            change_chart_title();
+
+            //auto play;
+            //play_year();
+        });
+
+        map_tooltip_value_func = function (value) {
+            if (value == null) return "無";
+            if (value == "無") return "無";
+            return value.toFixed(2);
+        }
+
+
+        function go_next_month() {
+
+            if (play_current > play_d2) {
+                play_current = play_d1;
+                current_sy = play_current.getFullYear();
+            }
+            else {
+                current_sy = play_current.getFullYear() + 1;
+            }
+            current_sm = 1;
+
+            //draw plot line
+            ShowPlotLine(current_sy, current_sm);
+
+            //change map data
+            change_year_data(current_sy, current_sm);
+
+            //play month ++
+            play_current = new Date(current_sy, current_sm, 1);
+        }
+
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="container">
+
+            <div class="print_page">
+                <div>
+                    <a href="javascript: return false;" onclick="window.print();">
+                        <img src="../../images/print.png" />
+                    </a>
+                </div>
+            </div>
+
+            <div class="back">
+                <div>
+                    <a href="../../water_page/放流水標準大事紀/index.html">
+                        <img src="../../images/air/back.png" />
+                    </a>
+                </div>
+            </div>
+
+            <div class="title">
+                <div class="h1">
+                    <div class="text">廢(污)水減污管理</div>
+                    <div class="drop chart_change" onclick="open_change_list();">
+                        ▼
+                        <div class="list">
+                            <div>
+                                <a href="chart_s8_factory.html">
+                                    工業廢水水趨勢圖
+                                </a>
+                            </div>
+                            <div>
+                                <a href="chart_s8_farm.html">
+                                    畜牧廢水趨勢圖
+                                </a>
+                            </div>
+                            <div>
+                                <a class="select">
+                                    生活污水趨勢圖
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="h2">
+                    民國87年致力於<a href="chart_s8_factory.html"><u>工業廢水</a></u>、<a href="chart_s8_farm.html"><u>畜牧廢水</a></u>、<a href="chart_s8_people.html"><u>生活污水</a></u>等點污染源及暴雨逕流等非點污染源之防治與控制，已展現甚佳之施政績效。
+                </div>
+                <div class="h3">
+                    資料來源：土地面積、人口及密度：<a href="http://erdb.epa.gov.tw/DataRepository/ReportAndStatistics/StatSceAreapop.aspx"><u>環境資源資料庫</a></u>；廢[污]水削減量：<a href="http://erdb.epa.gov.tw/DataRepository/PollutionProtection/WasteReduction.aspx"><u>環境資源資料庫</a></u>
+                </div>
+            </div>
+            <div class="map">
+                <div id="data_map">
+                </div>
+
+            </div>
+            <div class="chart">
+
+                <div id="data_chart">
+                </div>
+
+                <div class="action_bar">
+                    <div id="div_action_left" onclick="go_year_start();">
+                        <img src="../../images/right.png" />
+                    </div>
+                    <div onclick="btn_action();">
+                        <img src="../../images/play.png" id="img_action_play" />
+                    </div>
+                    <div id="div_action_right" onclick="go_year_end();">
+                        <img src="../../images/left.png" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</body>
+</html>

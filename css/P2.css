@@ -1,0 +1,85 @@
+﻿body {
+    padding: 0px;
+    margin: 0px;
+}
+
+.container {
+    min-width: 700px;
+    max-width: 1000px;
+    width: 100%;
+    padding: 2%;
+    margin: 0 auto 0 auto;
+}
+
+.button {
+    float: left;
+    width: 15%;
+}
+
+    .button .text {
+        padding-bottom: 40%;
+    }
+
+    .button .btn {
+        padding: 10%;
+        cursor: pointer;
+    }
+
+    .button .btn img {
+    }
+
+    .button div img {
+        width: 100%;
+    }
+
+.chat {
+    float: left;
+    width: 53%;
+    padding-left: 1%;
+    padding-top: 8%;
+}
+
+    .chat img {
+        width: 100%;
+    }
+
+.value {
+    float: left;
+    width: 22%;
+    margin-left: 5%;
+    font-family: 微軟正黑體;
+    font-size: 120%;
+    color: white;
+    padding-right: 3%;
+    padding-top: 10%;
+     text-align: center;
+}
+
+    .value .co {
+        width: 100%;
+    }
+
+    .value img {
+        width: 100%;
+    }
+
+    .value .text {
+        margin-top: -82%;
+        padding: 5%;
+        font-size: 100%;
+    }
+
+@media (max-width: 850px) {
+    .value .text {
+        font-size: 75%;
+    }
+}
+
+.value .num {
+    font-size: 200%;
+    font-weight: bold;
+}
+
+.value .no2 {
+    margin-top: 35%;
+}

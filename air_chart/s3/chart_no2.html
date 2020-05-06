@@ -1,0 +1,670 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="../../css/P3.css" rel="stylesheet" />
+    <script src="../../js/jquery-1.10.2.js"></script>
+
+    <script src="../../js/highchats/highstock.js"></script>
+    <script src="../../js/highchats/map.js"></script>
+    <script src="../../js/highchats/drilldown.js"></script>
+    <script src="../../js/highchats/exporting.js"></script>
+    <script src="../../js/highchats/offline-exporting.js"></script>
+
+    <script src="../../js/common/chart.js"></script>
+    <script src="../../js/common/map.js"></script>
+    <script src="../../js/common/play.js"></script>
+    <script src="../../js/common/area_code.js"></script>
+
+    <!-- co value -->
+    <script src="../../js/AirQualityMap/map_no2_traffic.js"></script>
+    <script src="../../js/AirQualityMap/map_no2_normal.js"></script>
+    <script src="../../js/AirQualityMap/map_NMHC_traffic.js"></script>
+    <script src="../../js/AirQualityMap/map_NMHC_normal.js"></script>
+
+    <script src="../../js/AirQualityChart/chart_no2_traffic.js"></script>
+    <script src="../../js/AirQualityChart/chart_no2_normal.js"></script>
+    <script src="../../js/AirQualityChart/chart_NMHC_traffic.js"></script>
+    <script src="../../js/AirQualityChart/chart_NMHC_normal.js"></script>
+
+    <script src="../../js/s3/co_oil.js"></script>
+    <script src="../../js/driver/Car_count.js"></script>
+    <script src="../../js/driver/Scootor_count.js"></script>
+
+    <!-- geo json -->
+    <script src="../../Geojson/airqualityarea.geojson.js"></script>
+    <script src="../../Geojson/Country.geojson.js"></script>
+    <script src="../../Geojson/station.geojson.js"></script>
+
+    <title>二氧化氮及非甲烷碳氫化合物排放標準</title>
+    <script type="text/javascript">
+
+        var current_area = "";
+        var current_area_code = "";
+
+        var data_sy, data_sm;
+
+        var current_sy = 0;
+        var current_sm = 0;
+        var current_map_value_name = "二氧化氮濃度(ppb)";
+        var current_site_name = "交通測站";
+
+        var co_map = map_no2_traffic;
+        var co_chart = chart_no2_traffic;
+
+        var chart_no2 = chart_no2_traffic;
+        var NMHC = chart_NMHC_traffic
+
+        function set_default_ym() {
+            var d1 = new Date(stock_chart.xAxis[0].getExtremes().max);
+            //var d1 = new Date(co_chart[0].time_value[0][0]);
+            current_sy = d1.getFullYear();
+            current_sm = d1.getMonth() + 1;
+
+            data_sy = current_sy;
+            data_sm = current_sm;
+        }
+
+        function get_chart_opts() {
+            var z1 = 1;
+            var z2 = 2;
+            var z3 = 3;
+            var chart_opts = {
+                chart: {
+                    spacing: [0, -30, 0, -5]
+                },
+                exporting: {
+                    buttons: {
+                        contextButton: {
+                            x: -130,
+                            y: -5
+                        }
+                    }
+                },
+                legend: {
+                    enabled: true,
+                    itemMarginTop: 10,
+                    y: 10,
+                    width: 500,
+                    useHTML: true
+                },
+                yAxis: [
+               {
+                   title: {
+                       text: '二氧化氮濃度(ppb)',
+                       rotation: 270,
+                       align: 'high',
+                       x: 0,
+                       y: 105
+                   },
+                   gridLineWidth: 0,
+                   opposite: false
+               },
+               {
+                   title: {
+                       text: '非甲烷碳氫化合物濃度(ppm)',
+                       rotation: 270,
+                       align: 'high',
+                       x: 0,
+                       y: 105
+                   },
+                   offset: 50,
+                   gridLineWidth: 0,
+                   opposite: false,
+               },
+               {
+                   title: {
+                       text: '機<br>車',
+                       rotation: 0,
+                       align: 'high',
+                       x: 10,
+                       y: 25
+                   },
+                   offset: 5,
+                   gridLineWidth: 0,
+                   top: '0%',
+                   height: '32%',
+                   labels: {
+                       enabled: false
+                   }
+               },
+               {
+                   title: {
+                       text: '汽<br>油<br>車',
+                       rotation: 0,
+                       align: 'high',
+                       x: 10,
+                       y: 25
+                   },
+                   offset: 5,
+                   gridLineWidth: 0,
+                   top: '33%',
+                   height: '32%',
+                   labels: {
+                       enabled: false
+                   }
+               },
+               {
+                   title: {
+                       text: '柴<br>油<br>車',
+                       rotation: 0,
+                       align: 'high',
+                       x: 10,
+                       y: 25
+                   },
+                   offset: 5,
+                   gridLineWidth: 0,
+                   top: '66%',
+                   height: '32%',
+                   labels: {
+                       enabled: false
+                   }
+               },
+                {
+                    title: {
+                        text: '數量',
+                        rotation: 0,
+                        align: 'high',
+                        x: -40,
+                        y: -10
+                    },
+                    offset: 40,
+                    gridLineWidth: 0,
+                    opposite: true,
+                }
+                ]
+        , series: [
+              {
+                  name: '二氧化氮濃度(ppb)',
+                  zIndex: 20,
+                  type: 'spline',
+                  yAxis: 0,
+                  marker: {
+                      enabled: true,
+                      radius: 0
+                  },
+                  color: line_color[0],
+                  tooltip: {
+                      pointFormatter: function (obj) {
+                          var s = '<span style="color:' + obj.color + '">\u25CF</span> ' + obj.series.name + ': <b>';
+                          var v = parseFloat(obj.y.toFixed(2));
+                          s = s + v + ' </b><br/>';
+                          return s;
+                      }
+                  }
+              },
+              {
+                  name: '非甲烷碳氫化合物濃度(ppm)',
+                  zIndex: 20,
+                  type: 'spline',
+                  yAxis: 1,
+                  marker: {
+                      enabled: true,
+                      radius: 0
+                  },
+                  color: line_color[1],
+                  tooltip: {
+                      pointFormatter: function (obj) {
+                          var s = '<span style="color:' + obj.color + '">\u25CF</span> ' + obj.series.name + ': <b>';
+                          var v = parseFloat(obj.y.toFixed(2));
+                          s = s + v + ' </b><br/>';
+                          //var driver = get_driver_count(obj.x);
+                          //s = s + driver;
+                          return s;
+                      }
+                  }
+              },
+                {
+                    name: '汽車數量',
+                    data: [],
+                    zIndex: 10,
+                    type: 'spline',
+                    yAxis: 5,
+                    marker: {
+                        enabled: true,
+                        radius: 0
+                    },
+                    color: line_color[2]
+                },
+                {
+                    name: '機車數量',
+                    data: [],
+                    zIndex: 10,
+                    type: 'spline',
+                    yAxis: 5,
+                    marker: {
+                        enabled: true,
+                        radius: 0
+                    },
+                    color: line_color[3]
+                }
+                , {
+                    name: '汽油車HC,THC 排放標準',
+                    data: co_oil.gas_v1,
+                    zIndex: z1,
+                    type: 'area',
+                    yAxis: 3,
+                    fillOpacity: 1,
+                    color: area_color[0],
+                    step: true,
+                    showInLegend: false,
+                    tooltip: {
+                        pointFormatter: function (obj) {
+                            var s = '<span style="color:' + obj.color + '">\u25CF</span> ' + obj.series.name + ': <b>';
+                            var v = obj.y.toFixed(2);
+                            s = s + v + ' </b><br/>';
+                            return s;
+                        }
+                    }
+                }
+                , {
+                    name: '汽油車HC+NOx,NMHC+NOx 排放標準',
+                    data: co_oil.gas_v2,
+                    zIndex: z2,
+                    type: 'area',
+                    yAxis: 3,
+                    fillOpacity: 1,
+                    color: area_color[1],
+                    step: true,
+                    showInLegend: false,
+                    tooltip: {
+                        pointFormatter: function (obj) {
+                            var s = '<span style="color:' + obj.color + '">\u25CF</span> ' + obj.series.name + ': <b>';
+                            var v = obj.y.toFixed(2);
+                            s = s + v + ' </b><br/>';
+                            return s;
+                        }
+                    }
+                }
+                 , {
+                     name: '汽油車NOx 排放標準',
+                     data: co_oil.gas_v3,
+                     zIndex: z3,
+                     type: 'area',
+                     yAxis: 3,
+                     fillOpacity: 1,
+                     color: area_color[2],
+                     step: true,
+                     showInLegend: false,
+                     tooltip: {
+                         pointFormatter: function (obj) {
+                             var s = '<span style="color:' + obj.color + '">\u25CF</span> ' + obj.series.name + ': <b>';
+                             var v = obj.y.toFixed(2);
+                             s = s + v + ' </b><br/>';
+                             return s;
+                         }
+                     }
+                 }
+                  , {
+                      name: '柴油車HC,THC 排放標準',
+                      data: co_oil.feul_v1,
+                      zIndex: z3,
+                      type: 'area',
+                      yAxis: 4,
+                      fillOpacity: 1,
+                      color: area_color[0],
+                      step: true,
+                      showInLegend: false,
+                      tooltip: {
+                          pointFormatter: function (obj) {
+                              var s = '<span style="color:' + obj.color + '">\u25CF</span> ' + obj.series.name + ': <b>';
+                              var v = obj.y.toFixed(2);
+                              s = s + v + ' </b><br/>';
+                              return s;
+                          }
+                      }
+                  }
+                , {
+                    name: '柴油車HC+NOx,NMHC+NOx 排放標準',
+                    data: co_oil.feul_v2,
+                    zIndex: z1,
+                    type: 'area',
+                    yAxis: 4,
+                    fillOpacity: 1,
+                    color: area_color[1],
+                    step: true,
+                    showInLegend: false,
+                    tooltip: {
+                        pointFormatter: function (obj) {
+                            var s = '<span style="color:' + obj.color + '">\u25CF</span> ' + obj.series.name + ': <b>';
+                            var v = obj.y.toFixed(2);
+                            s = s + v + ' </b><br/>';
+                            return s;
+                        }
+                    }
+                }
+                 , {
+                     name: '柴油車NOx 排放標準',
+                     data: co_oil.feul_v3,
+                     zIndex: z2,
+                     type: 'area',
+                     yAxis: 4,
+                     fillOpacity: 1,
+                     color: area_color[2],
+                     step: true,
+                     showInLegend: false,
+                     tooltip: {
+                         pointFormatter: function (obj) {
+                             var s = '<span style="color:' + obj.color + '">\u25CF</span> ' + obj.series.name + ': <b>';
+                             var v = obj.y.toFixed(2);
+                             s = s + v + ' </b><br/>';
+                             return s;
+                         }
+                     }
+                 }
+                  , {
+                      name: 'HC、THC 排放標準(g/km)',
+                      data: co_oil.moto_v1,
+                      zIndex: z1,
+                      type: 'area',
+                      yAxis: 2,
+                      fillOpacity: 1,
+                      color: area_color[0],
+                      step: true,
+                      showInLegend: true,
+                      events: {
+                          legendItemClick: function () {
+                              return false;
+                          }
+                      },
+                      visible: true,
+                      tooltip: {
+                          pointFormatter: function (obj) {
+                              var s = '<span style="color:' + obj.color + '">\u25CF</span> ' + "機車HC,THC排放標準" + ': <b>';
+                              var v = obj.y.toFixed(2);
+                              s = s + v + ' </b><br/>';
+                              return s;
+                          }
+                      }
+                  }
+                , {
+                    name: 'HC+NOx、NMHC+NOx 排放標準(g/km)',
+                    data: co_oil.moto_v2,
+                    zIndex: z3,
+                    type: 'area',
+                    yAxis: 2,
+                    fillOpacity: 1,
+                    color: area_color[1],
+                    step: true,
+                    showInLegend: true,
+                    events: {
+                        legendItemClick: function () {
+                            return false;
+                        }
+                    },
+                    visible: true,
+                    tooltip: {
+                        pointFormatter: function (obj) {
+                            var s = '<span style="color:' + obj.color + '">\u25CF</span> ' + "機車HC+NOx,NMHC+NOx排放標準" + ': <b>';
+                            var v = obj.y.toFixed(2);
+                            s = s + v + ' </b><br/>';
+                            return s;
+                        }
+                    }
+                }
+                 , {
+                     name: 'NOx 排放標準(g/km)',
+                     data: co_oil.moto_v3,
+                     zIndex: z2,
+                     type: 'area',
+                     yAxis: 2,
+                     fillOpacity: 1,
+                     color: area_color[2],
+                     step: true,
+                     showInLegend: true,
+                     events: {
+                         legendItemClick: function () {
+                             return false;
+                         }
+                     },
+                     visible: true,
+                     tooltip: {
+                         pointFormatter: function (obj) {
+                             var s = '<span style="color:' + obj.color + '">\u25CF</span> ' + "機車NOX排放標準" + ': <b>';
+                             var v = obj.y.toFixed(2);
+                             s = s + v + ' </b><br/>';
+                             return s;
+                         }
+                     }
+                 }
+        ]
+            };
+
+            return chart_opts;
+        }
+
+        var map_opts = {
+            colorAxis: {
+                min: 0,
+                max: 30
+            },
+            legend: {
+                width: 120
+            }
+        }
+
+        $(document).ready(function () {
+
+            current_area = "ALL";
+            current_area_code = "ALL";
+
+            //chart
+            var opts = get_chart_opts();
+            DrawChart(current_area, "data_chart", opts);
+
+            //chart data
+            change_chart_data();
+            set_default_ym(); // 找出最小日期
+
+            //set map;
+            show_map(current_area, "data_map", map_opts);
+            var map_class_value = [10.99, 15.68, 20.4, 26.61];
+            set_color_class(map_class_value, 0, false);
+            change_year_data(current_sy, current_sm);
+
+            map_level_ary.push("ALL");
+
+            change_chart_title();
+
+            //auto play;
+            //play_year();
+        });
+
+        function change_chart_data(level, code) {
+            code = (code) ? code : current_area_code;
+            level = (level) ? level : current_area;
+
+            if (stock_chart) {
+                var find = false;
+                for (var i = 0; i < chart_no2.length; i++) {
+                    if ((chart_no2[i].area == code) && (chart_no2[i].level == level)) {
+                        stock_chart.series[0].setData(chart_no2[i].time_value, true, 5000, true);
+                        //排除回到全台資料沒有更新的問題, 全台建二筆資料
+                        if (i == 1) {
+                            stock_chart.series[0].setData(chart_no2[0].time_value, true, 5000, true);
+                        }
+                        find = true;
+                        break;
+                    }
+                }
+                if (find == false) {
+                    stock_chart.series[0].setData([], true, 5000, true);
+                }
+
+                find = false;
+                for (var i = 0; i < NMHC.length; i++) {
+                    if ((NMHC[i].area == code) && (NMHC[i].level == level)) {
+                        stock_chart.series[1].setData(NMHC[i].time_value, true, 5000, true);
+                        //排除回到全台資料沒有更新的問題, 全台建二筆資料
+                        if (i == 1) {
+                            stock_chart.series[1].setData(NMHC[0].time_value, true, 5000, true);
+                        }
+                        find = true;
+                        break;
+                    }
+                }
+                if (find == false) {
+                    stock_chart.series[1].setData([], true, 5000, true);
+                }
+
+                //car
+                for (var i = 0; i < Car_count.length; i++) {
+                    if ((Car_count[i].area == code) && (Car_count[i].level == level)) {
+                        stock_chart.series[2].setData(Car_count[i].time_value, true, 5000, true);
+                        //排除回到全台資料沒有更新的問題, 全台建二筆資料
+                        if (i == 1) {
+                            stock_chart.series[2].setData(Car_count[0].time_value, true, 5000, true);
+                        }
+                        break;
+                    }
+                }
+
+                //moto
+                for (var i = 0; i < Scootor_count.length; i++) {
+                    if ((Scootor_count[i].area == code) && (Scootor_count[i].level == level)) {
+
+                        stock_chart.series[3].setData(Scootor_count[i].time_value, true, 5000, true);
+
+                        //排除回到全台資料沒有更新的問題, 全台建二筆資料
+                        if (i == 1) {
+                            stock_chart.series[3].setData(Scootor_count[0].time_value, true, 5000, true);
+                        }
+
+                        break;
+                    }
+                }
+
+            }
+        }
+
+        map_tooltip_value_func = function (value) {
+            if (value == null) return "無";
+            if (value == "無") return "無";
+            return value.toFixed(2);
+        }
+
+        function change_site(site_type) {
+            switch (site_type) {
+                case "traffic":
+                    chart_no2 = chart_no2_traffic
+                    NMHC = chart_NMHC_traffic
+                    co_map = map_no2_traffic;
+                    co_chart = chart_no2_traffic;
+                    current_site_name = "交通測站";
+                    break;
+                    break;
+                case "normal":
+                    chart_no2 = chart_no2_normal
+                    NMHC = chart_NMHC_normal
+                    co_map = map_no2_normal;
+                    co_chart = chart_no2_normal;
+                    current_site_name = "一般測站";
+                    break;
+            }
+
+            change_chart_data(current_area, current_area_code);
+            change_chart_title(current_area, current_area_code);
+
+            change_year_data(current_sy, current_sm);
+            $(".map_static_change .list").hide();
+
+        }
+
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="container">
+
+            <div class="print_page">
+                <div>
+                    <a href="javascript: return false;" onclick="window.print();">
+                        <img src="../../images/print.png" />
+                    </a>
+                </div>
+            </div>
+
+            <div class="back">
+                <div>
+                    <a href="../../air_page/p2_subject_3.html">
+                        <img src="../../images/air/back.png" />
+                    </a>
+                </div>
+            </div>
+
+            <div class="title">
+                <div class="h1">
+                    <div class="text">實施排放標準管制</div>
+                    <div class="drop chart_change" onclick="open_change_list();">
+                        ▼
+                        <div class="list">
+                            <div>
+                                <a href="chart_co.html">
+                                    一氧化碳濃度與排放標準管制
+                                </a>
+                            </div>
+                            <div>
+                                <a class="select">
+                                    二氧化氮和非甲烷碳氫化合物濃度與排放標準管制
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="h2">
+                    民國76年開始實施排放標準，隨著各期排放標準加嚴，<a href="chart_co.html"><u>一氧化碳</a></u>、
+                    <a href="chart_no2.html"><u>二氧化氮以及非甲烷碳氫化合物</a></u>濃度亦逐年下降。
+                </div>
+                <div class="h3">
+                    資料來源：排放標準：<a href="http://www.epa.gov.tw/lp.asp?ctNode=31646&CtUnit=1436&BaseDSD=7&mp=epa"><u>臺灣環境品質報告1987-2014</a></u>；空氣品質監測月值：
+                    <a href="http://erdb.epa.gov.tw/DataRepository/EnvMonitor/AirQualityMonitorMonData.aspx"><u>環境資源資料庫</a></u>；車輛登記數：<a href="http://stat.motc.gov.tw/mocdb/stmain.jsp?sys=100"><u>交通部統計查詢網</u></a>
+                </div>
+            </div>
+
+            <div class="map">
+                <div id="data_map">
+                </div>
+            </div>
+            <div class="chart">
+
+                <div class="site_menu">
+                    <div class="map_static_change">
+                        <div onclick="open_map_change_list();" style="cursor: pointer;">
+                            <img src="../../images/change.png" />切換 
+                        </div>
+                        <div class="list">
+                            <div>
+                                <a href="javascript: change_site('traffic');" onclick="change_site('traffic');">
+                                    交通測站
+                                </a>
+                            </div>
+                            <div>
+                                <a href="javascript: change_site('normal');" onclick="change_site('normal');">
+                                    一般測站
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="data_chart">
+                </div>
+
+                <div class="action_bar">
+                    <div id="div_action_left" onclick="go_year_start();">
+                        <img src="../../images/right.png" />
+                    </div>
+                    <div onclick="btn_action();">
+                        <img src="../../images/play.png" id="img_action_play" />
+                    </div>
+                    <div id="div_action_right" onclick="go_year_end();">
+                        <img src="../../images/left.png" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</body>
+</html>

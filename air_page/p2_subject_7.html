@@ -1,0 +1,328 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>空氣污染防制費大事紀</title>
+    <script src="../js/jquery-1.10.2.js"></script>
+    <link href="../css/air2.css" rel="stylesheet" />
+    <script src="http://s.codepen.io/assets/libs/modernizr.js" type="text/javascript"></script>
+    <link href='http://fonts.googleapis.com/css?family=Droid+Serif|Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/reset.css">
+
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <style type="text/css">
+        .history {
+            width: 100%;
+            margin-left: 0%;
+            margin-top: 0%;
+        }
+
+        .top_block div {
+            float: left;
+        }
+
+        .top_block img {
+            width: 100%;
+        }
+
+        .top_block .text {
+            width: 70%;
+        }
+
+        .top_block .next {
+            width: 25%;
+            padding-left: 3%;
+            padding-top: 3%;
+        }
+
+        .top_block{
+            padding-top: 2%;
+            clear: both;
+            display: table; 
+        }
+
+        .back{
+            margin-top: -16.5%;
+        }
+
+        .chart{
+            margin-top: -16.5%;
+        }
+    </style>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            var $timeline_block = $('.cd-timeline-block');
+
+            //hide timeline blocks which are outside the viewport
+            $timeline_block.each(function () {
+                if ($(this).offset().top > $(window).scrollTop() + $(window).height() * 0.75) {
+                    $(this).find('.cd-timeline-img, .cd-timeline-content').addClass('is-hidden');
+                }
+            });
+
+            //on scolling, show/animate timeline blocks when enter the viewport
+            $(window).on('scroll', function () {
+                $timeline_block.each(function () {
+                    if ($(this).offset().top <= $(window).scrollTop() + $(window).height() * 0.75 && $(this).find('.cd-timeline-img').hasClass('is-hidden')) {
+                        $(this).find('.cd-timeline-img, .cd-timeline-content').removeClass('is-hidden').addClass('bounce-in');
+                    }
+                });
+            });
+        });
+    </script>
+
+</head>
+<body>
+    <form id="form1">
+        <div class="content">
+            <!-- dot -->
+            <div class="circle">
+                <div class="dot1">
+                    <img src="../images/air/3c.png" />
+                </div>
+                <div class="dot2">
+                    <img src="../images/air/1c.png" />
+                </div>
+                <div class="dot3">
+                    <img src="../images/air/2c.png" />
+                </div>
+                <div class="dot4">
+                    <img src="../images/air/4c.png" />
+                </div>
+                <div class="dot5">
+                    <img src="../images/air/5c.png" />
+                </div>
+                <div class="dot6 select_dot">
+                    <img src="../images/air/6d.png" />
+                </div>
+                <div class="dot7">
+                    <img src="../images/air/7c.png" />
+                </div>
+                <div class="dot8">
+                    <img src="../images/air/8c.png" />
+                </div>
+                <div class="dot9">
+                    <img src="../images/air/9c.png" />
+                </div>
+            </div>
+
+            <!-- dot text -->
+            <div class="circle_text">
+                <div class="dot_text1">
+                    燃料管制
+                </div>
+                <div class="dot_text2">
+                    空氣品質管制站
+                </div>
+                <div class="dot_text3">
+                    排放標準管制
+                </div>
+                <div class="dot_text4">
+                    空氣品質標準
+                </div>
+                <div class="dot_text5">
+                    固定污染源
+                </div>
+                <div class="dot_text6 select_text">
+                    空氣污染防制費
+                </div>
+                <div class="dot_text7">
+                    空品防制區
+                </div>
+                <div class="dot_text8">
+                    低污染交通工具
+                </div>
+                <div class="dot_text9">
+                    細懸浮微粒
+                </div>
+            </div>
+
+            <div  class="top_block">
+                <img src="assets/background.png" />
+            </div>
+
+            <div class="back">
+                <a href="../air_page/p1_air_year.html">
+                </a>
+            </div>
+
+            <div class="chart">
+                <a href="../air_chart/s7/chart_air_money.html">
+                </a>
+            </div>
+
+            <!-- content -->
+            <div>
+                <section id="cd-timeline" class="cd-container">
+                    <div class="cd-timeline-block">
+                        <div class="cd-timeline-img cd-location">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-icon-location.svg" alt="Picture">
+                        </div>
+                        <!-- cd-timeline-img -->
+                        <div class="cd-timeline-content">
+                            <h2>開徵第一階段空污費依燃料油實際使用量徵收</h2>
+                            <p>84-87年開徵第1階段空污費，由環保署統籌對固定污染源（工廠）及移動污染源（車輛），依其使用的油燃料量徵收。</p>
+                            <span class="cd-date">84年</span>
+                        </div>
+                        <!-- cd-timeline-content -->
+                    </div>
+                    <!-- cd-timeline-block -->
+                    <div class="cd-timeline-block">
+                        <div class="cd-timeline-img cd-location">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-icon-location.svg" alt="Movie">
+                        </div>
+                        <!-- cd-timeline-img -->
+                        <div class="cd-timeline-content">
+                            <h2>
+                                落實污染者付費擴大空污費污染徵收項目<br>
+                                依照工程類別開徵營建工程空污費（依照實際排量徵收）
+                            </h2>
+                            <p>第一次修訂，將原公告中先後二階段之二種收費方式併列，並增列營建工程依工程類別徵收之條文，由地方政府徵收。</p>
+                            <span class="cd-date">86年</span>
+                        </div>
+                        <!-- cd-timeline-content -->
+                    </div>
+                    <!-- cd-timeline-block -->
+                    <div class="cd-timeline-block">
+                        <div class="cd-timeline-img cd-location">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-icon-location.svg" alt="Picture">
+                        </div>
+                        <!-- cd-timeline-img -->
+                        <div class="cd-timeline-content">
+                            <h2>
+                                開徵第二階段空污費依實際污染排放量徵收<br>
+                                開徵氮氧化物空污費<br>
+                                公告硫氧化物與氮氧化物排放係數及控制效率
+                            </h2>
+                            <p>第二次修正公告收費辦法，固定源改依硫氧化物與氮氧化物實際排放量並配合優惠費率徵收，並自民國87 年7 月1 日起開始實施，稱之為第二階段固定污染源空污費，促使固定污染源主動採取最合適、最有效之污染排放控制措施，減少空氣污染排放量。</p>
+                            <span class="cd-date">87年</span>
+                        </div>
+                        <!-- cd-timeline-content -->
+                    </div>
+                    <!-- cd-timeline-block -->
+                    <div class="cd-timeline-block">
+                        <div class="cd-timeline-img cd-location">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-icon-location.svg" alt="Location">
+                        </div>
+                        <!-- cd-timeline-img -->
+                        <div class="cd-timeline-content">
+                            <h2>
+                                修正空污費排放量計算要點與收費辦法<br>
+                                修正公告硫氧化物與氮氧化物排放係數及控制效率<br>
+                                配合空污法修正內容修正空污費相關徵收條文內容
+                            </h2>
+                            <p>年第三次修訂乃配合釋憲後空氣污染防制法修正內容，原收費辦法條文中有關徵收之具體規定，已於母法中載明者則予以刪除；同年第四次修訂乃修正發布第11 條條文，針對固定污染源每季應繳費額或每件營建工程核算應繳費額在新臺幣一百元以下者，得免徵收。</p>
+                            <span class="cd-date">88年</span>
+                        </div>
+                        <!-- cd-timeline-content -->
+                    </div>
+                    <!-- cd-timeline-block -->
+                    <div class="cd-timeline-block">
+                        <div class="cd-timeline-img cd-location">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-icon-location.svg" alt="Location">
+                        </div>
+                        <!-- cd-timeline-img -->
+                        <div class="cd-timeline-content">
+                            <h2>調整氮氧化物收費費率反應環境空氣品質之污染現況</h2>
+                            <p>第五次修訂乃將固定污染源排放量計算要點納入收費辦法中，統一進行規範。</p>
+                            <span class="cd-date">90年</span>
+                        </div>
+                        <!-- cd-timeline-content -->
+                    </div>
+                    <!-- cd-timeline-block -->
+                    <div class="cd-timeline-block">
+                        <div class="cd-timeline-img cd-location">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-icon-location.svg" alt="Location">
+                        </div>
+                        <!-- cd-timeline-img -->
+                        <div class="cd-timeline-content">
+                            <h2>修正公告硫氧化物與氮氧化物空污費收費費率<br>依燃油種類、成分、數量、指定公告物質修正空污費費率</h2>
+                            <p>第六次修訂乃係配合空氣污染防制法第四次修正公布，將空氣污染防制法所授權訂定之空污費相關規定，明訂於空氣污染防制費收費辦法中。</p>
+                            <span class="cd-date">93年</span>
+                        </div>
+                        <!-- cd-timeline-content -->
+                    </div>
+                    <!-- cd-timeline-block -->
+                    <div class="cd-timeline-block">
+                        <div class="cd-timeline-img cd-location">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-icon-location.svg" alt="Location">
+                        </div>
+                        <!-- cd-timeline-img -->
+                        <div class="cd-timeline-content">
+                            <h2>修正公告硫氧化物與氮氧化物排放及揮發性有機物空污費徵收費率</h2>
+                            <p>公告修正「固定污染源空氣污染防制費收費費率」，針對硫氧化物與氮氧化物收費費率以整廠排放量為計算基礎，以合理調整費率結構、反映空品現況，並落實「污染者付費」公平原則。</p>
+                            <span class="cd-date">95年</span>
+                        </div>
+                        <!-- cd-timeline-content -->
+                    </div>
+                    <!-- cd-timeline-block -->
+                    <div class="cd-timeline-block">
+                        <div class="cd-timeline-img cd-location">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-icon-location.svg" alt="Location">
+                        </div>
+                        <!-- cd-timeline-img -->
+                        <div class="cd-timeline-content">
+                            <h2>
+                                修正公告硫氧化物與氮氧化物排放係數及控制效率<br>
+                                公告揮發性有機物排放係數及控制效率<br>
+                                開徵揮發性有機物
+                            </h2>
+                            <p>第七次修訂乃將石油焦之空氣污染防制費原係依其銷售量徵收，回歸為依污染物實際排放量徵收；明定燃料混燒之空氣污染防制費計算方式；另鑑於近年臭氧已成為國內空氣品質不良PSI>100 主要污染物，因此針對造成臭氧前驅物之揮發性有機物，增訂揮發性有機物空氣污染防制費費率。</p>
+                            <span class="cd-date">96年</span>
+                        </div>
+                        <!-- cd-timeline-content -->
+                    </div>
+                    <!-- cd-timeline-block -->
+                    <div class="cd-timeline-block">
+                        <div class="cd-timeline-img cd-location">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-icon-location.svg" alt="Location">
+                        </div>
+                        <!-- cd-timeline-img -->
+                        <div class="cd-timeline-content">
+                            <h2>
+                                修正公告空污費費率<br>
+                                公告揮發性有機物自廠係數建置作業要點
+                            </h2>
+                            <p>修正發布「固定污染源空氣污染防制費收費費率」。</p>
+                            <span class="cd-date">98年</span>
+                        </div>
+                        <!-- cd-timeline-content -->
+                    </div>
+                    <!-- cd-timeline-block -->
+                    <div class="cd-timeline-block">
+                        <div class="cd-timeline-img cd-location">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-icon-location.svg" alt="Location">
+                        </div>
+                        <!-- cd-timeline-img -->
+                        <div class="cd-timeline-content">
+                            <h2>公告揮發性有機物質量平衡計畫規定</h2>
+                            <p>採用質量平衡計算空氣污染物排放量之固定污染源計量方式規定。</p>
+                            <span class="cd-date">99年</span>
+                        </div>
+                        <!-- cd-timeline-content -->
+                    </div>
+                    <!-- cd-timeline-block -->
+                    <div class="cd-timeline-block">
+                        <div class="cd-timeline-img cd-location">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-icon-location.svg" alt="Location">
+                        </div>
+                        <!-- cd-timeline-img -->
+                        <div class="cd-timeline-content">
+                            <h2>修正公告空污費費率</h2>
+                            <p>公告修正「固定污染源空氣污染防制費收費費率」。</p>
+                            <span class="cd-date">100年</span>
+                        </div>
+                        <!-- cd-timeline-content -->
+                    </div>
+                    <!-- cd-timeline-block -->
+                </section>
+            </div>
+
+        </div>
+    </form>
+</body>
+</html>

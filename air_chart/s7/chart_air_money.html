@@ -1,0 +1,349 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="../../css/P3.css" rel="stylesheet" />
+    <script src="../../js/jquery-1.10.2.js"></script>
+
+    <script src="../../js/highchats/highstock.js"></script>
+    <script src="../../js/highchats/map.js"></script>
+    <script src="../../js/highchats/drilldown.js"></script>
+    <script src="../../js/highchats/exporting.js"></script>
+    <script src="../../js/highchats/offline-exporting.js"></script>
+
+    <script src="../../js/common/chart.js"></script>
+    <script src="../../js/common/map.js"></script>
+    <script src="../../js/common/play.js"></script>
+    <script src="../../js/common/area_code.js"></script>
+
+    <!-- co value -->
+    <script src="../../js/air_s7/data_money.js"></script>
+    <script src="../../js/AirQualityChart/chart_air_city_month_all.js"></script>
+    <script src="../../js/AirQualityMap/map_air_city_month_all.js"></script>
+
+    <!-- geo json -->
+    <script src="../../Geojson/airqualityarea.geojson.js"></script>
+    <script src="../../Geojson/Country.geojson.js"></script>
+    <script src="../../Geojson/station.geojson.js"></script>
+
+    <title>空氣污染防制費</title>
+    <script type="text/javascript">
+
+        var current_area = "";
+        var current_area_code = "";
+
+        var data_sy, data_sm;
+
+        var current_sy = 0;
+        var current_sm = 0;
+        var current_map_value_name = "空氣污染防制費（億元）";
+        var current_site_name = "";
+        var map_legend_sub_text = "";
+
+        var co_map = map_air_city_month_all;
+        var co_chart = chart_air_city_month_all;
+
+        function set_default_ym() {
+            var d1 = new Date(co_chart[0].time_value[0][0]);
+            current_sy = d1.getFullYear();
+            current_sm = d1.getMonth() + 1;
+
+            data_sy = current_sy;
+            data_sm = current_sm;
+        }
+
+        function get_chart_opts() {
+            var chart_opts = {
+                chart: {
+                    spacing: [0, 0, 0, -60],
+                    events: {
+                        load: function () {
+
+                        },
+                        click: function (event) {
+                            var d = new Date(event.xAxis[0].value);
+
+                            play_current = d;
+                            current_sy = play_current.getFullYear();
+                            var mm = d.getMonth() + 1;
+                            if (mm > 6) {
+                                current_sy += 1;
+                            }
+
+                            //draw plot line
+                            ShowPlotLine(current_sy, current_sm);
+
+                            //change map data
+                            change_year_data(current_sy, current_sm);
+                        }
+                    }
+                },
+                exporting: {
+                    buttons: {
+                        contextButton: {
+                            x: -0, y: 0
+                        }
+                    }
+                },
+                navigator:{
+                    enabled: true,
+                    baseSeries: 1
+                },
+                legend: {
+                    y: 45
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal'
+                    }
+                },
+                xAxis: {
+                    labels: {
+                        formatter: function () {
+                            var d = this.value;
+                            var d1 = new Date(d);
+                            var v = d1.getYear() + 1900 - 1911 + '';
+                            return v;
+                        },
+                        title: {
+                            text: '空氣污染防制費（千元）',
+                            x: -120
+                        },
+                    },
+                    tickInterval: 365 * 24 * 3600 * 1000,
+                    endOnTick: true,
+                    title: {
+                        text: "年",
+                    }
+                },
+                scrollbar:{
+                    enabled: false
+                },
+                navigator:{
+                    enabled: false
+                },
+                tooltip: {
+                    useHTML: true,
+                    formatter: function () {
+                        var d = new Date(this.x);
+                        var str_d = d.getFullYear() - 1911 + "年 ";
+
+                        var s = "<b>" + str_d + "</b><br />";
+                        $.each(this.points, function () {
+                            if ((this.series.options.tooltip) && (this.series.options.tooltip.pointFormatter)) {
+                                s += this.series.options.tooltip.pointFormatter(this);
+                            }
+                            else {
+                                s += '<span style="color:' + this.color + '">\u25CF</span> ' + this.series.name + ': <b>'
+                               + this.y + "</b><br/>";
+                            }
+
+                        });
+
+                        return s;
+                    }
+                },
+                yAxis: [
+               {
+                   title: {
+                       text: '空氣污染防制費（千元）',
+                       rotation: 0,
+                       align: 'high',
+                       x: -120,
+                       y: -25
+                   },
+                   gridLineWidth: 0,
+                   opposite: true,
+                   //tickInterval: 0.1,
+                   min: 0,
+                   offset: 25,
+                   visible: false
+               },
+                {
+                    min: 0,
+                    title: {
+                        text: '單位：億元',
+                        rotation: 0,
+                        align: 'high',
+                        x: 70,
+                        y: -25
+                    },
+                    labels: {
+                        format: " {value}"
+                    },
+                    opposite: false
+                }
+                ]
+        , series: [
+              {
+                  name: '空氣污染防制費（千元）',
+                  data: [],
+                  zIndex: 10,
+                  type: 'spline',
+                  yAxis: 0,
+                  marker: {
+                      enabled: true,
+                      radius: 0
+                  },
+                  color: line_color[0],
+                  tooltip: {
+                      pointFormatter: function (obj) {
+                          var s = '<span style="color:' + obj.color + '">\u25CF</span> ' + obj.series.name + ': <b>';
+                          var v = obj.y.toFixed(2);
+                          s = s + v + ' (千元)</b><br/>';
+                          return s;
+                      }
+                  },
+                  visible: false,
+                  showInLegend: false
+              },
+              {
+                  name: '固定污染源收入(億元)',
+                  data: money.data_1,
+                  type: 'column',
+                  yAxis: 1,
+                  color: area_color[0],
+                  dataLabels: {
+                      enabled: true
+                  },
+                  tooltip: {
+                      pointFormatter: function (obj) {
+                          var s = '<span style="color:' + obj.color + '">\u25CF</span> ' + obj.series.name + ': <b>';
+                          var v = obj.y.toFixed(2);
+                          s = s + v + ' (億元)</b><br/>';
+                          return s;
+                      }
+                  }
+              }, {
+                  name: '移動污染源收入(億元)',
+                  data: money.data_2,
+                  type: 'column',
+                  yAxis: 1,
+                  color: area_color[1],
+                  dataLabels: {
+                      enabled: true
+                  },
+                  tooltip: {
+                      pointFormatter: function (obj) {
+                          var s = '<span style="color:' + obj.color + '">\u25CF</span> ' + obj.series.name + ': <b>';
+                          var v = obj.y.toFixed(2);
+                          s = s + v + ' (億元)</b><br/>';
+                          return s;
+                      }
+                  }
+              }
+        ]
+            };
+
+            return chart_opts;
+        }
+
+        var map_opts = {
+            colorAxis: {
+                min: 0,
+                max: 1
+            },
+            legend: {
+                width: 150
+            }
+        }
+
+        $(document).ready(function () {
+
+            current_area = "ALL";
+            current_area_code = "ALL";
+
+            //chart
+            var opts = get_chart_opts();
+            DrawChart(current_area, "data_chart", opts);
+
+            //chart data
+            change_chart_data();
+            set_default_ym(); // 找出最小日期
+
+            //set map;
+            show_map(current_area, "data_map", map_opts);
+            var map_class_value = [50000, 100000, 150000, 200000];
+            set_color_class(map_class_value, 0, false, 0);
+            change_year_data(current_sy, current_sm);
+
+            map_level_ary.push("ALL");
+
+            change_chart_title();
+
+            //auto play;
+            //play_year();
+
+        });
+
+        map_tooltip_value_func = function (value) {
+            if (value == null) return "無";
+            if (value == "無") return "無";
+            return value.toFixed(2);
+        }
+
+        function change_chart_data(level, code) {
+        };
+
+
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="container">
+
+            <div class="print_page">
+                <div>
+                    <a href="javascript: return false;" onclick="window.print();">
+                        <img src="../../images/print.png" />
+                    </a>
+                </div>
+            </div>
+
+            <div class="back">
+                <div>
+                    <a href="../../air_page/空氣污染防制費大事紀/index.html">
+                        <img src="../../images/air/back.png" />
+                    </a>
+                </div>
+            </div>
+
+            <div class="title">
+                <div class="h1">
+                    <div class="text">空氣污染防制費</div>
+                </div>
+                <div class="h2">
+                    民國84年起基於"污染者付費"及"專款專用"精神，實施空氣污染防制費的徵收以及推動各項補貼、獎勵、減免措施，促使工廠主動改善污染。
+                </div>
+                <div class="h3">
+                    資料來源：固定污染源收入及移動污染源收入：<a href="http://www.epa.gov.tw/lp.asp?ctNode=31646&CtUnit=1436&BaseDSD=7&mp=epa"><u>臺灣環境品質報告1987-2014</a></u>
+                </div>
+            </div>
+
+            <div class="map" style="display: none;">
+                <div id="data_map">
+                </div>
+
+            </div>
+            <div class="chart" style="width: 90%; padding-left: 5%;">
+                <div id="data_chart">
+                </div>
+
+                <div class="action_bar"  style="display: none;">
+                    <div id="div_action_left" onclick="go_year_start();">
+                        <img src="../../images/right.png" />
+                    </div>
+                    <div onclick="btn_action();">
+                        <img src="../../images/play.png" id="img_action_play" />
+                    </div>
+                    <div id="div_action_right" onclick="go_year_end();">
+                        <img src="../../images/left.png" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</body>
+</html>

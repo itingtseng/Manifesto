@@ -1,0 +1,177 @@
+﻿body {
+    padding: 0px;
+    margin: 0px;
+    height: 100%;
+}
+
+.cover1 {
+    width: 100%;
+    min-width: 800px;
+    height: 100%;
+    display: table;
+    background-image: url('../images/index/background1.png');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    overflow: visible;
+    z-index: 10;
+}
+
+.cover2 {
+    width: 100%;
+     min-width: 800px;
+    height: 100%;
+    display: table;
+    background-image: url('../images/index/background2.png');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    overflow: visible;
+    z-index: 9;
+}
+
+.contain {
+    position: absolute;
+    width: 100%;
+    min-width: 750px;
+    height: 100%;
+    display: table;
+    top: 0px;
+    left: 0px;
+    z-index: 20;
+}
+
+    .contain .main {
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto 0 auto;
+        clear: both;
+        display: block;
+    }
+
+    .contain .title {
+        padding: 1%;
+        padding-top: 3%;
+        width: 35%;
+    }
+
+        .contain .title img {
+            width: 100%;
+        }
+
+.left {
+    overflow: visible;
+    width: 15%;
+}
+
+    .left img {
+        width: 100%;
+        padding-bottom: 13%;
+    }
+
+.center {
+    width: 50%;
+    padding: 0 4% 0 4%;
+}
+
+    .center img {
+        width: 100%;
+    }
+
+.right {
+    width: 15%;
+    text-align: right;
+}
+
+    .right img {
+        width: 100%;
+        padding-bottom: 13%;
+    }
+
+.img_2 {
+    width: 25% !important;
+}
+
+#mobile_div {
+    display: none;
+}
+
+.test{
+    color: #8e0f0c,
+}
+
+img {
+    width: 100%;
+}
+
+
+@media screen and (max-width: 760px){
+    
+    body{
+        overflow: hidden;
+    }
+
+    .cover1{
+        min-width: 100%;
+    }
+
+    .cover2{
+        min-width: 100%;
+    }
+
+    .contain {
+        min-width: 100%;
+    }
+    
+    .title{
+        min-width: 100%;
+        text-align: center;
+        margin-top: 2%;
+    }
+
+       .contain .title img {
+            width: 80%;
+        }
+
+    #pc_table {
+        display: none;
+    }
+
+    #mobile_div {
+        display: block;
+    }
+
+    .mobile_center{
+        width: 80%;
+        margin: 2% 10% 5% 10%;
+        clear: both;
+    }
+
+    .mobile_left {
+        float: left;
+        width: 30%;
+        margin-left: 3%;
+    }
+
+      .mobile_left img{
+           padding: 3% 0 3% 0;
+       }
+
+       .mobile_right {
+        float: right;
+        width: 30%;
+        margin-right: 3%;
+        text-align: right;
+    }
+
+       .mobile_right img{
+           padding: 3% 0 3% 0;
+       }
+
+}

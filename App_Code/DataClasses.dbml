@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Danny_Test" EntityNamespace="WhitePaper.Table" ContextNamespace="WhitePaper" Class="DataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=C1228287;Initial Catalog=Danny_Test;Persist Security Info=True;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="Danny_TestConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.COemission" Member="COemission">
+    <Type Name="COemission">
+      <Column Name="TYPE" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="[1993Y]" Member="_1993Y" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="[1994Y]" Member="_1994Y" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="[1995Y]" Member="_1995Y" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="[1996Y]" Member="_1996Y" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="[1997Y]" Member="_1997Y" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="[1998Y]" Member="_1998Y" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="[1999Y]" Member="_1999Y" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="[2000Y]" Member="_2000Y" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="[2001Y]" Member="_2001Y" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="[2002Y]" Member="_2002Y" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="[2003Y]" Member="_2003Y" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="[2004Y]" Member="_2004Y" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="[2005Y]" Member="_2005Y" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="[2006Y]" Member="_2006Y" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="[2007Y]" Member="_2007Y" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="[2008Y]" Member="_2008Y" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="[2009Y]" Member="_2009Y" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="[2010Y]" Member="_2010Y" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="[2011Y]" Member="_2011Y" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="[2012Y]" Member="_2012Y" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="[2013Y]" Member="_2013Y" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="[2014Y]" Member="_2014Y" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="[2015Y]" Member="_2015Y" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AirQualityMonth" Member="AirQualityMonth">
+    <Type Name="AirQualityMonth">
+      <Column Name="COUNTY" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="SITENAME" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ITEMNAME" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="MONITORYEAR" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="MONITORMONTH" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="MONTHLYVALUE" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="ITEMUNIT" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AirStation" Member="AirStation">
+    <Type Name="AirStation">
+      <Column Name="NUMBER" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="COUNTY" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="VILLAGE" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="SITENAME" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="SITETYPE" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="SITEADD" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="AIRQUALITYAREA" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="X" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Y" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.data_pb" Member="data_pb">
+    <Type Name="data_pb">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="city" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="d_year" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="d_month" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="d_value" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>

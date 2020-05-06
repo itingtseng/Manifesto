@@ -1,0 +1,235 @@
+﻿body, html {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
+
+.content {
+    width: 100%;
+    height: 100%;
+    max-width: 1200px !important;
+    min-width: 800px;
+    margin: 0 auto 0 auto;
+    clear: both;
+    display: block;
+    padding-top: 2%;
+}
+
+.air_line {
+    width: 100%;
+    float: left;
+    margin-top: 0%;
+}
+
+    .air_line img {
+        width: 100%;
+    }
+
+.title_text {
+    width: 40%;
+    float: right;
+    top: 10%;
+}
+
+    .title_text img {
+        width: 100%;
+    }
+
+.year {
+    margin-left: -1.2%;
+    height: 320%;
+}
+
+    .year a {
+        width: 100%;
+        display: table;
+        height: 100%;
+    }
+
+    .year div {
+        float: left;
+        width: 2.5%;
+        height: 200px;
+        display: table;
+        cursor: pointer;
+        z-index: 60;
+        border: 0px solid;
+    }
+
+    .year .tip {
+        position: relative;
+        z-index: 65;
+        width: 35%;
+    }
+
+        .year .tip img {
+            width: 100%;
+        }
+
+.year_1 {
+    position: relative;
+    margin-top: -30.3%;
+    left: 6.5%;
+}
+
+
+.line {
+    clear: both;
+    padding-top: 0%;
+    width: 100%;
+}
+
+    .line a {
+        width: 100%;
+        display: table;
+        height: 100%;
+    }
+
+    .line div {
+        float: left;
+        width: 2.3% !important;
+        height: 220px;
+        display: table;
+        cursor: pointer;
+        margin-top: -28% !important;
+        z-index: 80;
+        border: 0px solid;
+    }
+
+        .line div canvas {
+            width: 100%;
+            cursor: pointer;
+        }
+
+#line1 {
+    position: relative;
+    left: 0.4%;
+}
+
+#line2 {
+    position: relative;
+    left: 30.2%;
+    margin-top: -24%;
+    width: 7%;
+}
+
+#line3 {
+    position: relative;
+    left: 32.1%;
+    margin-top: -15%;
+    width: 7%;
+}
+
+#line4 {
+    position: relative;
+    left: 33.8%;
+    margin-top: -25%;
+    width: 7%;
+}
+
+#line5 {
+    position: relative;
+    left: 39.4%;
+    margin-top: -13%;
+    width: 7%;
+}
+
+#line6 {
+    position: relative;
+    left: 49.2%;
+    margin-top: -25%;
+    width: 7%;
+}
+
+#line7 {
+    position: relative;
+    left: 52.4%;
+    margin-top: -13.6%;
+    width: 7%;
+}
+
+#line8 {
+    position: relative;
+    left: 66.2%;
+    margin-top: -13.9%;
+    width: 7%;
+    height: 260px;
+}
+
+#line9 {
+    position: relative;
+    left: 68%;
+    margin-top: -25%;
+    width: 7%;
+}
+
+#line10 {
+    position: relative;
+    left: 70.2%;
+    margin-top: -25%;
+    width: 7%;
+}
+
+#line11 {
+    position: relative;
+    left: 72.4%;
+    margin-top: -25%;
+    width: 7%;
+    height: 280px;
+}
+
+#line12 {
+    position: relative;
+    left: 79.8%;
+    margin-top: -25%;
+    width: 7%;
+    height: 280px;
+}
+
+#line13 {
+    position: relative;
+    left: 84%;
+    margin-top: -25%;
+    width: 7%;
+}
+
+#line14 {
+    position: relative;
+    left: 86%;
+    margin-top: -25%;
+    width: 7%;
+}
+
+#line15 {
+    position: relative;
+    left: 93.1%;
+    margin-top: -25%;
+    width: 7%;
+}
+
+.back {
+    position: relative;
+    width: 6%;
+    height: 60px;
+    margin-top: -60.5%;
+    left: 3.5%;
+    z-index: 900;
+}
+
+    .back a {
+        display: table;
+        width: 100%;
+        height: 100%;
+    }
+
+    .back img {
+        width: 100%;
+    }
+
+.air_all {
+    width: 100%;
+}
+
+    .air_all img {
+        width: 100%;
+    }

@@ -1,0 +1,315 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="../../css/P3.css" rel="stylesheet" />
+    <script src="../../js/jquery-1.10.2.js"></script>
+
+    <script src="../../js/highchats/highstock.js"></script>
+    <script src="../../js/highchats/map.js"></script>
+    <script src="../../js/highchats/drilldown.js"></script>
+    <script src="../../js/highchats/exporting.js"></script>
+    <script src="../../js/highchats/offline-exporting.js"></script>
+
+    <script src="../../js/common/chart.js"></script>
+    <script src="../../js/common/map.js"></script>
+    <script src="../../js/common/play.js"></script>
+    <script src="../../js/common/area_code.js"></script>
+
+    <!-- co value -->
+    <script src="../../js/AirQualityChart/chart_so2_normal.js"></script>
+    <script src="../../js/AirQualityChart/chart_so2_industry.js"></script>
+
+    <script src="../../js/AirQualityMap/map_so2_industry.js"></script>
+    <script src="../../js/AirQualityMap/map_so2_normal.js"></script>
+
+    <script src="../../js/so2/co_oil.js"></script>
+    <script src="../../js/driver/Car_count.js"></script>
+    <script src="../../js/driver/Scootor_count.js"></script>
+
+    <!-- geo json -->
+    <script src="../../Geojson/airqualityarea.geojson.js"></script>
+    <script src="../../Geojson/Country.geojson.js"></script>
+    <script src="../../Geojson/station.geojson.js"></script>
+
+    <title>氣、柴油含硫管制</title>
+    <script type="text/javascript">
+
+        var current_area = "";
+        var current_area_code = "";
+
+        var data_sy, data_sm;
+
+        var current_sy = 0;
+        var current_sm = 0;
+        var current_map_value_name = "二氧化硫濃度(ppb)";
+        var current_site_name = "工業測站";
+
+        var co_map = map_so2_industry;
+        var co_chart = chart_so2_industry;
+
+        function set_default_ym() {
+            var d1 = new Date(stock_chart.xAxis[0].getExtremes().max);
+            current_sy = d1.getFullYear();
+            current_sm = d1.getMonth() + 1;
+
+            data_sy = current_sy;
+            data_sm = current_sm;
+        }
+
+        function get_chart_opts() {
+            var chart_opts = {
+                chart: {
+                    spacing: [0, -100, 0, -80],
+                },
+                exporting:{
+                    buttons: {
+                        contextButton: {
+                            x: -180
+                        }
+                    }
+                },
+                yAxis: [
+                {
+                    title: {
+                        text: '二氧化硫濃度(ppb)',
+                        rotation: 0,
+                        align: 'high',
+                        x: 105,
+                        y: -30
+                    },
+                    min: 0,
+                    showFirstLabel: true,
+                    showLastLabel: true,
+                    gridLineWidth: 0,
+                    opposite: false,
+                    offset: 25
+                },
+                {
+                    title: {
+                        text: '燃料油含硫標準(%)',
+                        rotation: 0,
+                        align: 'high',
+                        x: -100,
+                        y: -30
+                    },
+                    min: 0,
+                    max: 0.011,
+                    gridLineWidth: 0,
+                    showFirstLabel: true,
+                    showLastLabel: true,
+                    opposite: true,
+                    labels: {
+                        formatter: function () {
+                            return (this.value * 100).toFixed(1) + ' %';
+                        }
+                    }
+                }],
+                series: [
+                    {
+                        name: '二氧化硫濃度(ppb)',
+                        zIndex: 10,
+                        type: 'spline',
+                        yAxis: 0,
+                        marker: {
+                            enabled: true,
+                            radius: 0
+                        },
+                        color: line_color[0],
+                        tooltip: {
+                            pointFormatter: function (obj) {
+                                var s = '<span style="color:' + obj.color + '">\u25CF</span> ' + obj.series.name + ': <b>';
+                                var v = obj.y.toFixed(2);
+                                s = s + v + ' </b><br/>';
+                                return s;
+                            }
+                        }
+                    },
+                    {
+                        name: '燃料油含硫標準(%)',
+                        data: co_oil.fuel,
+                        zIndex: 1,
+                        type: 'area',
+                        yAxis: 1,
+                        fillOpacity: 1,
+                        color: area_color[0],
+                        tooltip: {
+                            pointFormatter: function (obj) {
+                                var s = '<span style="color:' + obj.color + '">\u25CF</span> ' + obj.series.name + ': <b>';
+                                var v = obj.y * 100;
+                                s = s + v + ' %</b><br/>';
+                                //var driver = get_driver_count(obj.x);
+                                //s = s  + driver;
+                                return s;
+
+                            }
+                        }
+                    }
+                ]
+            };
+
+            return chart_opts;
+        }
+
+        var map_opts = {
+            colorAxis: {
+                min: 0,
+                max: 40
+            },
+            legend: {
+                width: 120
+            }
+        }
+
+        $(document).ready(function () {
+
+            current_area = "ALL";
+            current_area_code = "ALL";
+
+            //chart
+            var opts = get_chart_opts();
+            DrawChart(current_area, "data_chart", opts);
+
+            //chart data
+            change_chart_data();
+            set_default_ym(); // 找出最小日期
+
+            //set map;
+            show_map(current_area, "data_map", map_opts);
+            var map_class_value = [2.5, 3.4, 4.4, 6.3];
+            set_color_class(map_class_value, 0, false);
+            change_year_data(current_sy, current_sm);
+
+            map_level_ary.push("ALL");
+
+            change_chart_title();
+
+            //auto play;
+            //play_year();
+        });
+
+        map_tooltip_value_func = function (value) {
+            if (value == null) return "無";
+            if (value == "無") return "無";
+            return value.toFixed(2);
+        }
+
+        function change_site(site_type) {
+            switch (site_type) {
+                case "industry":
+                    co_map = map_so2_industry;
+                    co_chart = chart_so2_industry;
+                    current_site_name = "工業測站";
+                    break;
+                case "normal":
+                    co_map = map_so2_normal;
+                    co_chart = chart_so2_normal;
+                    current_site_name = "一般測站";
+                    break;
+            }
+
+            change_chart_data(current_area, current_area_code);
+            change_chart_title(current_area, current_area_code);
+
+            change_year_data(current_sy, current_sm);
+            $(".map_static_change .list").hide();
+
+        }
+
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="container">
+
+            <div class="print_page">
+                <div>
+                    <a href="javascript: return false;" onclick="window.print();">
+                        <img src="../../images/print.png" />
+                    </a>
+                </div>
+            </div>
+
+            <div class="back">
+                <div>
+                    <a href="../../air_page/p2_subject_1.html">
+                        <img src="../../images/air/back.png" />
+                    </a>
+                </div>
+            </div>
+
+            <div class="title">
+                <div class="h1">
+                    <div class="text">實施燃料含硫管制</div>
+                    <div class="drop chart_change" onclick="open_change_list();">
+                        ▼
+                        <div class="list">
+                            <div>
+                                <a class="select">
+                                    燃料油含硫標準
+                                </a>
+                            </div>
+                            <div>
+                                <a href="chart_so2_fuel.html">
+                                    汽油和柴油含硫標準
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="h2">
+                    民國70年推動低硫燃料油政策，逐期降低油品中所含硫的成份，由於<a href="chart_so2.html"><u>燃料油</a></u>、<a href="chart_so2_fuel.html"><u>汽油和柴油</a></u>各油品性質的差異，含硫成分比例的管制也有所不同。
+                </div>
+                <div class="h3">
+                    資料來源：燃料油含硫標準：<a href="http://www.epa.gov.tw/lp.asp?ctNode=31646&CtUnit=1436&BaseDSD=7&mp=epa"><u>臺灣環境品質報告1987-2014</a></u>；空氣品質監測月值：
+                    <a href="http://erdb.epa.gov.tw/DataRepository/EnvMonitor/AirQualityMonitorMonData.aspx"><u>環境資源資料庫</a></u>
+                </div>
+            </div>
+
+            <div class="map">
+                <div id="data_map">
+                </div>
+            </div>
+            <div class="chart">
+                
+                <div class="site_menu">
+                    <div class="map_static_change">
+                        <div onclick="open_map_change_list();" style="cursor: pointer;" class="text">
+                            <img src="../../images/change.png" />切換 
+                        </div>
+                        <div class="list">
+                            <div>
+                                <a href="javascript: change_site('industry');" onclick="change_site('industry');">
+                                    工業測站
+                                </a>
+                            </div>
+                            <div>
+                                <a href="javascript: change_site('normal');" onclick="change_site('normal');">
+                                    一般測站
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="data_chart">
+                </div>
+
+                <div class="action_bar">
+                    <div id="div_action_left" onclick="go_year_start();">
+                        <img src="../../images/right.png" />
+                    </div>
+                    <div onclick="btn_action();">
+                        <img src="../../images/play.png" id="img_action_play" />
+                    </div>
+                    <div id="div_action_right" onclick="go_year_end();">
+                        <img src="../../images/left.png" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</body>
+</html>
